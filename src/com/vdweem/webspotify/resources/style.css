@@ -1,0 +1,135 @@
+html, body {
+	margin: 0px;
+	padding; 0px;
+}
+body, a, input, textarea, select {
+	font-size: 12px;
+	font: arial;
+}
+body, a {
+	color: white;
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
+}
+#topbar {
+	background: url('images/topgradient.png') repeat-x;
+	height: 56px;
+}
+#applicationTitle {
+	text-align: center;
+	color: black;
+	font-weight: bold;
+	font-size: 13px;
+}
+#search {
+	width: 200px;
+	padding-top: 10px;
+	padding-left: 20px;
+}
+#search .searchLeft {
+	background: url('images/searchLeft.png') no-repeat;
+	width: 20px;
+	height: 21px;
+	float: left;
+}
+#search .searchRight {
+	background: url('images/searchRight.png') no-repeat;
+	width: 20px;
+	height: 21px;
+	float: right;
+}
+#search .search {
+	background: url('images/searchCenter.png') repeat-x;
+	width: 160px;
+	border: 0px;
+	height: 21px;
+	vertical-align: center;
+}
+
+#leftbar {
+	background-color: #474747;
+	position: absolute;
+	left: 0px;
+	width: 240px;
+	top: 56px;
+	bottom: 42px;
+}
+#playingArt {
+	background: url('images/noAlbum.png') no-repeat;
+	position: absolute;
+	left: 0px;
+	width: 240px;
+	height: 240px;
+	bottom: 50px;
+}
+#playingText {
+	background: url('images/playingGradient.png') repeat-x;
+	position: absolute;
+	left: 0px;
+	width: 240px;
+	height: 50px;
+	bottom: 0px;
+}
+#center {
+	background-color: #373737;
+	position: absolute;
+	left: 240px;
+	right: 0px;
+	top: 56px;
+	bottom: 42px;
+	overflow: auto;
+}
+
+#controls {
+	background: url('images/controlsGradient.png') repeat-x;
+	position: absolute;
+	left: 0px;
+	right: 0px;
+	height: 42px;
+	bottom: 0px;
+}
+
+#center table tr.odd {
+	background-color: #313131;
+}
+/****************************************************************
+ *								Search							*
+ ****************************************************************/
+.searchTop img {
+	width: 60px;
+	height: 60px;
+}
+.searchTop td {
+	vertical-align: top;
+}
+.searchTop ol li, .searchTop ol li a {
+	display: inline;	
+	color: #999999;
+}
+.searchTop ol li .albumandartist .artist, .searchTop ol li .albumandartist .artist a{
+	color: #666666;
+}
+.searchTop li.title {
+	color: #FFF;
+}
+.searchTop ol {
+	list-style: none outside none; 
+	padding: 10px;	
+}
+ 
+table.searchResults, table.searchTop {
+	width: 100%;
+	table-layout: fixed;	
+}
+table.searchTop td { width: 50%; }
+table.searchResults .track      { }
+table.searchResults .artist     { width: 15%; }
+table.searchResults .time       { width: 40px; }
+table.searchResults .popularity { width: 70px; }
+table.searchResults .album      { width: 30%; }
+tr.searchHead {
+	background: url("images/searchGradient.png") repeat-x scroll 0 0 transparent;
+	color: black;
+}

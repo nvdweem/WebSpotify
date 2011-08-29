@@ -1,0 +1,180 @@
+
+#include <string.h>
+#include "Session.h"
+#include "spotify_Session.h"
+#include "appkey.c"
+#include "playlist.h"
+#include "JNI.h"
+#include "music.h"
+#include "media.h"
+
+sp_session *session;
+jobject sessionListener;
+
+sp_session* getSession() {
+	return session;
+}
+
+jobject getSessionListener() {
+	return sessionListener;
+}
+
+/**
+ * The session callbacks
+ */
+static sp_session_callbacks callbacks = {
+	  (void (__stdcall *)(sp_session *, sp_error)) &cb_logged_in // void (SP_CALLCONV *logged_in)(sp_session *session, sp_error error);
+	, (void (__stdcall *)(sp_session *)) &cb_logged_out // void (SP_CALLCONV *logged_out)(sp_session *session);
+	, NULL //(void (__stdcall *)(sp_session *)) &cb_metadata_updated //void (SP_CALLCONV *metadata_updated)(sp_session *session);
+	, (void (__stdcall *)(sp_session *, sp_error error)) &cb_connection_error //void (SP_CALLCONV *connection_error)(sp_session *session, sp_error error);
+	, (void (__stdcall *)(sp_session *, const char *)) &cb_message_to_user //void (SP_CALLCONV *message_to_user)(sp_session *session, const char *message);
+	, (void (__stdcall *)(sp_session *)) &notify_main_thread //void (SP_CALLCONV *notify_main_thread)(sp_session *session);
+	, (int (__stdcall *)(sp_session *session, const sp_audioformat *format, const void *frames, int num_frames)) &music_delivery //int (SP_CALLCONV *music_delivery)(sp_session *session, const sp_audioformat *format, const void *frames, int num_frames);
+	, (void (__stdcall *)(sp_session *)) &cb_play_token_lost //void (SP_CALLCONV *play_token_lost)(sp_session *session);
+	, (void (__stdcall *)(sp_session *, const char *)) &cb_log_message //void (SP_CALLCONV *log_message)(sp_session *session, const char *data);
+	, (void (__stdcall *)(sp_session *)) &cb_end_of_track //&end_of_track //void (SP_CALLCONV *end_of_track)(sp_session *session);
+	, (void (__stdcall *)(sp_session *, sp_error)) &cb_streaming_error //void (SP_CALLCONV *streaming_error)(sp_session *session, sp_error error);
+	, (void (__stdcall *)(sp_session *)) &cb_userinfo_updated //void (SP_CALLCONV *userinfo_updated)(sp_session *session);
+	, (void (__stdcall *)(sp_session *)) &cb_start_playback //void (SP_CALLCONV *start_playback)(sp_session *session);
+	, (void (__stdcall *)(sp_session *)) &cb_stop_playback //void (SP_CALLCONV *stop_playback)(sp_session *session);
+	, (void (__stdcall *)(sp_session *, sp_audio_buffer_stats *)) &cb_get_audio_buffer_stats //void (SP_CALLCONV *get_audio_buffer_stats)(sp_session *session, sp_audio_buffer_stats *stats);
+	, (void (__stdcall *)(sp_session *)) &cb_offline_status_updated //void (SP_CALLCONV *offline_status_updated)(sp_session *session);
+};
+
+JNIEXPORT void JNICALL Java_spotify_Session_Init(JNIEnv * env, jobject, jobject _sessionListener, jobject _playlistListener) {
+	sp_session_config config;
+	sp_error error;
+
+    extern const uint8_t g_appkey[];
+    extern const size_t g_appkey_size;
+	memset(&config, 0, sizeof(config));
+
+	config.api_version = SPOTIFY_API_VERSION;
+	config.cache_location = "tmp";
+	config.settings_location = "tmp";
+	config.application_key = g_appkey;
+	config.application_key_size = g_appkey_size;
+	config.user_agent = "SpotifyDJ";
+	config.callbacks = &callbacks;
+
+	setEnv(env);
+	sessionListener = env->NewGlobalRef(_sessionListener);
+	
+	init_main_thread();
+	error = sp_session_create(&config, &session);
+	if (SP_ERROR_OK != error) {
+		fprintf(stderr, "failed to create session: %s\n", sp_error_message(error));
+	}
+	
+	// Playlist listener
+	initPlaylist(session, env->NewGlobalRef(_playlistListener));
+	infloop(session);
+}
+
+JNIEXPORT void JNICALL Java_spotify_Session_Login(JNIEnv * env, jobject, jstring usernameJ, jstring passwordJ) {
+	jboolean iscopy;
+	const char *username = env->GetStringUTFChars(usernameJ, &iscopy);
+	const char *password = env->GetStringUTFChars(passwordJ, &iscopy);
+	sp_session_login(session, username, password);
+}
+
+void cb_search_complete(sp_search *search, void *userdata) {
+	jobject target = (jobject) userdata;
+	for (int i = 0; i < sp_search_num_tracks(search); i++) {
+		sp_track *track = sp_search_track(search, i);
+		if (!sp_track_is_available(session, track)) continue;
+		callVoidMethod(target, "addTrack", readTrack(track, true));
+	}
+
+	for (int i = 0; i < sp_search_num_albums(search); i++) {
+		sp_album *album = sp_search_album(search, i);
+		if (!sp_album_is_available(album)) continue;
+		callVoidMethod(target, "addAlbum", readAlbum(album, true));
+	}
+
+	for (int i = 0; i < sp_search_num_artists(search); i++) {
+		sp_artist *artist = sp_search_artist(search, i);
+		callVoidMethod(target, "addArtist", readArtist(artist, true));
+	}
+
+	callVoidMethod(target, "setComplete");
+	sp_search_release(search);
+	removeGlobalRef(target);
+}
+JNIEXPORT void JNICALL Java_spotify_Session_Search(JNIEnv *env, jobject, jstring _query, jint trackCount, jint albumCount, jint artistCount, jobject _target) {
+	jboolean iscopy;
+	const char *query = env->GetStringUTFChars(_query, &iscopy);
+
+	sp_search_create(session, query, 0, trackCount, 0, albumCount, 0, artistCount, &cb_search_complete, env->NewGlobalRef(_target));
+}
+
+/**
+ * Callbacks
+ */
+void cb_logged_in(sp_session *session, sp_error error){
+	callVoidMethod(sessionListener, "cb_logged_in", error);
+}
+void cb_logged_out(sp_session *session){
+	callVoidMethod(sessionListener, "cb_logged_out");
+}
+void cb_metadata_updated(sp_session *session){
+	callVoidMethod(sessionListener, "cb_metadata_updated");
+}
+void cb_connection_error(sp_session *session, sp_error error){
+	callVoidMethod(sessionListener, "cb_connection_error", (int) error);
+}
+void cb_message_to_user(sp_session *session, const char *message){
+	callVoidMethod(sessionListener, "cb_message_to_user", message);
+}
+void cb_play_token_lost(sp_session *session){
+	callVoidMethod(sessionListener, "cb_play_token_lost");
+}
+void cb_log_message(sp_session *session, const char *data){
+	callVoidMethod(sessionListener, "cb_log_message", data);
+}
+void cb_end_of_track(sp_session *session){
+	callVoidMethod(sessionListener, "cb_end_of_track");
+}
+void cb_streaming_error(sp_session *session, sp_error error){
+	callVoidMethod(sessionListener, "cb_streaming_error", (int) error);
+}
+void cb_userinfo_updated(sp_session *session){
+	callVoidMethod(sessionListener, "cb_userinfo_updated");
+}
+void cb_start_playback(sp_session *session){
+	callVoidMethod(sessionListener, "cb_start_playback");
+}
+void cb_stop_playback(sp_session *session){
+	callVoidMethod(sessionListener, "cb_stop_playback");
+}
+void cb_get_audio_buffer_stats(sp_session *session, sp_audio_buffer_stats *stats){
+	callVoidMethod(sessionListener, "cb_get_audio_buffer_stats");
+}
+void cb_offline_status_updated(sp_session *session){
+	callVoidMethod(sessionListener, "cb_offline_status_updated");
+}
+
+JNIEXPORT void JNICALL Java_spotify_Session_RegisterPlayer(JNIEnv *env, jobject, jobject player) {
+	setPlayer(env->NewGlobalRef(player));
+}
+
+JNIEXPORT void JNICALL Java_spotify_Session_Play(JNIEnv *env, jobject, jstring _trackId) {
+	jboolean iscopy;
+	const char *trackId = env->GetStringUTFChars(_trackId, &iscopy);
+
+	sp_track *track = sp_link_as_track(sp_link_create_from_string(trackId));
+	sp_session_player_load(session, track);
+	sp_session_player_play(session, true);
+}
+
+JNIEXPORT void JNICALL Java_spotify_Session_ReadArtistImage(JNIEnv *env, jobject, jstring _artistId, jobject target) {
+	jboolean iscopy;
+	const char *artistId = env->GetStringUTFChars(_artistId, &iscopy);
+	readArtistImage(sp_link_as_artist(sp_link_create_from_string(artistId)), env->NewGlobalRef(target));
+}
+
+JNIEXPORT void JNICALL Java_spotify_Session_ReadAlbumImage(JNIEnv *env, jobject, jstring _albumId, jobject target) {
+	jboolean iscopy;
+	const char *albumId = env->GetStringUTFChars(_albumId, &iscopy);
+	readAlbumImage(sp_link_as_album(sp_link_create_from_string(albumId)), env->NewGlobalRef(target));
+}

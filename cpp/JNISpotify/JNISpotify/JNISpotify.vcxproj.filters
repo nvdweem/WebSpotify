@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Spotify">
+      <UniqueIdentifier>{59c4790e-6a36-4bf6-8227-2f2004842049}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Spotify">
+      <UniqueIdentifier>{2f86daac-50fd-4194-be94-1ef27656d90e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Session.cpp">
+      <Filter>Source Files\Spotify</Filter>
+    </ClCompile>
+    <ClCompile Include="appkey.c">
+      <Filter>Source Files\Spotify</Filter>
+    </ClCompile>
+    <ClCompile Include="infloop.cpp">
+      <Filter>Source Files\Spotify</Filter>
+    </ClCompile>
+    <ClCompile Include="JNI.cpp">
+      <Filter>Source Files\Spotify</Filter>
+    </ClCompile>
+    <ClCompile Include="playlist.cpp">
+      <Filter>Source Files\Spotify</Filter>
+    </ClCompile>
+    <ClCompile Include="media.cpp">
+      <Filter>Source Files\Spotify</Filter>
+    </ClCompile>
+    <ClCompile Include="music.cpp">
+      <Filter>Source Files\Spotify</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Session.h">
+      <Filter>Header Files\Spotify</Filter>
+    </ClInclude>
+    <ClInclude Include="spotify_Session.h">
+      <Filter>Header Files\Spotify</Filter>
+    </ClInclude>
+    <ClInclude Include="infloop.h">
+      <Filter>Header Files\Spotify</Filter>
+    </ClInclude>
+    <ClInclude Include="JNI.h">
+      <Filter>Header Files\Spotify</Filter>
+    </ClInclude>
+    <ClInclude Include="playlist.h">
+      <Filter>Header Files\Spotify</Filter>
+    </ClInclude>
+    <ClInclude Include="media.h">
+      <Filter>Header Files\Spotify</Filter>
+    </ClInclude>
+    <ClInclude Include="music.h">
+      <Filter>Header Files\Spotify</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
