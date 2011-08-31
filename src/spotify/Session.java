@@ -3,6 +3,7 @@ package spotify;
 public class Session {
 	private SessionListener sessionListener;
 	private PlaylistListener playlistListener;
+	private Player player;
 	
 	private static final Session instance = new Session();
 	static {
@@ -24,6 +25,7 @@ public class Session {
 		listener.initialize();
 		this.sessionListener = listener;
 		this.playlistListener = playlist;
+		this.player = new Player(this);
 		
 		try {
 			Thread.sleep(500);
@@ -57,13 +59,23 @@ public class Session {
 		return result;
 	}
 	
+	public Player getPlayer() {
+		return player;
+	}
+	
+	public Artist browseArtist(String link) {
+		return BrowseArtist(link);
+	}
+	
 	private native void Init(SessionListener listener, PlaylistListener playlist);
 	private native void Login(String username, String password);
 	private native void Search(String query, int trackCount, int albumCount, int artistCount, Search result);
 	
 	protected native void RegisterPlayer(Player player);
-	protected native void Play(String track);
+	protected native void Play(Track track);
+	protected native void Seek(int position);
 	
 	private native void ReadArtistImage(String id, Image target);
 	private native void ReadAlbumImage(String id, Image target);
+	private native Artist BrowseArtist(String link);
 }

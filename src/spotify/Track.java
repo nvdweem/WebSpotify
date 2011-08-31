@@ -2,7 +2,7 @@ package spotify;
 
 import org.json.JSONObject;
 
-public class Track extends Media {
+public class Track extends Media implements Comparable<Track> {
 
 	protected int duration;
 	protected Album album;
@@ -76,6 +76,11 @@ public class Track extends Media {
 
 	public void setDisc(int disc) {
 		this.disc = disc;
+	}
+
+	@Override
+	public int compareTo(Track o) {
+		return Integer.valueOf(o.getPopularity()).compareTo(getPopularity());
 	}
 	
 }

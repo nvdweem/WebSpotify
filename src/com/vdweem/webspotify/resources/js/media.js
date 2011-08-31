@@ -12,9 +12,9 @@ var Media = function() {
 	
 	function decorateDuration(duration) {
 		duration /= 1000;
-		var minutes = Math.round(duration / 60);
+		var minutes = Math.floor(duration / 60);
 		var seconds = lz(duration % 60, 2);
-		return $('<span class="duration">'+minutes+':'+seconds+'</span>');
+		return $('<span class="duration">'+minutes+':'+seconds+'</span>').data("value", duration);
 	}
 	
 	function decoratePopularity(popularity) {
@@ -27,7 +27,7 @@ var Media = function() {
 	 * { id, name, duration, popularity, disc, album, artist }
 	 */
 	function decorateTrack(t) {
-		var row = $('<tr class="track"></tr>').data("id", t.id);
+		var row = $('<tr class="track"></tr>').data("id", t.id).data("album", t.album.id);
 		row.append(cell().text(t.name));
 		row.append(cell().append(artistLink(t.artist)));
 		row.append(cell().append(decorateDuration(t.duration)));
@@ -48,6 +48,7 @@ var Media = function() {
 		"decorateTrack" : decorateTrack,
 		"artistLink": artistLink,
 		"albumLink": albumLink,
+		"decorateDuration": decorateDuration,
 	}
 }();
 /*

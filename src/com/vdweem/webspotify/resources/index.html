@@ -5,11 +5,16 @@
     <title> WebSpotify v0.2 </title>
     
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery.lazyload.mini.js"></script>
+    
     <link rel="stylesheet" type="text/css" href="style.css" />
     
     <script type="text/javascript" src="js/ajax.js"></script>
     <script type="text/javascript" src="js/media.js"></script>
+    <script type="text/javascript" src="js/artistbrowse.js"></script>
     <script type="text/javascript" src="js/search.js"></script>
+    <script type="text/javascript" src="js/player.js"></script>
+    <script type="text/javascript" src="js/status.js"></script>
   </head>
   <body>
     <div id="topbar">
@@ -31,6 +36,12 @@
     <div id="center">
     </div>
     <div id="controls">
+    
+      <div id="progress">
+    	<div id="played"></div>
+    	<div id="position"></div>
+    	<div id="play"></div>
+      </div>
     </div>
   </body>
 </html>

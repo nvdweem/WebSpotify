@@ -1,5 +1,5 @@
 #include "jni.h"
-#include "api.h";
+#include "api.h"
 
 JNIEnv *cb_env;
 
@@ -32,7 +32,6 @@ void removeGlobalRef(jobject target) {
 }
 
 void callVoidMethod(jobject object, const char* methodName) {
-//fprintf(stderr, "%s\n", methodName);
 	JNIEnv* env = attachThread();
 	jclass cls = env->GetObjectClass(object);
 	jmethodID methodId = env->GetMethodID(cls, methodName, "()V");
@@ -41,7 +40,6 @@ void callVoidMethod(jobject object, const char* methodName) {
 }
 
 void callVoidMethod(jobject object, const char* methodName, int arg0) {
-//fprintf(stderr, "%s\n", methodName);
 	JNIEnv* env = attachThread();
 	jclass cls = env->GetObjectClass(object);
 	jmethodID methodId = env->GetMethodID(cls, methodName, "(I)V");
@@ -49,8 +47,13 @@ void callVoidMethod(jobject object, const char* methodName, int arg0) {
 	detachThread();
 }
 
+void callVoidMethod(JNIEnv *env, jobject object, const char* methodName, int arg0) {
+	jclass cls = env->GetObjectClass(object);
+	jmethodID methodId = env->GetMethodID(cls, methodName, "(I)V");
+	env->CallVoidMethod(object, methodId, arg0);
+}
+
 void callVoidMethod(jobject object, const char* methodName, int arg0, int arg1, int arg2) {
-//fprintf(stderr, "%s\n", methodName);
 	JNIEnv* env = attachThread();
 	jclass cls = env->GetObjectClass(object);
 	jmethodID methodId = env->GetMethodID(cls, methodName, "(III)V");
@@ -59,7 +62,6 @@ void callVoidMethod(jobject object, const char* methodName, int arg0, int arg1, 
 }
 
 void callVoidMethod(jobject object, const char* methodName, const char* arg0) {
-//fprintf(stderr, "%s\n", methodName);
 	JNIEnv* env = attachThread();
 	jclass cls = env->GetObjectClass(object);
 	jmethodID methodId = env->GetMethodID(cls, methodName, "(Ljava/lang/String;)V");
@@ -69,54 +71,47 @@ void callVoidMethod(jobject object, const char* methodName, const char* arg0) {
 }
 
 void callVoidMethod(jobject object, const char* methodName, jobject arg0) {
-//fprintf(stderr, "%s\n", methodName);
 	JNIEnv* env = attachThread();
-//fprintf(stderr, "Attached: ");
 	jclass cls = env->GetObjectClass(object);
-//fprintf(stderr, "Class %s: ", cls);
 	jmethodID methodId = env->GetMethodID(cls, methodName, "(Ljava/lang/Object;)V");
-//fprintf(stderr, "Method %s: ", methodId);
 	env->CallVoidMethod(object, methodId, arg0);
-//fprintf(stderr, "Method called: ");
 	detachThread();
-//fprintf(stderr, "Detached\n");
 }
 
 jobject callObjectMethod(jobject object, const char* methodName, const char* arg0) {
-//fprintf(stderr, "%s\n", methodName);
 	JNIEnv* env = attachThread();
-//fprintf(stderr, "Attached: ");
 	jclass cls = env->GetObjectClass(object);
-//fprintf(stderr, "Class %s: ", cls);
 	jmethodID methodId = env->GetMethodID(cls, methodName, "(Ljava/lang/String;)Ljava/lang/Object;");
-//fprintf(stderr, "Method %s: ", methodId);
 	jstring _arg0 = env->NewStringUTF(arg0);
-//fprintf(stderr, "Arg %s: ", _arg0);
 	jobject result = env->CallObjectMethod(object, methodId, _arg0);
-//fprintf(stderr, "Result %s: ", result);
 	detachThread();
-//fprintf(stderr, "Detached\n");
 	return result;
 }
 
 int callIntMethod(JNIEnv *env, jobject object, const char* methodName, jbyteArray arg0) {
-//fprintf(stderr, "%s\n", methodName);
-
-jclass cls = env->GetObjectClass(object);
-//fprintf(stderr, "Class %s: ", cls);
+	jclass cls = env->GetObjectClass(object);
 	jmethodID methodId = env->GetMethodID(cls, methodName, "([B)I");
-//fprintf(stderr, "Method %s: ", methodId);
 	return env->CallIntMethod(object, methodId, arg0);
-//fprintf(stderr, "Method called\n");
 }
 
 void callVoidMethodB(JNIEnv *env, jobject object, const char* methodName, jbyteArray arg0) {
-//fprintf(stderr, "%s\n", methodName);
-
-jclass cls = env->GetObjectClass(object);
-//fprintf(stderr, "Class %s: ", cls);
+	jclass cls = env->GetObjectClass(object);
 	jmethodID methodId = env->GetMethodID(cls, methodName, "([B)V");
-//fprintf(stderr, "Method %s: ", methodId);
 	env->CallVoidMethod(object, methodId, arg0);
-//fprintf(stderr, "Method called\n");
+}
+
+const char* callStringMethod(jobject object, const char* methodName) {
+	JNIEnv* env = attachThread();
+	const char *resultStr = callStringMethod(env, object, methodName);
+	detachThread();
+	return resultStr;
+}
+const char* callStringMethod(JNIEnv *env, jobject object, const char* methodName) {
+	jclass cls = env->GetObjectClass(object);
+	jmethodID methodId = env->GetMethodID(cls, methodName, "()Ljava/lang/String;");
+	
+	jboolean iscopy;
+	jobject result = env->CallObjectMethod(object, methodId);
+	const char *resultStr = env->GetStringUTFChars((jstring) result, &iscopy);
+	return resultStr;
 }

@@ -1,8 +1,11 @@
 package com.vdweem.webspotify;
 
+import java.util.Collection;
+
 public class Util {
 	public static boolean isEmpty(Object o) {
 		if (o == null) return true;
+		if (o instanceof Collection) return ((Collection<?>) o).size() == 0;
 		if ("".equals(o.toString())) return true;
 		return false;
 	}

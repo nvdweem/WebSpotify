@@ -12,7 +12,10 @@ public class Player {
 	private List<Track> queue = new ArrayList<Track>();
 	private final Session session;
 	
+	private int rate = 0, channels = 0;
+	int positionOffset = 0;
 	private SourceDataLine audio;
+	private Track playing;
 	
 	public Player(Session session) {
 		this.session = session;
@@ -23,9 +26,24 @@ public class Player {
 		queue.add(track);
 	}
 	
+	public void changeSong() {
+		audio = null;
+	}
+	
 	public void play(Track track) {
-		playlist.add(track);
-		session.Play(track.getId());
+		playing = track;
+		session.Play(track);
+		positionOffset = 0;
+	}
+	
+	public int getDuration() {
+		if (playing == null) return 0;
+		return playing.getDuration() / 1000;
+	}
+	
+	public int getPosition() {
+		if (audio == null) return 0;
+		return positionOffset + (audio.getFramePosition() / this.rate);
 	}
 	
 	public void pause() {
@@ -36,7 +54,16 @@ public class Player {
 		
 	}
 	
+	public void seek(int position) {
+		session.Seek(position * 1000);
+	}
+	public void seekCallback(int position) {
+		audio = null;
+		positionOffset = position / 1000;
+	}
+	
 	public int addToBuffer(byte[] buffer) {
+		if (audio == null) return 0;
 		int available = audio.available();
 		if (available == 0) return 0;
 		int bufferSize = buffer.length;
@@ -44,14 +71,13 @@ public class Player {
 		return audio.write(buffer, 0, toWrite) / 4;
 	}
 	
-	int rate = 0, channels = 0;
 	public void setAudioFormat(int rate, int sampleSize, int channels) {
-		if (rate == this.rate && channels == this.channels) return;
+		if (audio != null && rate == this.rate && channels == this.channels) return;
 		this.rate = rate;
 		this.channels = channels;
 		
 		try {
-			AudioFormat format = new AudioFormat(44100, 16, 2, true, false);
+			AudioFormat format = new AudioFormat(rate, 8*channels, channels, true, false);
 			format = new AudioFormat(format.getEncoding(), format.getSampleRate(), format.getSampleSizeInBits(), format.getChannels(), format.getFrameSize(), format.getFrameRate(), false);
 			
 			audio = AudioSystem.getSourceDataLine(format);
@@ -61,4 +87,9 @@ public class Player {
 			e.printStackTrace();
 		} 
 	}
+	
+	public Track getPlaying() {
+		return playing;
+	}
+	
 }

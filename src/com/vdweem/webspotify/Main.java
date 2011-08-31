@@ -4,8 +4,12 @@ import spotify.PlaylistListenerImpl;
 import spotify.Session;
 import spotify.SessionListenerImpl;
 
+import com.vdweem.webspotify.servlets.ArtistBrowse;
 import com.vdweem.webspotify.servlets.Image;
+import com.vdweem.webspotify.servlets.Play;
 import com.vdweem.webspotify.servlets.Search;
+import com.vdweem.webspotify.servlets.Seek;
+import com.vdweem.webspotify.servlets.Status;
 
 public class Main {
 
@@ -42,6 +46,11 @@ public class Main {
 
 		srv.addServlet("/Search", new Search());
 		srv.addServlet("/Image", new Image());
+		srv.addServlet("/Play", new Play());
+		srv.addServlet("/Status", new Status());
+		srv.addServlet("/Seek", new Seek());
+		srv.addServlet("/ArtistBrowse", new ArtistBrowse());
+		
 		 
 		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
 			public void run() {

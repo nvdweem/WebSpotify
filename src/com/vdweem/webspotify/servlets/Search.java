@@ -17,8 +17,8 @@ public class Search extends SpotifyServlet {
 			throws ServletException, IOException {
 		String query = getParam("query");
 		int trackCount = Util.parseInt(getParam("tracks"), 100);
-		int artistCount = Util.parseInt(getParam("artists"), 10);
-		int albumCount = Util.parseInt(getParam("albums"), 10);
+		int artistCount = Util.parseInt(getParam("artists"), 15);
+		int albumCount = Util.parseInt(getParam("albums"), 15);
 		
 		if (Util.isEmpty(query)) {
 			printError("Query is required");

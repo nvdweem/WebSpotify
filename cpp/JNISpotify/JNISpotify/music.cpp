@@ -9,6 +9,10 @@ void setPlayer(jobject _player) {
 	player = _player;
 }
 
+jobject getPlayer() {
+	return player;
+}
+
 /**
  * This callback is used from libspotify whenever there is PCM data available.
  *

@@ -1,8 +1,8 @@
 html, body {
 	margin: 0px;
-	padding; 0px;
+	padding: 0px;
 }
-body, a, input, textarea, select {
+body, a, input, textarea, select, td {
 	font-size: 12px;
 	font: arial;
 }
@@ -64,6 +64,11 @@ a:hover {
 	height: 240px;
 	bottom: 50px;
 }
+#playingArt img {
+	width: 240px;
+	height: 240px;
+	border: 0px;
+}
 #playingText {
 	background: url('images/playingGradient.png') repeat-x;
 	position: absolute;
@@ -71,6 +76,12 @@ a:hover {
 	width: 240px;
 	height: 50px;
 	bottom: 0px;
+}
+#playingText .playing {
+	padding: 10px;
+}
+#playingText .playing .artist {
+	font-weight: bold;
 }
 #center {
 	background-color: #373737;
@@ -91,30 +102,88 @@ a:hover {
 	bottom: 0px;
 }
 
+/****************************************************************
+ *							Play progress						*
+ ****************************************************************/
+#progress {
+	background-color: red;
+	position: absolute;
+	top: 17px;
+	height: 10px;
+	left: 300px;
+	right: 80px;
+}
+#played {
+	background: url('images/playedGradient.png') repeat-x;
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+}
+#position {
+	background: url('images/playing.png') no-repeat;
+	width: 9px;
+	height: 10px;
+	
+	position: absolute;
+	top: 0px;
+	left: -4px;
+	z-index: 1;
+}
+#play {
+	background: url('images/playGradient.png') repeat-x;
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+}
+#controls .progressTime {
+	font-size: 10px;
+	position: absolute;
+	top: 14px;
+}
+#controls .played {
+	left: 260px;
+}
+#controls .duration {
+    right: 53px;
+}
+
+
 #center table tr.odd {
 	background-color: #313131;
 }
 /****************************************************************
  *								Search							*
  ****************************************************************/
-.searchTop img {
+.searchTop div.images, .browseTop div.images {
+	overflow: hidden;
+	width: 10000px;
+}
+.searchTop .Albums, .searchTop .Artists, .browseTop .Artists {
+	height: 141px;
+	overflow: hidden;
+} 
+.searchTop img, .browseTop img {
 	width: 60px;
 	height: 60px;
 }
-.searchTop td {
+.searchTop td, .browseTop td {
 	vertical-align: top;
 }
-.searchTop ol li, .searchTop ol li a {
+.searchTop ol li, .searchTop ol li a, .browseTop ol li, .browseTop ol li a {
 	display: inline;	
 	color: #999999;
 }
-.searchTop ol li .albumandartist .artist, .searchTop ol li .albumandartist .artist a{
+.searchTop ol li .albumandartist .artist, .searchTop ol li .albumandartist .artist a {
 	color: #666666;
 }
 .searchTop li.title {
 	color: #FFF;
 }
-.searchTop ol {
+.searchTop ol, .browseTop ol {
 	list-style: none outside none; 
 	padding: 10px;	
 }
@@ -132,4 +201,33 @@ table.searchResults .album      { width: 30%; }
 tr.searchHead {
 	background: url("images/searchGradient.png") repeat-x scroll 0 0 transparent;
 	color: black;
+}
+
+/****************************************************************
+ *								Browse							*
+ ****************************************************************/
+table.browseTop {
+	width: 100%;
+	table-layout: fixed;
+}
+table.browseTop td { width: 50%; }
+.bio img {
+	width: 130px;
+	height: 130px;
+	float: left;
+	padding: 15px;
+}
+.artistname, .relatedArtists {
+	font-size: 14px;
+	font-weight: bold;
+	padding-bottom: 10px;
+	padding-top: 15px;
+}
+.bio {
+	padding-right: 20px;
+}
+.bio .text {
+	height: 102px;
+	overflow: hidden;
+	color: #999999;
 }

@@ -1,4 +1,5 @@
 var Search = function() {
+	$(document).ready(init);
 	
 	function init() {
 		var search = function(event) {
@@ -21,7 +22,8 @@ var Search = function() {
 		var list = $('<ol></ol>');
 		var images = $('<div class="images"></div>');
 		
-		list.append($('<li class="title">'+title+': </li>'));
+		if (title)
+			list.append($('<li class="title">'+title+': </li>'));
 		for (var i = 0; i < listItems.length; i++) {
 			if (i != 0)
 				list.append($('<li> - </li>'));
@@ -80,10 +82,8 @@ var Search = function() {
 	
 	return {
 		"decorateSearch": decorateSearch,
+		"decorateList": decorateList,
+		"decorateAlbumAndArtist": decorateAlbumAndArtist,
 		"init": init,
 	};
 }();
-
-$(document).ready(function() {
-	Search.init();
-});

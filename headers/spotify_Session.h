@@ -11,7 +11,7 @@ extern "C" {
 /*
  * Class:     spotify_Session
  * Method:    Init
- * Signature: (Lspotify/SessionListener;)V
+ * Signature: (Lspotify/SessionListener;Lspotify/PlaylistListener;)V
  */
 JNIEXPORT void JNICALL Java_spotify_Session_Init
   (JNIEnv *, jobject, jobject, jobject);
@@ -27,18 +27,10 @@ JNIEXPORT void JNICALL Java_spotify_Session_Login
 /*
  * Class:     spotify_Session
  * Method:    Search
- * Signature: (Ljava/lang/String;)V
+ * Signature: (Ljava/lang/String;IIILspotify/Search;)V
  */
 JNIEXPORT void JNICALL Java_spotify_Session_Search
   (JNIEnv *, jobject, jstring, jint, jint, jint, jobject);
-
-/*
- * Class:     spotify_Session
- * Method:    Play
- * Signature: (Ljava/lang/String;)V
- */
-JNIEXPORT void JNICALL Java_spotify_Session_Play
-  (JNIEnv *, jobject, jobject);
 
 /*
  * Class:     spotify_Session
@@ -47,6 +39,22 @@ JNIEXPORT void JNICALL Java_spotify_Session_Play
  */
 JNIEXPORT void JNICALL Java_spotify_Session_RegisterPlayer
   (JNIEnv *, jobject, jobject);
+
+/*
+ * Class:     spotify_Session
+ * Method:    Play
+ * Signature: (Lspotify/Track;)V
+ */
+JNIEXPORT void JNICALL Java_spotify_Session_Play
+  (JNIEnv *, jobject, jobject);
+
+/*
+ * Class:     spotify_Session
+ * Method:    Seek
+ * Signature: (I)V
+ */
+JNIEXPORT void JNICALL Java_spotify_Session_Seek
+  (JNIEnv *, jobject, jint);
 
 /*
  * Class:     spotify_Session
@@ -63,14 +71,6 @@ JNIEXPORT void JNICALL Java_spotify_Session_ReadArtistImage
  */
 JNIEXPORT void JNICALL Java_spotify_Session_ReadAlbumImage
   (JNIEnv *, jobject, jstring, jobject);
-
-/*
- * Class:     spotify_Session
- * Method:    Seek
- * Signature: (I)V
- */
-JNIEXPORT void JNICALL Java_spotify_Session_Seek
-  (JNIEnv *, jobject, jint);
 
 /*
  * Class:     spotify_Session

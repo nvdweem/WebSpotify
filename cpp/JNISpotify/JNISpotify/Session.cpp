@@ -94,7 +94,7 @@ void cb_search_complete(sp_search *search, void *userdata) {
 
 	for (int i = 0; i < sp_search_num_artists(search); i++) {
 		sp_artist *artist = sp_search_artist(search, i);
-		callVoidMethod(target, "addArtist", readArtist(artist, true));
+		callVoidMethod(target, "addArtist", readArtist(artist, false));
 	}
 
 	callVoidMethod(target, "setComplete");
@@ -158,13 +158,18 @@ JNIEXPORT void JNICALL Java_spotify_Session_RegisterPlayer(JNIEnv *env, jobject,
 	setPlayer(env->NewGlobalRef(player));
 }
 
-JNIEXPORT void JNICALL Java_spotify_Session_Play(JNIEnv *env, jobject, jstring _trackId) {
-	jboolean iscopy;
-	const char *trackId = env->GetStringUTFChars(_trackId, &iscopy);
-
+JNIEXPORT void JNICALL Java_spotify_Session_Play(JNIEnv *env, jobject, jobject trackObject) {
+	const char* trackId = callStringMethod(trackObject, "getId");
 	sp_track *track = sp_link_as_track(sp_link_create_from_string(trackId));
+	readTrack(trackObject, track, true);
+
 	sp_session_player_load(session, track);
 	sp_session_player_play(session, true);
+}
+
+JNIEXPORT void JNICALL Java_spotify_Session_Seek(JNIEnv *env, jobject _this, jint position) {
+	sp_session_player_seek(session, position);
+	callVoidMethod(getPlayer(), "seekCallback", position);
 }
 
 JNIEXPORT void JNICALL Java_spotify_Session_ReadArtistImage(JNIEnv *env, jobject, jstring _artistId, jobject target) {
@@ -177,4 +182,11 @@ JNIEXPORT void JNICALL Java_spotify_Session_ReadAlbumImage(JNIEnv *env, jobject,
 	jboolean iscopy;
 	const char *albumId = env->GetStringUTFChars(_albumId, &iscopy);
 	readAlbumImage(sp_link_as_album(sp_link_create_from_string(albumId)), env->NewGlobalRef(target));
+}
+
+JNIEXPORT jobject JNICALL Java_spotify_Session_BrowseArtist(JNIEnv *env, jobject, jstring _link) {
+	jboolean iscopy;
+	const char *link = env->GetStringUTFChars(_link, &iscopy);
+	sp_artist *artist = sp_link_as_artist(sp_link_create_from_string(link));
+	return readArtist(artist, true);
 }

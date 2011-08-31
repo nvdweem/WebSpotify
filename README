@@ -1,0 +1,18 @@
+ABOUT
+=====
+The goal of this project is to create a web based Spotify client which can be
+used with more than one person in a room. The host can specify a playlist
+which should be played, and everybody can add requests to that playlist. This
+way it will be possible to have Spotify running during parties or during
+worktime.
+
+STATUS
+======
+Currently the code compiles and runs under Windows. The client code is Java and should
+run on every computer available, but the C++ part is Windows dependant where the platform
+dependent code is in infloop.h/cpp.
+
+BUILDING
+========
+The project files are included in the repository. This is an Eclipse project and a MSVC++
+solution. 
