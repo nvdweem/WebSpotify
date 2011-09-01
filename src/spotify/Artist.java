@@ -6,12 +6,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.vdweem.webspotify.Util;
-
+/**
+ * Holds artist data.
+ * @author Niels
+ */
 public class Artist extends Media {
+	private static final long serialVersionUID = -6068013696650606562L;
+	
 	private String bio;
 	private List<Artist> relatedArtists;
 	private List<Track> topTracks;
@@ -24,37 +27,48 @@ public class Artist extends Media {
 		albums = new ArrayList<Album>();
 	}
 	
+	@Override
+	public boolean isComplete() {
+		return super.isComplete() && allAlbumsComplete();
+	}
+	
+	private boolean allAlbumsComplete() {
+		for (Album a : albums) if (!a.isComplete()) return false;
+		return true;
+	}
+	
 	public JSONObject toJSON() {
 		JSONObject object = super.toJSON();
 		
-		if (!Util.isEmpty(bio)) object.put("bio", bio);
-		if (!Util.isEmpty(relatedArtists)) {
-			JSONArray artists = new JSONArray();
-			for (Artist a : relatedArtists) artists.put(a.toJSON());
-			object.put("relatedArtists", artists);
-		}
-		if (!Util.isEmpty(topTracks)) {
+		if (!com.vdweem.webspotify.Util.isEmpty(bio)) object.put("bio", bio);
+		if (!com.vdweem.webspotify.Util.isEmpty(relatedArtists))
+			object.put("relatedArtists", Util.listToArray(relatedArtists));
+
+		if (!com.vdweem.webspotify.Util.isEmpty(topTracks)) {
 			keepOnlyTop5Tracks();
-			JSONArray tracks = new JSONArray();
-			for (Track t : topTracks) tracks.put(t.toJSON());
-			object.put("topTracks", tracks);
+			object.put("topTracks", Util.listToArray(topTracks));
 		}
-		if (!Util.isEmpty(albums)) {
-			JSONArray albums = new JSONArray();
-			for (Album t : this.albums) albums.put(t.toJSON());
-			object.put("albums", albums);
+		if (!com.vdweem.webspotify.Util.isEmpty(albums)) {
+			Collections.sort(albums, Album.typeYearComparator);
+			object.put("albums", Util.listToArray(albums));
 		}
 		
 		return object;
 	}
 	
+	/**
+	 * Keeps only the best 5 tracks. Removes duplicates.
+	 */
 	private void keepOnlyTop5Tracks() {
+		// Remove all tracks that are not from this artist.
 		for (int i = topTracks.size() - 1; i >= 0; i--)
 			if (!this.equals(topTracks.get(i).artist))
 				topTracks.remove(i);
 		
-		Collections.sort(topTracks);
+		// Sort by popularity.
+		Collections.sort(topTracks, Track.top5Comparator);
 		
+		// Keep the first 5 unique results.
 		Set<String> tracks = new HashSet<String>();
 		List<Track> topTracks = new ArrayList<Track>();
 		for (Track t : this.topTracks) {

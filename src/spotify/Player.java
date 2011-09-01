@@ -7,8 +7,12 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.SourceDataLine;
 
+/**
+ * Provides an interface for playing songs.
+ * @author Niels
+ */
 public class Player {
-	private List<Track> playlist = new ArrayList<Track>();
+//	private List<Track> playlist = new ArrayList<Track>();
 	private List<Track> queue = new ArrayList<Track>();
 	private final Session session;
 	
@@ -28,12 +32,13 @@ public class Player {
 	
 	public void changeSong() {
 		audio = null;
+		positionOffset = 0;
 	}
 	
 	public void play(Track track) {
 		playing = track;
 		session.Play(track);
-		positionOffset = 0;
+		changeSong();
 	}
 	
 	public int getDuration() {
@@ -55,7 +60,8 @@ public class Player {
 	}
 	
 	public void seek(int position) {
-		session.Seek(position * 1000);
+		if (playing != null)
+			session.Seek(position * 1000);
 	}
 	public void seekCallback(int position) {
 		audio = null;

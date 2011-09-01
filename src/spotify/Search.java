@@ -5,6 +5,10 @@ import java.util.List;
 
 import org.json.JSONObject;
 
+/**
+ * Holds data for Search results.
+ * @author Niels
+ */
 public class Search extends Completable {
 	private List<Track> tracks;
 	private List<Album> albums;

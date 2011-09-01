@@ -19,6 +19,10 @@ jobject getSessionListener() {
 	return sessionListener;
 }
 
+void notify_main_thread(sp_session *session) {
+	callVoidMethod(sessionListener, "cb_notify_main_thread");
+}
+
 /**
  * The session callbacks
  */
@@ -60,7 +64,6 @@ JNIEXPORT void JNICALL Java_spotify_Session_Init(JNIEnv * env, jobject, jobject 
 	setEnv(env);
 	sessionListener = env->NewGlobalRef(_sessionListener);
 	
-	init_main_thread();
 	error = sp_session_create(&config, &session);
 	if (SP_ERROR_OK != error) {
 		fprintf(stderr, "failed to create session: %s\n", sp_error_message(error));
@@ -68,7 +71,6 @@ JNIEXPORT void JNICALL Java_spotify_Session_Init(JNIEnv * env, jobject, jobject 
 	
 	// Playlist listener
 	initPlaylist(session, env->NewGlobalRef(_playlistListener));
-	infloop(session);
 }
 
 JNIEXPORT void JNICALL Java_spotify_Session_Login(JNIEnv * env, jobject, jstring usernameJ, jstring passwordJ) {
@@ -78,18 +80,29 @@ JNIEXPORT void JNICALL Java_spotify_Session_Login(JNIEnv * env, jobject, jstring
 	sp_session_login(session, username, password);
 }
 
+JNIEXPORT jint JNICALL Java_spotify_Session_ProcessEvents(JNIEnv *, jobject) {
+	if (!session) return 1000;
+	int next_timeout = 0;
+
+	do {
+		sp_session_process_events(session, &next_timeout);
+	} while (next_timeout == 0);
+	
+	return next_timeout;
+}
+
 void cb_search_complete(sp_search *search, void *userdata) {
 	jobject target = (jobject) userdata;
 	for (int i = 0; i < sp_search_num_tracks(search); i++) {
 		sp_track *track = sp_search_track(search, i);
 		if (!sp_track_is_available(session, track)) continue;
-		callVoidMethod(target, "addTrack", readTrack(track, true));
+		callVoidMethod(target, "addTrack", readTrack(track, false));
 	}
 
 	for (int i = 0; i < sp_search_num_albums(search); i++) {
 		sp_album *album = sp_search_album(search, i);
 		if (!sp_album_is_available(album)) continue;
-		callVoidMethod(target, "addAlbum", readAlbum(album, true));
+		callVoidMethod(target, "addAlbum", readAlbum(album, false));
 	}
 
 	for (int i = 0; i < sp_search_num_artists(search); i++) {
@@ -189,4 +202,11 @@ JNIEXPORT jobject JNICALL Java_spotify_Session_BrowseArtist(JNIEnv *env, jobject
 	const char *link = env->GetStringUTFChars(_link, &iscopy);
 	sp_artist *artist = sp_link_as_artist(sp_link_create_from_string(link));
 	return readArtist(artist, true);
+}
+
+JNIEXPORT jobject JNICALL Java_spotify_Session_BrowseAlbum(JNIEnv *env, jobject, jstring _link) {
+	jboolean iscopy;
+	const char *link = env->GetStringUTFChars(_link, &iscopy);
+	sp_album *album = sp_link_as_album(sp_link_create_from_string(link));
+	return readAlbum(album, true);
 }

@@ -1,13 +1,29 @@
 package spotify;
 
+/**
+ * Implementation for Spotify events and actions.
+ * @author Niels
+ */
 public class SessionListenerImpl implements SessionListener {
 
 	private boolean initialized = false;
 	private boolean loggedIn = false;
+	private EventProcessor processor;
+	
+	public SessionListenerImpl() {
+		processor = new EventProcessor();
+		processor.start();
+	}
 	
 	public void initialize() {
 		initialized = true;
 	}
+	
+	@Override
+	public void cb_notify_main_thread() {
+		processor.processEventsNow();
+	}
+
 	
 	public void checkLogin() throws RuntimeException {
 		if (!initialized) throw new RuntimeException("Please initialize first.");

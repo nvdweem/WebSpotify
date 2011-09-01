@@ -1,15 +1,27 @@
+/**
+ * Provides functions to decorate media types.
+ */
 var Media = function() {
 	
-	function cell() {
-		return $('<td></td>');
+	/**
+	 * Helper to return a cell with the specified class.
+	 */
+	function cell(clazz) {
+		return $('<td></td>').addClass(clazz);
 	}
 	
+	/**
+	 * Adds zero's until the required length is achieved.
+	 */
 	function lz(value, len) {
 		while ((value + "").length < len)
 			value = "0" + value;
 		return value;
 	}
 	
+	/**
+	 * Format a duration integer to mm:ss span.
+	 */
 	function decorateDuration(duration) {
 		duration /= 1000;
 		var minutes = Math.floor(duration / 60);
@@ -17,6 +29,9 @@ var Media = function() {
 		return $('<span class="duration">'+minutes+':'+seconds+'</span>').data("value", duration);
 	}
 	
+	/**
+	 * Decorate a popularity integer to an image.
+	 */
 	function decoratePopularity(popularity) {
 		var rating = Math.round(popularity * 0.12);
 		if (rating > 0) 
@@ -24,22 +39,35 @@ var Media = function() {
 		return $('<span> &nbsp; </span>');
 	}
 	/**
-	 * { id, name, duration, popularity, disc, album, artist }
+	 * Decorate a track row. Some options are available by providing an options object.
 	 */
-	function decorateTrack(t) {
+	function decorateTrack(t, options) {
+		var printArtist = options ? options.printArtist !== false : true;
+		var printAlbum = options ? options.printAlbum !== false : true;
+		var index = options ? options.index : false;
+		
 		var row = $('<tr class="track"></tr>').data("id", t.id).data("album", t.album.id);
-		row.append(cell().text(t.name));
-		row.append(cell().append(artistLink(t.artist)));
-		row.append(cell().append(decorateDuration(t.duration)));
-		row.append(cell().append(decoratePopularity(t.popularity)));
-		row.append(cell().append(albumLink(t.album)));
+		if (index) row.append(cell('index').text(index));
+		row.append(cell('name').text(t.name));
+		if (printArtist)
+			row.append(cell('artist').append(artistLink(t.artist)));
+		row.append(cell('duration').append(decorateDuration(t.duration)));
+		row.append(cell('popularity').append(decoratePopularity(t.popularity)));
+		if (printAlbum)
+			row.append(cell('album').append(albumLink(t.album)));
 		return row;
 	}
 	
+	/**
+	 * Decorate an artist to a link.
+	 */
 	function artistLink(a) {
 		return $('<a href="#" class="artist"></a>').data("id", a.id).text(a.name);
 	}
 	
+	/**
+	 * Decorate an album to a link.
+	 */
 	function albumLink(a) {
 		return $('<a href="#" class="album"></a>').data("id", a.id).text(a.name);
 	}

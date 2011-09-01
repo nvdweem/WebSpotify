@@ -1,6 +1,12 @@
+/**
+ * Provides functions to search for songs.
+ */
 var Search = function() {
 	$(document).ready(init);
 	
+	/**
+	 * Initializer.
+	 */
 	function init() {
 		var search = function(event) {
 			if (event) event.preventDefault();
@@ -9,6 +15,7 @@ var Search = function() {
 			Ajax.call("Search", {query: query}, Search.decorateSearch);
 		};
 		
+		// Make the search bar usable.
 		$('.searchRight').click(search);
 		$('input.search').keypress(function(e) {
 			if(e.which == 13){
@@ -18,19 +25,26 @@ var Search = function() {
 		});
 	}
 	
+	/**
+	 * Decorates a list of artists or albums.
+	 */
 	function decorateList(title, listItems, listDecorator) {
 		var list = $('<ol></ol>');
 		var images = $('<div class="images"></div>');
 		
 		if (title)
 			list.append($('<li class="title">'+title+': </li>'));
+		
+		if (!listItems) {
+			list.append($('<li>Error: timout retrieving data.</li>'));
+		}
 		for (var i = 0; i < listItems.length; i++) {
 			if (i != 0)
 				list.append($('<li> - </li>'));
 			list.append($('<li></li>').append(listDecorator(listItems[i])));
 			
 			images.append(
-				listDecorator(listItems[i]).html("").append(
+				listDecorator(listItems[i], true).html("").append(
 						$('<img />').attr("src", "Image?id=" + listItems[i].id)	
 				)
 			);
@@ -38,13 +52,21 @@ var Search = function() {
 		return $('<div class="'+title+'"></div>').append(images).append(list);
 	}
 	
-	function decorateAlbumAndArtist(album) {
+	/**
+	 * Decorator to combine albums and artists.
+	 */
+	function decorateAlbumAndArtist(album, forImage) {
+		if (forImage === true)
+			return Media.albumLink(album);
 		var target = $('<span class="albumandartist"></span>');
 		target.append(Media.albumLink(album));
 		target.append($('<span class="artist"> by </span>').append(Media.artistLink(album.artist)));
 		return target;
 	}
 
+	/**
+	 * Decorate the search result.
+	 */
 	function decorateSearch(search) {
 		var result = $('<div></div>');
 		

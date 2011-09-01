@@ -1,5 +1,9 @@
 package spotify;
 
+/**
+ * Interface for playlist events from the Spotify library.
+ * @author Niels
+ */
 public interface PlaylistListener {
 	void cb_playlist_added(/*sp_playlistcontainer *pc, sp_playlist *playlist, int position, void *userdata*/);
 	void cb_playlist_removed(/*sp_playlistcontainer *pc, sp_playlist *playlist, int position, void *userdata*/);

@@ -6,17 +6,17 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import spotify.Artist;
+import spotify.Album;
 import spotify.Session;
 
 import com.vdweem.webspotify.Util;
 
 /**
- * Browse for artists.
+ * Browse for albums.
  * @author Niels
  */
-public class ArtistBrowse extends SpotifyServlet {
-	private static final long serialVersionUID = -1546402760249122315L;
+public class AlbumBrowse extends SpotifyServlet {
+	private static final long serialVersionUID = -5892036524310521996L;
 
 	@Override
 	protected void doGet(HttpServletRequest arg0, HttpServletResponse arg1)
@@ -24,9 +24,9 @@ public class ArtistBrowse extends SpotifyServlet {
 		String id = getParam("id");
 		if (Util.isEmpty(id)) return;
 		
-		Artist artist = Session.getInstance().browseArtist(id);
-		artist.waitFor(100);
-		printLn(artist.toString());
+		Album album = Session.getInstance().browseAlbum(id);
+		album.waitFor(100);
+		printLn(album.toString());
 	}
-
+	
 }

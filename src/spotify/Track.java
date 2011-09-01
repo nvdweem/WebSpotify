@@ -1,14 +1,38 @@
 package spotify;
 
+import java.util.Comparator;
+
 import org.json.JSONObject;
 
-public class Track extends Media implements Comparable<Track> {
-
+/**
+ * Holds data for Tracks.
+ * @author Niels
+ */
+public class Track extends Media { 
+	private static final long serialVersionUID = -429087740793002622L;
+	
 	protected int duration;
 	protected Album album;
 	protected Artist artist;
 	protected int popularity;
 	protected int disc;
+	protected int index;
+	
+	public static final Comparator<Track> top5Comparator = new Comparator<Track>(){
+		@Override
+		public int compare(Track o1, Track o2) {
+			return Integer.valueOf(o2.getPopularity()).compareTo(o1.getPopularity());
+		}
+	};
+	public static final Comparator<Track> sequenceComparator = new Comparator<Track>(){
+		@Override
+		public int compare(Track o1, Track o2) {
+			int discCompare = Integer.valueOf(o1.getDisc()).compareTo(o2.getDisc());
+			if (discCompare != 0) return discCompare;
+			
+			return Integer.valueOf(o1.getIndex()).compareTo(o2.getIndex());
+		}
+	};
 	
 	public Track(String id) {
 		super(id);
@@ -20,6 +44,7 @@ public class Track extends Media implements Comparable<Track> {
 		json.put("duration", duration);
 		json.put("popularity", popularity);
 		json.put("disc", disc);
+		json.put("index", index);
 		json.put("album", album == null ? null : album.toJSON());
 		json.put("artist", artist == null ? null : artist.toJSON());
 		
@@ -78,9 +103,12 @@ public class Track extends Media implements Comparable<Track> {
 		this.disc = disc;
 	}
 
-	@Override
-	public int compareTo(Track o) {
-		return Integer.valueOf(o.getPopularity()).compareTo(getPopularity());
+	public int getIndex() {
+		return index;
 	}
-	
+
+	public void setIndex(int index) {
+		this.index = index;
+	}
+
 }

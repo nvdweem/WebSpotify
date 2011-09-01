@@ -1,12 +1,19 @@
+/**
+ * Provides functions for playing tracks.
+ */
 var Player = function() {
 	$(document).ready(init);
 	
+	/**
+	 * Initialize the player.
+	 */
 	function init() {
+		// Play tracks when the row is double clicked.
 		$("tr.track").live('dblclick', function() {
 			Ajax.get("Play", {"id": $(this).data("id")});
 		})
-		
 
+		// Make the progress bar clickable to seek a position.
 		$("#progress").unbind('click').click(function(e){
 		    var position = e.pageX - $(this).position().left;
 		    var width = $(this).width();
@@ -15,6 +22,9 @@ var Player = function() {
 		}); 
 	}
 	
+	/**
+	 * Update the position of the progress bar.
+	 */
 	function updatePosition(positionObj) {
 		var position = positionObj.position;
 		var duration = positionObj.duration;

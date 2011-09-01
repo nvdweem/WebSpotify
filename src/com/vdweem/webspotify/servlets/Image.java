@@ -10,6 +10,10 @@ import spotify.Session;
 
 import com.vdweem.webspotify.Util;
 
+/**
+ * Show an image. If no image is found then show the corresponding placeholder.
+ * @author Niels
+ */
 public class Image extends SpotifyServlet {
 	private static final long serialVersionUID = -2475432570212048165L;
 

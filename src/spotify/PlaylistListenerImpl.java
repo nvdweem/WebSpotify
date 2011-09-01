@@ -1,5 +1,9 @@
 package spotify;
 
+/**
+ * Listens to Spotify playlist events.
+ * @author Niels
+ */
 public class PlaylistListenerImpl implements PlaylistListener {
 
 	@Override

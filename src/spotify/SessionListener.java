@@ -1,9 +1,14 @@
 package spotify;
 
+/**
+ * Interface for all Spotify events and actions.
+ * @author Niels
+ */
 public interface SessionListener {
 	public void initialize();
 	public void checkLogin() throws RuntimeException;
-	
+
+	public void cb_notify_main_thread();
 	public void cb_logged_in(int error);
 	public void cb_logged_out();
 	public void cb_metadata_updated();

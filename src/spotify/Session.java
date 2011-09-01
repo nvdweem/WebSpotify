@@ -1,5 +1,9 @@
 package spotify;
 
+/**
+ * Session God class. Handles all interactions between the Java code and the Spotify library.
+ * @author Niels
+ */
 public class Session {
 	private SessionListener sessionListener;
 	private PlaylistListener playlistListener;
@@ -17,11 +21,7 @@ public class Session {
 	
 	public void initialize(final SessionListener listener, final PlaylistListener playlist)
 	{
-		new Thread() {
-			public void run() {
-				Init(listener, playlist);
-			}
-		}.start();
+		Init(listener, playlist);
 		listener.initialize();
 		this.sessionListener = listener;
 		this.playlistListener = playlist;
@@ -67,9 +67,14 @@ public class Session {
 		return BrowseArtist(link);
 	}
 	
+	public Album  browseAlbum(String link) {
+		return BrowseAlbum(link);
+	}
+	
 	private native void Init(SessionListener listener, PlaylistListener playlist);
 	private native void Login(String username, String password);
 	private native void Search(String query, int trackCount, int albumCount, int artistCount, Search result);
+	protected native int ProcessEvents();
 	
 	protected native void RegisterPlayer(Player player);
 	protected native void Play(Track track);
@@ -78,4 +83,5 @@ public class Session {
 	private native void ReadArtistImage(String id, Image target);
 	private native void ReadAlbumImage(String id, Image target);
 	private native Artist BrowseArtist(String link);
+	private native Album BrowseAlbum(String link);
 }

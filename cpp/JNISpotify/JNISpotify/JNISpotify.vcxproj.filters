@@ -27,9 +27,6 @@
     <ClCompile Include="appkey.c">
       <Filter>Source Files\Spotify</Filter>
     </ClCompile>
-    <ClCompile Include="infloop.cpp">
-      <Filter>Source Files\Spotify</Filter>
-    </ClCompile>
     <ClCompile Include="JNI.cpp">
       <Filter>Source Files\Spotify</Filter>
     </ClCompile>
@@ -48,9 +45,6 @@
       <Filter>Header Files\Spotify</Filter>
     </ClInclude>
     <ClInclude Include="spotify_Session.h">
-      <Filter>Header Files\Spotify</Filter>
-    </ClInclude>
-    <ClInclude Include="infloop.h">
       <Filter>Header Files\Spotify</Filter>
     </ClInclude>
     <ClInclude Include="JNI.h">

@@ -1,16 +1,20 @@
 package com.vdweem.webspotify;
 
-import spotify.Image;
 import spotify.PlaylistListenerImpl;
 import spotify.Search;
 import spotify.Session;
 import spotify.SessionListenerImpl;
 
+/**
+ * File to perform some tests.
+ * @author Niels
+ *
+ */
 public class Test {
 	public static void main(String[] args) throws InterruptedException {
 		Session session = Session.getInstance();
 		session.initialize(new SessionListenerImpl(), new PlaylistListenerImpl());
-		session.login("SavageFi", "hahahaha");
+		session.login(Setup.username, Setup.password);
 		
 		Thread.sleep(1000);
 		

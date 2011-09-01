@@ -10,7 +10,12 @@ import com.vdweem.webspotify.Util;
 
 import spotify.Session;
 
+/**
+ * Seeks a position for a song.
+ * @author Niels
+ */
 public class Seek extends SpotifyServlet {
+	private static final long serialVersionUID = 1663753237297957525L;
 
 	@Override
 	protected void doGet(HttpServletRequest arg0, HttpServletResponse arg1)

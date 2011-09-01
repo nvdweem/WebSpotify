@@ -11,7 +11,12 @@ import spotify.Track;
 
 import com.vdweem.webspotify.Util;
 
+/**
+ * Play a track.
+ * @author Niels
+ */
 public class Play extends SpotifyServlet {
+	private static final long serialVersionUID = 4369945020882244504L;
 
 	@Override
 	protected void doGet(HttpServletRequest arg0, HttpServletResponse arg1)

@@ -1,11 +1,14 @@
 package spotify;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 
 import com.vdweem.webspotify.Main;
 
+/**
+ * Holds image data.
+ * @author Niels
+ */
 public class Image extends Completable {
 	private final Type type;
 	private byte[] bytes;
@@ -27,6 +30,10 @@ public class Image extends Completable {
 		return bytes;
 	}
 	
+	/**
+	 * Returns the image data or a placeholder when no data is available.
+	 * @return
+	 */
 	private byte[] defaultImage() {
 		InputStream in = null;
 		

@@ -68,17 +68,19 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;JNISPOTIFY_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>c:\Program Files (x86)\Java\jdk1.7.0\include\win32;c:\Program Files (x86)\Java\jdk1.7.0\include\;C:\Users\Niels\workspace\imports\8;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CallingConvention>StdCall</CallingConvention>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>libspotify.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="appkey.c" />
-    <ClCompile Include="infloop.cpp" />
     <ClCompile Include="JNI.cpp" />
     <ClCompile Include="media.cpp" />
     <ClCompile Include="music.cpp" />
@@ -86,7 +88,6 @@
     <ClCompile Include="Session.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="infloop.h" />
     <ClInclude Include="JNI.h" />
     <ClInclude Include="media.h" />
     <ClInclude Include="music.h" />

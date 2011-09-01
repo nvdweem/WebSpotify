@@ -1,8 +1,16 @@
 package spotify;
 
+import java.io.Serializable;
+
 import org.json.JSONObject;
 
-public class Media extends Completable {
+/**
+ * Superclass for media types.
+ * @author Niels
+ */
+public class Media extends Completable implements Serializable {
+	private static final long serialVersionUID = -6025491409147182598L;
+	
 	protected String id;
 	protected String name;
 	

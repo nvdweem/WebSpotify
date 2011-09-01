@@ -155,6 +155,9 @@ a:hover {
 #center table tr.odd {
 	background-color: #313131;
 }
+span.duration, td.index {
+	color: #999999;
+}
 /****************************************************************
  *								Search							*
  ****************************************************************/
@@ -206,7 +209,7 @@ tr.searchHead {
 /****************************************************************
  *								Browse							*
  ****************************************************************/
-table.browseTop {
+.browse table.browseTop {
 	width: 100%;
 	table-layout: fixed;
 }
@@ -230,4 +233,53 @@ table.browseTop td { width: 50%; }
 	height: 102px;
 	overflow: hidden;
 	color: #999999;
+}
+
+.browse div.label {
+	height: 23px;
+	background: url('images/browseGradient.png') repeat-x;
+	color: #D7D7D7;
+
+	font-size: 15px;
+    font-weight: bold;
+    padding-left: 15px;	
+    margin-bottom: 15px;
+}
+
+.browse table {
+	padding-left: 30px;
+    width: 865px;
+}
+.browse img.left  {
+	float: left;
+	padding-left: 35px;
+}
+
+.browse td.index { width: 27px; }
+.browse td.track { }
+.browse td.artist { }
+.browse td.duration { width: 40px; }
+.browse td.popularity { width: 40px; }
+
+.spacer {
+	clear: both;
+	padding-bottom: 20px;
+}
+
+.browse div.album {
+	padding-bottom: 20px;
+}
+
+.browse div.album img.cover {
+	width: 130px;
+	height: 130px;
+}
+.browse div.albumTitle {
+	padding-left: 198px;
+	font-size: 15px;
+	padding-bottom: 10px;
+}
+.browse div.albumTitle span.year {
+	color: #999999;
+	padding-left: 25px;
 }

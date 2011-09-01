@@ -10,7 +10,12 @@ import spotify.Session;
 
 import com.vdweem.webspotify.Util;
 
+/**
+ * Perform a search.
+ * @author Niels
+ */
 public class Search extends SpotifyServlet {
+	private static final long serialVersionUID = 4386468939868538644L;
 
 	@Override
 	protected void doGet(HttpServletRequest arg0, HttpServletResponse arg1)

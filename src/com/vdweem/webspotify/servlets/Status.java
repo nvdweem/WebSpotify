@@ -12,7 +12,12 @@ import spotify.Player;
 import spotify.Session;
 import spotify.Track;
 
+/**
+ * Performs a status update.
+ * @author Niels
+ */
 public class Status extends SpotifyServlet {
+	private static final long serialVersionUID = 3616323075290964160L;
 
 	@Override
 	protected void doGet(HttpServletRequest arg0, HttpServletResponse arg1)

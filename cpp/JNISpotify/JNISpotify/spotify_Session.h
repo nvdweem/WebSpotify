@@ -26,6 +26,14 @@ JNIEXPORT void JNICALL Java_spotify_Session_Login
 
 /*
  * Class:     spotify_Session
+ * Method:    ProcessEvents
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_spotify_Session_ProcessEvents
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     spotify_Session
  * Method:    Search
  * Signature: (Ljava/lang/String;)V
  */
@@ -78,6 +86,14 @@ JNIEXPORT void JNICALL Java_spotify_Session_Seek
  * Signature: (Ljava/lang/String;)Lspotify/Artist;
  */
 JNIEXPORT jobject JNICALL Java_spotify_Session_BrowseArtist
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     spotify_Session
+ * Method:    BrowseAlbum
+ * Signature: (Ljava/lang/String;)Lspotify/Album;
+ */
+JNIEXPORT jobject JNICALL Java_spotify_Session_BrowseAlbum
   (JNIEnv *, jobject, jstring);
 
 #ifdef __cplusplus
