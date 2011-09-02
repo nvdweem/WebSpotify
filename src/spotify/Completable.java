@@ -11,6 +11,9 @@ public class Completable {
 		this.complete = false;
 	}
 	
+	protected void setComplete(boolean complete) {
+		this.complete = complete;
+	}
 	public void setComplete() {
 		complete = true;
 	}

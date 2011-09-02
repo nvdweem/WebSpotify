@@ -106,6 +106,5 @@ var Search = function() {
 		"decorateSearch": decorateSearch,
 		"decorateList": decorateList,
 		"decorateAlbumAndArtist": decorateAlbumAndArtist,
-		"init": init,
 	};
 }();

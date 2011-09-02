@@ -23,7 +23,7 @@ int music_delivery(sp_session *sess, const sp_audioformat *format, const void *f
 	if (num_frames == 0)
 		return 0; // Audio discontinuity, do nothing
 
-	callVoidMethod(player, "setAudioFormat", format->sample_rate, num_frames * format->channels, format->channels);
+	callVoidMethod(player, "setAudioFormat", format->sample_rate, format->channels);
 
 	JNIEnv *env = attachThread();
 

@@ -16,6 +16,7 @@ public class Util {
 	 * @return
 	 */
 	public static JSONArray listToArray(List<? extends Media> list) {
+		if (com.vdweem.webspotify.Util.isEmpty(list)) return null;
 		JSONArray result = new JSONArray();
 		for (Media media : list) {
 			result.put(media.toJSON());

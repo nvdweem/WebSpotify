@@ -71,6 +71,10 @@ public class Session {
 		return BrowseAlbum(link);
 	}
 	
+	public PlaylistContainer getPlaylistContainer() {
+		return playlistListener.getContainer();
+	}
+	
 	private native void Init(SessionListener listener, PlaylistListener playlist);
 	private native void Login(String username, String password);
 	private native void Search(String query, int trackCount, int albumCount, int artistCount, Search result);

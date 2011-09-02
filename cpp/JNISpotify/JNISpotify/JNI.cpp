@@ -53,11 +53,11 @@ void callVoidMethod(JNIEnv *env, jobject object, const char* methodName, int arg
 	env->CallVoidMethod(object, methodId, arg0);
 }
 
-void callVoidMethod(jobject object, const char* methodName, int arg0, int arg1, int arg2) {
+void callVoidMethod(jobject object, const char* methodName, int arg0, int arg1) {
 	JNIEnv* env = attachThread();
 	jclass cls = env->GetObjectClass(object);
-	jmethodID methodId = env->GetMethodID(cls, methodName, "(III)V");
-	env->CallVoidMethod(object, methodId, arg0, arg1, arg2);
+	jmethodID methodId = env->GetMethodID(cls, methodName, "(II)V");
+	env->CallVoidMethod(object, methodId, arg0, arg1);
 	detachThread();
 }
 
@@ -75,6 +75,14 @@ void callVoidMethod(jobject object, const char* methodName, jobject arg0) {
 	jclass cls = env->GetObjectClass(object);
 	jmethodID methodId = env->GetMethodID(cls, methodName, "(Ljava/lang/Object;)V");
 	env->CallVoidMethod(object, methodId, arg0);
+	detachThread();
+}
+
+void callVoidMethod(jobject object, const char* methodName, jobject arg0, int arg1) {
+	JNIEnv* env = attachThread();
+	jclass cls = env->GetObjectClass(object);
+	jmethodID methodId = env->GetMethodID(cls, methodName, "(Ljava/lang/Object;I)V");
+	env->CallVoidMethod(object, methodId, arg0, arg1);
 	detachThread();
 }
 

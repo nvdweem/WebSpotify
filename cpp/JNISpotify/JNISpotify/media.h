@@ -8,3 +8,6 @@ jobject readArtist(sp_artist *artist, bool complete);
 void readArtist(jobject target, sp_artist *artist, bool complete);
 void readArtistImage(sp_artist *artist, jobject target);
 void readAlbumImage(sp_album *album, jobject target);
+
+void linkToJstring(char *url, sp_link* l);
+void imageToByteArray(const byte* coverId, jobject target);

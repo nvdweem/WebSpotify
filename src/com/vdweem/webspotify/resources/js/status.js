@@ -22,6 +22,7 @@ var Status = function() {
 	function updateStatus(data) {
 		Player.updatePosition(data.position);
 		updatePlaying(data.playing);
+		Playlist.update(data.playlistRevision);
 	}
 	
 	var playing;

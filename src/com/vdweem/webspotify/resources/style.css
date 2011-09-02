@@ -56,6 +56,13 @@ a:hover {
 	top: 56px;
 	bottom: 42px;
 }
+#lists {
+	overflow: auto;
+	position: absolute;
+	top: 0px;
+	bottom: 290px;
+	width: 240px;
+}
 #playingArt {
 	background: url('images/noAlbum.png') no-repeat;
 	position: absolute;
@@ -283,3 +290,42 @@ table.browseTop td { width: 50%; }
 	color: #999999;
 	padding-left: 25px;
 }
+
+/****************************************************************
+ *							Playlist							*
+ ****************************************************************/
+.playlists {
+	overflow: hidden;
+}
+.playlists ol {
+    list-style: none;
+    padding: 0 0 0 10px;
+    margin: 0;
+}
+.playlists ol li {
+	padding: 2px 0 2px 20px;
+	background: url('images/playlistIcon.png') left center no-repeat;
+	white-space: nowrap;
+}
+
+.playlist .title {
+	font-size: 14px;
+	font-weight: bold;
+	padding-left: 10px;
+}
+.playlist .title img {
+	padding-right: 15px;
+}
+.playlist .title .duration {
+	float: right;
+	padding-right: 30px;
+}
+
+table.playlist {
+	width: 100%;
+}
+table.playlist .track      { }
+table.playlist .artist     { width: 15%; }
+table.playlist .time       { width: 40px; }
+table.playlist .popularity { width: 70px; }
+table.playlist .album      { width: 30%; }

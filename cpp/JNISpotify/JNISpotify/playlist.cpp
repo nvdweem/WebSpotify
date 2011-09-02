@@ -1,6 +1,23 @@
 #include "playlist.h"
+#include "media.h"
+#include "session.h"
 
 jobject playlistListener;
+
+jobject readPlaylist(sp_playlist *pl) {
+	jobject playlist = callObjectMethod(playlistListener, "createPlaylist", "");
+	callVoidMethod(playlist, "setName", sp_playlist_name(pl));
+	callVoidMethod(playlist, "setDescription", sp_playlist_get_description(pl));
+	
+	for (int i = 0; i < sp_playlist_num_tracks(pl); i++) {
+		sp_track *track = sp_playlist_track(pl, i);
+		if (!sp_track_is_available(getSession(), track)) continue;
+		callVoidMethod(playlist, "addTrack", readTrack(track, false));
+	}
+
+	callVoidMethod(playlist, "setComplete");
+	return playlist;
+}
 
 /**
  * Called when a new playlist has been added to the playlist container.
@@ -11,7 +28,8 @@ jobject playlistListener;
  * @param[in]  userdata   Userdata as set in sp_playlistcontainer_add_callbacks()
  */
 void cb_playlist_added(sp_playlistcontainer *pc, sp_playlist *playlist, int position, void *userdata) {
-	callVoidMethod(playlistListener, "cb_playlist_added");
+	jobject list = readPlaylist(playlist);
+	callVoidMethod(playlistListener, "cb_playlist_added", list, position);
 }
 
 /**
@@ -23,7 +41,7 @@ void cb_playlist_added(sp_playlistcontainer *pc, sp_playlist *playlist, int posi
  * @param[in]  userdata   Userdata as set in sp_playlistcontainer_add_callbacks()
  */
 void cb_playlist_removed(sp_playlistcontainer *pc, sp_playlist *playlist, int position, void *userdata) {
-	callVoidMethod(playlistListener, "cb_playlist_removed");
+	callVoidMethod(playlistListener, "cb_playlist_removed", position);
 }
 
 
@@ -37,7 +55,7 @@ void cb_playlist_removed(sp_playlistcontainer *pc, sp_playlist *playlist, int po
  * @param[in]  userdata   Userdata as set in sp_playlistcontainer_add_callbacks()
  */
 void cb_playlist_moved(sp_playlistcontainer *pc, sp_playlist *playlist, int position, int new_position, void *userdata) {
-	callVoidMethod(playlistListener, "cb_playlist_moved");
+	callVoidMethod(playlistListener, "cb_playlist_moved", position, new_position);
 }
 
 /**
@@ -47,10 +65,11 @@ void cb_playlist_moved(sp_playlistcontainer *pc, sp_playlist *playlist, int posi
  * @param[in]  userdata   Userdata as set in sp_playlistcontainer_add_callbacks()
  */
 void cb_container_loaded(sp_playlistcontainer *pc, void *userdata) {
-	callVoidMethod(playlistListener, "cb_container_loaded");
+	callVoidMethod(playlistListener, "cb_container_reload");
 	for ( int i = 0; i < sp_playlistcontainer_num_playlists ( pc ); ++i ) {
         switch ( sp_playlistcontainer_playlist_type ( pc,i ) ) {
 			case SP_PLAYLIST_TYPE_PLAYLIST:
+				callVoidMethod(playlistListener, "addPlaylist", readPlaylist(sp_playlistcontainer_playlist(pc, i)));
 				break;
 			case SP_PLAYLIST_TYPE_START_FOLDER:
 				break;
@@ -60,6 +79,7 @@ void cb_container_loaded(sp_playlistcontainer *pc, void *userdata) {
 				break;
         }
     }
+	callVoidMethod(playlistListener, "cb_container_loaded");
 }
 
 static sp_playlistcontainer_callbacks playlistContainerCallback = {

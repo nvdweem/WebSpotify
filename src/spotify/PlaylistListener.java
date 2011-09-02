@@ -5,8 +5,12 @@ package spotify;
  * @author Niels
  */
 public interface PlaylistListener {
-	void cb_playlist_added(/*sp_playlistcontainer *pc, sp_playlist *playlist, int position, void *userdata*/);
-	void cb_playlist_removed(/*sp_playlistcontainer *pc, sp_playlist *playlist, int position, void *userdata*/);
-	void cb_playlist_moved(/*sp_playlistcontainer *pc, sp_playlist *playlist, int position, int new_position, void *userdata*/);
-	void cb_container_loaded(/*sp_playlistcontainer *pc, void *userdata*/);
+	
+	void addPlaylist(Object playlist);
+	void cb_playlist_added(Object list, int position);
+	void cb_playlist_removed(int position);
+	void cb_playlist_moved(int from, int to);
+	void cb_container_reload();
+	void cb_container_loaded();
+	PlaylistContainer getContainer();
 }

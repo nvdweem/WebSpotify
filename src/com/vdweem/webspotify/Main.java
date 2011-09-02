@@ -8,6 +8,7 @@ import com.vdweem.webspotify.servlets.AlbumBrowse;
 import com.vdweem.webspotify.servlets.ArtistBrowse;
 import com.vdweem.webspotify.servlets.Image;
 import com.vdweem.webspotify.servlets.Play;
+import com.vdweem.webspotify.servlets.Playlist;
 import com.vdweem.webspotify.servlets.Search;
 import com.vdweem.webspotify.servlets.Seek;
 import com.vdweem.webspotify.servlets.Status;
@@ -58,6 +59,7 @@ public class Main {
 		srv.addServlet("/Seek", new Seek());
 		srv.addServlet("/ArtistBrowse", new ArtistBrowse());
 		srv.addServlet("/AlbumBrowse", new AlbumBrowse());
+		srv.addServlet("/Playlist", new Playlist());
 		
 		 
 		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {

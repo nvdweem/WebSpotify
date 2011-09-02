@@ -77,7 +77,7 @@ public class Player {
 		return audio.write(buffer, 0, toWrite) / 4;
 	}
 	
-	public void setAudioFormat(int rate, int sampleSize, int channels) {
+	public void setAudioFormat(int rate, int channels) {
 		if (audio != null && rate == this.rate && channels == this.channels) return;
 		this.rate = rate;
 		this.channels = channels;
