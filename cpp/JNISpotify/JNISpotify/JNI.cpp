@@ -110,7 +110,12 @@ void callVoidMethodB(JNIEnv *env, jobject object, const char* methodName, jbyteA
 
 const char* callStringMethod(jobject object, const char* methodName) {
 	JNIEnv* env = attachThread();
-	const char *resultStr = callStringMethod(env, object, methodName);
+	jclass cls = env->GetObjectClass(object);
+	jmethodID methodId = env->GetMethodID(cls, methodName, "()Ljava/lang/String;");
+	
+	jboolean iscopy;
+	jobject result = env->CallObjectMethod(object, methodId);
+	const char *resultStr = env->GetStringUTFChars((jstring) result, &iscopy);
 	detachThread();
 	return resultStr;
 }

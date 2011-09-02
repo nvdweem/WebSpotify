@@ -1,5 +1,5 @@
 #include "media.h"
-#include "session.h"
+#include "Session.h"
 
 void linkToJstring(char *url, sp_link* l) {
 	sp_link_as_string(l, url, 256);

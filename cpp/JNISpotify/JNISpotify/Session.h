@@ -1,5 +1,4 @@
 #include "api.h"
-#include "infloop.h"
 #include "JNI.h"
 
 sp_session* getSession();

@@ -27,22 +27,22 @@ void notify_main_thread(sp_session *session) {
  * The session callbacks
  */
 static sp_session_callbacks callbacks = {
-	  (void (__stdcall *)(sp_session *, sp_error)) &cb_logged_in // void (SP_CALLCONV *logged_in)(sp_session *session, sp_error error);
-	, (void (__stdcall *)(sp_session *)) &cb_logged_out // void (SP_CALLCONV *logged_out)(sp_session *session);
+	  &cb_logged_in // void (SP_CALLCONV *logged_in)(sp_session *session, sp_error error);
+	, &cb_logged_out // void (SP_CALLCONV *logged_out)(sp_session *session);
 	, NULL //(void (__stdcall *)(sp_session *)) &cb_metadata_updated //void (SP_CALLCONV *metadata_updated)(sp_session *session);
-	, (void (__stdcall *)(sp_session *, sp_error error)) &cb_connection_error //void (SP_CALLCONV *connection_error)(sp_session *session, sp_error error);
-	, (void (__stdcall *)(sp_session *, const char *)) &cb_message_to_user //void (SP_CALLCONV *message_to_user)(sp_session *session, const char *message);
-	, (void (__stdcall *)(sp_session *)) &notify_main_thread //void (SP_CALLCONV *notify_main_thread)(sp_session *session);
-	, (int (__stdcall *)(sp_session *session, const sp_audioformat *format, const void *frames, int num_frames)) &music_delivery //int (SP_CALLCONV *music_delivery)(sp_session *session, const sp_audioformat *format, const void *frames, int num_frames);
-	, (void (__stdcall *)(sp_session *)) &cb_play_token_lost //void (SP_CALLCONV *play_token_lost)(sp_session *session);
-	, (void (__stdcall *)(sp_session *, const char *)) &cb_log_message //void (SP_CALLCONV *log_message)(sp_session *session, const char *data);
-	, (void (__stdcall *)(sp_session *)) &cb_end_of_track //&end_of_track //void (SP_CALLCONV *end_of_track)(sp_session *session);
-	, (void (__stdcall *)(sp_session *, sp_error)) &cb_streaming_error //void (SP_CALLCONV *streaming_error)(sp_session *session, sp_error error);
-	, (void (__stdcall *)(sp_session *)) &cb_userinfo_updated //void (SP_CALLCONV *userinfo_updated)(sp_session *session);
-	, (void (__stdcall *)(sp_session *)) &cb_start_playback //void (SP_CALLCONV *start_playback)(sp_session *session);
-	, (void (__stdcall *)(sp_session *)) &cb_stop_playback //void (SP_CALLCONV *stop_playback)(sp_session *session);
-	, (void (__stdcall *)(sp_session *, sp_audio_buffer_stats *)) &cb_get_audio_buffer_stats //void (SP_CALLCONV *get_audio_buffer_stats)(sp_session *session, sp_audio_buffer_stats *stats);
-	, (void (__stdcall *)(sp_session *)) &cb_offline_status_updated //void (SP_CALLCONV *offline_status_updated)(sp_session *session);
+	, &cb_connection_error //void (SP_CALLCONV *connection_error)(sp_session *session, sp_error error);
+	, &cb_message_to_user //void (SP_CALLCONV *message_to_user)(sp_session *session, const char *message);
+	, &notify_main_thread //void (SP_CALLCONV *notify_main_thread)(sp_session *session);
+	, &music_delivery //int (SP_CALLCONV *music_delivery)(sp_session *session, const sp_audioformat *format, const void *frames, int num_frames);
+	, &cb_play_token_lost //void (SP_CALLCONV *play_token_lost)(sp_session *session);
+	, &cb_log_message //void (SP_CALLCONV *log_message)(sp_session *session, const char *data);
+	, &cb_end_of_track //&end_of_track //void (SP_CALLCONV *end_of_track)(sp_session *session);
+	, &cb_streaming_error //void (SP_CALLCONV *streaming_error)(sp_session *session, sp_error error);
+	, &cb_userinfo_updated //void (SP_CALLCONV *userinfo_updated)(sp_session *session);
+	, &cb_start_playback //void (SP_CALLCONV *start_playback)(sp_session *session);
+	, &cb_stop_playback //void (SP_CALLCONV *stop_playback)(sp_session *session);
+	, &cb_get_audio_buffer_stats //void (SP_CALLCONV *get_audio_buffer_stats)(sp_session *session, sp_audio_buffer_stats *stats);
+	, &cb_offline_status_updated //void (SP_CALLCONV *offline_status_updated)(sp_session *session);
 };
 
 JNIEXPORT void JNICALL Java_spotify_Session_Init(JNIEnv * env, jobject, jobject _sessionListener, jobject _playlistListener) {
@@ -77,7 +77,7 @@ JNIEXPORT void JNICALL Java_spotify_Session_Login(JNIEnv * env, jobject, jstring
 	jboolean iscopy;
 	const char *username = env->GetStringUTFChars(usernameJ, &iscopy);
 	const char *password = env->GetStringUTFChars(passwordJ, &iscopy);
-	sp_session_login(session, username, password);
+	sp_session_login(session, username, password, true);
 }
 
 JNIEXPORT jint JNICALL Java_spotify_Session_ProcessEvents(JNIEnv *, jobject) {

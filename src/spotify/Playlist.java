@@ -5,6 +5,10 @@ import java.util.List;
 
 import org.json.JSONObject;
 
+/**
+ * Holds playlist data.
+ * @author Niels
+ */
 public class Playlist extends Media {
 	private static final long serialVersionUID = 2581723963648031759L;
 	

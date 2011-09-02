@@ -1,6 +1,6 @@
 #include "playlist.h"
 #include "media.h"
-#include "session.h"
+#include "Session.h"
 
 jobject playlistListener;
 
@@ -83,10 +83,10 @@ void cb_container_loaded(sp_playlistcontainer *pc, void *userdata) {
 }
 
 static sp_playlistcontainer_callbacks playlistContainerCallback = {
-    (void (__stdcall *)(sp_playlistcontainer *pc, sp_playlist *playlist, int position, void *userdata)) &cb_playlist_added,
-    (void (__stdcall *)(sp_playlistcontainer *pc, sp_playlist *playlist, int position, void *userdata)) &cb_playlist_removed,
-    (void (__stdcall *)(sp_playlistcontainer *pc, sp_playlist *playlist, int position, int new_position, void *userdata)) &cb_playlist_moved,
-    (void (__stdcall *)(sp_playlistcontainer *pc, void *userdata)) &cb_container_loaded
+    &cb_playlist_added,
+    &cb_playlist_removed,
+    &cb_playlist_moved,
+    &cb_container_loaded
 };
 
 void initPlaylist(sp_session* session, jobject _playlistListener) {
