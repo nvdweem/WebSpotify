@@ -77,7 +77,7 @@ JNIEXPORT void JNICALL Java_spotify_Session_Login(JNIEnv * env, jobject, jstring
 	jboolean iscopy;
 	const char *username = env->GetStringUTFChars(usernameJ, &iscopy);
 	const char *password = env->GetStringUTFChars(passwordJ, &iscopy);
-	sp_session_login(session, username, password, true);
+	sp_session_login(session, username, password);
 }
 
 JNIEXPORT jint JNICALL Java_spotify_Session_ProcessEvents(JNIEnv *, jobject) {
