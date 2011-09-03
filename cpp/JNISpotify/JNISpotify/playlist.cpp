@@ -4,16 +4,81 @@
 
 jobject playlistListener;
 
-jobject readPlaylist(sp_playlist *pl) {
-	jobject playlist = callObjectMethod(playlistListener, "createPlaylist", "");
-	callVoidMethod(playlist, "setName", sp_playlist_name(pl));
-	callVoidMethod(playlist, "setDescription", sp_playlist_get_description(pl));
-	
+void playlist_metadata_updated(sp_playlist *pl, void *userdata) {
+	// Check if all tracks are available.
 	for (int i = 0; i < sp_playlist_num_tracks(pl); i++) {
 		sp_track *track = sp_playlist_track(pl, i);
-		if (!sp_track_is_available(getSession(), track)) continue;
+		if (!sp_track_is_loaded(track)) return;
+	}
+
+	// All tracks are available, read playlist.
+	jobject playlist = (jobject) userdata;
+	callVoidMethod(playlist, "clear");
+	for (int i = 0; i < sp_playlist_num_tracks(pl); i++) {
+		sp_track *track = sp_playlist_track(pl, i);
+		if (!sp_track_is_loaded(track)) continue;
 		callVoidMethod(playlist, "addTrack", readTrack(track, false));
 	}
+	callVoidMethod(playlistListener, "incrementRevision");
+}
+void tracks_added(sp_playlist *pl, sp_track * const *tracks, int num_tracks, int position, void *userdata) {
+	jobject playlist = (jobject) userdata;
+	for (int i = 0; i < num_tracks; i++) {
+		if (!sp_track_is_loaded(tracks[i])) { 
+			position--;
+			continue;
+		}
+		callVoidMethod(playlist, "putTrack", readTrack(tracks[i], false), position + i);
+	}
+}
+void tracks_removed(sp_playlist *pl, const int *tracks, int num_tracks, void *userdata) {
+	playlist_metadata_updated(pl, userdata); // Just being lazy
+}
+void tracks_moved(sp_playlist *pl, const int *tracks, int num_tracks, int new_position, void *userdata) {
+	playlist_metadata_updated(pl, userdata); // Just being lazy
+}
+
+void playlist_renamed(sp_playlist *pl, void *userdata) {
+	fflush(stderr);
+	jobject playlist = (jobject) userdata;
+	callVoidMethod(playlist, "setName", sp_playlist_name(pl));
+}
+
+void description_changed(sp_playlist *pl, const char *desc, void *userdata) {
+	jobject playlist = (jobject) userdata;
+	callVoidMethod(playlist, "setDescription", desc);
+}
+
+
+sp_playlist_callbacks cb_playlist = {
+	&tracks_added, // void (SP_CALLCONV *tracks_added)(sp_playlist *pl, sp_track * const *tracks, int num_tracks, int position, void *userdata);
+	&tracks_removed, // void (SP_CALLCONV *tracks_removed)(sp_playlist *pl, const int *tracks, int num_tracks, void *userdata);
+	&tracks_moved, // void (SP_CALLCONV *tracks_moved)(sp_playlist *pl, const int *tracks, int num_tracks, int new_position, void *userdata);
+	&playlist_renamed, // void (SP_CALLCONV *playlist_renamed)(sp_playlist *pl, void *userdata);
+	NULL, // void (SP_CALLCONV *playlist_state_changed)(sp_playlist *pl, void *userdata);
+	NULL, // void (SP_CALLCONV *playlist_update_in_progress)(sp_playlist *pl, bool done, void *userdata);
+	&playlist_metadata_updated, // void (SP_CALLCONV *playlist_metadata_updated)(sp_playlist *pl, void *userdata);
+	NULL, // void (SP_CALLCONV *track_created_changed)(sp_playlist *pl, int position, sp_user *user, int when, void *userdata);
+	NULL, // void (SP_CALLCONV *track_seen_changed)(sp_playlist *pl, int position, bool seen, void *userdata);
+	&description_changed, // void (SP_CALLCONV *description_changed)(sp_playlist *pl, const char *desc, void *userdata);
+	NULL, // void (SP_CALLCONV *image_changed)(sp_playlist *pl, const byte *image, void *userdata);
+	NULL, // void (SP_CALLCONV *track_message_changed)(sp_playlist *pl, int position, const char *message, void *userdata);
+	NULL // void (SP_CALLCONV *subscribers_changed)(sp_playlist *pl, void *userdata);
+};
+
+
+jobject readPlaylist(sp_playlist *pl) {
+	jobject playlist = callObjectMethod(playlistListener, "createPlaylist", "", true);
+	callVoidMethod(playlist, "setName", sp_playlist_name(pl));
+	callVoidMethod(playlist, "setDescription", sp_playlist_get_description(pl));
+
+	for (int i = 0; i < sp_playlist_num_tracks(pl); i++) {
+		sp_track *track = sp_playlist_track(pl, i);
+		if (!sp_track_is_loaded(track)) continue;
+		callVoidMethod(playlist, "addTrack", readTrack(track, false));
+	}
+
+	sp_playlist_add_callbacks(pl, &cb_playlist, playlist);
 
 	callVoidMethod(playlist, "setComplete");
 	return playlist;
@@ -65,7 +130,8 @@ void cb_playlist_moved(sp_playlistcontainer *pc, sp_playlist *playlist, int posi
  * @param[in]  userdata   Userdata as set in sp_playlistcontainer_add_callbacks()
  */
 void cb_container_loaded(sp_playlistcontainer *pc, void *userdata) {
-	callVoidMethod(playlistListener, "cb_container_reload");
+	/*
+	callVoidMethod(playlistListener, "clear");
 	for ( int i = 0; i < sp_playlistcontainer_num_playlists ( pc ); ++i ) {
         switch ( sp_playlistcontainer_playlist_type ( pc,i ) ) {
 			case SP_PLAYLIST_TYPE_PLAYLIST:
@@ -79,6 +145,7 @@ void cb_container_loaded(sp_playlistcontainer *pc, void *userdata) {
 				break;
         }
     }
+	*/
 	callVoidMethod(playlistListener, "cb_container_loaded");
 }
 
@@ -89,7 +156,10 @@ static sp_playlistcontainer_callbacks playlistContainerCallback = {
     &cb_container_loaded
 };
 
-void initPlaylist(sp_session* session, jobject _playlistListener) {
-	sp_playlistcontainer_add_callbacks ( sp_session_playlistcontainer ( session ), &playlistContainerCallback, NULL);
+void setListener(jobject _playlistListener) {
 	playlistListener = _playlistListener;
+}
+
+void initPlaylistListener() {
+	sp_playlistcontainer_add_callbacks ( sp_session_playlistcontainer ( getSession() ), &playlistContainerCallback, NULL);
 }

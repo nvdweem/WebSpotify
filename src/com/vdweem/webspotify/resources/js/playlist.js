@@ -25,7 +25,7 @@ var Playlist = function() {
 		var result = $('<div class="playlist"></div>');
 		
 		var title = $('<div class="title"></div>');
-		title.append(decorateDuration(data.tracks.length, data.totalduration));
+		title.append(decorateDuration(data.tracks ? data.tracks.length : -1, data.totalduration));
 		title.append($('<img src="images/playlistIcon.png" />'));
 		title.append(data.name);
 		
@@ -39,6 +39,11 @@ var Playlist = function() {
 			'    <th class="album">Album</th>' +
 			'  </tr>' +
 			'</table>');
+		
+		if (!data.tracks) {
+			table.append($('<tr><td colspan="5">Playlist not (yet) loaded</td></tr>'));
+			return table;
+		}
 		for (var i = 0; i < data.tracks.length; i++) {
 			var track = data.tracks[i];
 			table.append(Media.decorateTrack(track).addClass(i % 2 == 0 ? "even" : "odd"));

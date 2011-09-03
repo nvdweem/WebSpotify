@@ -80,7 +80,7 @@ void cb_artistbrowse_complete(sp_artistbrowse *browse, void *_target) {
 		callVoidMethod(target, "addRelatedArtist", readArtist(sp_artistbrowse_similar_artist(browse, i), false));
 	
 	for (int i = 0; i < sp_artistbrowse_num_tracks(browse); i++) {
-		if (!sp_track_is_available(getSession(), sp_artistbrowse_track(browse, i))) continue;
+		if (!sp_track_is_loaded(sp_artistbrowse_track(browse, i))) continue;
 		callVoidMethod(target, "addTopTrack", readTrack(sp_artistbrowse_track(browse, i), true));
 	}
 	

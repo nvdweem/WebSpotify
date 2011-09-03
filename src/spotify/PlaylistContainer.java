@@ -19,6 +19,24 @@ public class PlaylistContainer extends Completable {
 		playlists = new ArrayList<Playlist>();
 	}
 	
+	public void clear() {
+		playlists.clear();
+	}
+	
+	public void putPlaylist(Playlist playlist, int position) {
+		playlists.add(position, playlist);
+	}
+	
+	public void remove(int position) {
+		playlists.remove(position);
+	}
+	
+	public void move(int from, int to) {
+		Playlist src = playlists.remove(from);
+		if (from < to) to--;
+		playlists.add(to, src);
+	}
+	
 	public void reset() {
 		playlists.clear();
 		setComplete(false);
@@ -49,22 +67,6 @@ public class PlaylistContainer extends Completable {
 	public void addPlaylist(Playlist playlist) {
 		playlists.add(playlist);
 	}
-	
-	/*
-	public void putPlaylist(Playlist playlist, int position) {
-		playlists.add(position, playlist);
-	}
-	
-	public void remove(int position) {
-		playlists.remove(position);
-	}
-	
-	public void move(int from, int to) {
-		Playlist src = playlists.remove(from);
-		if (from < to) to--;
-		playlists.add(to, src);
-	}
-	*/
 	
 	public void setComplete() {
 		for (int i = 0; i < playlists.size(); i++)

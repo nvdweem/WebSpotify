@@ -65,19 +65,20 @@ JNIEXPORT void JNICALL Java_spotify_Session_Init(JNIEnv * env, jobject, jobject 
 	sessionListener = env->NewGlobalRef(_sessionListener);
 	
 	error = sp_session_create(&config, &session);
+	
 	if (SP_ERROR_OK != error) {
 		fprintf(stderr, "failed to create session: %s\n", sp_error_message(error));
 	}
-	
+
 	// Playlist listener
-	initPlaylist(session, env->NewGlobalRef(_playlistListener));
+	setListener(env->NewGlobalRef(_playlistListener));
 }
 
 JNIEXPORT void JNICALL Java_spotify_Session_Login(JNIEnv * env, jobject, jstring usernameJ, jstring passwordJ) {
 	jboolean iscopy;
 	const char *username = env->GetStringUTFChars(usernameJ, &iscopy);
 	const char *password = env->GetStringUTFChars(passwordJ, &iscopy);
-	sp_session_login(session, username, password);
+	sp_session_login(session, username, password, false); 
 }
 
 JNIEXPORT jint JNICALL Java_spotify_Session_ProcessEvents(JNIEnv *, jobject) {
@@ -95,7 +96,7 @@ void cb_search_complete(sp_search *search, void *userdata) {
 	jobject target = (jobject) userdata;
 	for (int i = 0; i < sp_search_num_tracks(search); i++) {
 		sp_track *track = sp_search_track(search, i);
-		if (!sp_track_is_available(session, track)) continue;
+		if (!sp_track_is_loaded(track)) continue;
 		callVoidMethod(target, "addTrack", readTrack(track, false));
 	}
 
@@ -126,6 +127,7 @@ JNIEXPORT void JNICALL Java_spotify_Session_Search(JNIEnv *env, jobject, jstring
  */
 void cb_logged_in(sp_session *session, sp_error error){
 	callVoidMethod(sessionListener, "cb_logged_in", error);
+	initPlaylistListener();
 }
 void cb_logged_out(sp_session *session){
 	callVoidMethod(sessionListener, "cb_logged_out");

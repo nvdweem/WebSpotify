@@ -19,6 +19,10 @@ public class SessionListenerImpl implements SessionListener {
 		initialized = true;
 	}
 	
+	public void debug(String text) {
+		System.out.println(text);
+	}
+	
 	@Override
 	public void cb_notify_main_thread() {
 		processor.processEventsNow();

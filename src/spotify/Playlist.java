@@ -21,6 +21,7 @@ public class Playlist extends Media {
 	public Playlist(String id) {
 		super(id);
 		tracks = new ArrayList<Track>();
+		setComplete();
 	}
 	
 	@Override
@@ -33,9 +34,22 @@ public class Playlist extends Media {
 		return result;
 	}
 
+	public void clear() {
+		totalDuration = 0;
+		tracks.clear();
+	}
+	
+	public void putTrack(Object track, int position) {
+		if (!(track instanceof Track)) return;
+		tracks.add(position, (Track) track);
+	}
+	
+	public void removeTrack(int position) {
+		tracks.remove(position);
+	}
+	
 	public void addTrack(Object track) {
-		if (!(track instanceof Track))
-			return;
+		if (!(track instanceof Track)) return;
 		totalDuration += ((Track) track).getDuration();
 		tracks.add((Track) track);
 	}

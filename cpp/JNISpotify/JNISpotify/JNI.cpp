@@ -1,5 +1,6 @@
 #include "jni.h"
 #include "api.h"
+#include "Session.h"
 
 JNIEnv *cb_env;
 
@@ -31,6 +32,9 @@ void removeGlobalRef(jobject target) {
 	detachThread();
 }
 
+void debug(const char* text) {
+	callVoidMethod(getSessionListener(), "debug", text);
+}
 void callVoidMethod(jobject object, const char* methodName) {
 	JNIEnv* env = attachThread();
 	jclass cls = env->GetObjectClass(object);
@@ -87,11 +91,15 @@ void callVoidMethod(jobject object, const char* methodName, jobject arg0, int ar
 }
 
 jobject callObjectMethod(jobject object, const char* methodName, const char* arg0) {
+	return callObjectMethod(object, methodName, arg0, false);
+}
+jobject callObjectMethod(jobject object, const char* methodName, const char* arg0, bool global) {
 	JNIEnv* env = attachThread();
 	jclass cls = env->GetObjectClass(object);
 	jmethodID methodId = env->GetMethodID(cls, methodName, "(Ljava/lang/String;)Ljava/lang/Object;");
 	jstring _arg0 = env->NewStringUTF(arg0);
 	jobject result = env->CallObjectMethod(object, methodId, _arg0);
+	if (global) result = env->NewGlobalRef(result);
 	detachThread();
 	return result;
 }

@@ -51,12 +51,12 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;JNISPOTIFY_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <CallingConvention>StdCall</CallingConvention>
-      <AdditionalIncludeDirectories>c:\Program Files (x86)\Java\jdk1.7.0\include\win32;c:\Program Files (x86)\Java\jdk1.7.0\include\;C:\Users\Niels\workspace\imports\8;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>c:\Program Files (x86)\Java\jdk1.7.0\include\win32;c:\Program Files (x86)\Java\jdk1.7.0\include\;C:\Users\Niels\workspace\imports\9;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>libspotify.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>spotify.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
