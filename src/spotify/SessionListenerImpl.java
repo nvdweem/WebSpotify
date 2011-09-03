@@ -61,7 +61,6 @@ public class SessionListenerImpl implements SessionListener {
 	}
 	public void cb_end_of_track(){
 		System.out.println("cb_end_of_track");
-		System.exit(0);
 	}
 	public void cb_streaming_error(int error){
 		System.out.println("cb_streaming_error: " + error);
