@@ -8,11 +8,22 @@ worktime.
 
 STATUS
 ======
-Currently the code compiles and runs under Windows. The client code is Java and should
-run on every computer available, but the C++ part is Windows dependant where the platform
-dependent code is in infloop.h/cpp.
+The application is being developed under Windows. I tried to compile it for Linux and it 
+appears that this works. Compiling the Java sources should be quite straightforward (you
+can use the Eclise project). The C++ sources can be compiled with MSVC++ for windows, or
+you could use the makefile for Linux binaries (should also work for OSX with XCode 
+installed).
+
+At this point the tool is nearing the usable status. The next step will be allowing playing
+playlists and queueing songs.
+
+COMPATIBILITY
+=============
+The tool is verified to compile and run with the following operating systems:
+- Windows 7
+- Ubuntu 11.04
 
 BUILDING
 ========
 The project files are included in the repository. This is an Eclipse project and a MSVC++
-solution. 
+solution. You can also use the Makefile for the C++ files under Linux and OSX.
