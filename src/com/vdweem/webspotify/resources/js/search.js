@@ -71,13 +71,13 @@ var Search = function() {
 		var result = $('<div></div>');
 		
 		var head;
-		if (search.artists.length != 0 || search.albums.length != 0) {
+		if ((search.artists && search.artists.length != 0) || (search.albums && search.albums.length != 0)) {
 			head = $('<table class="searchTop"></table>');
 			var row = $('<tr></tr>');
 			head.append(row);
 			
-			if (search.artists.length != 0) row.append($('<td></td>').append(decorateList('Artists', search.artists, Media.artistLink)));
-			if (search.albums.length != 0) row.append($('<td></td>').append(decorateList('Albums', search.albums, decorateAlbumAndArtist)));
+			if (search.artists && search.artists.length != 0) row.append($('<td></td>').append(decorateList('Artists', search.artists, Media.artistLink)));
+			if (search.albums && search.albums.length != 0) row.append($('<td></td>').append(decorateList('Albums', search.albums, decorateAlbumAndArtist)));
 		}
 		else
 			head = $('<div></div>');
