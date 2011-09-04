@@ -12,6 +12,9 @@ import com.vdweem.webspotify.servlets.Playlist;
 import com.vdweem.webspotify.servlets.Search;
 import com.vdweem.webspotify.servlets.Seek;
 import com.vdweem.webspotify.servlets.Status;
+import com.vdweem.webspotify.servlets.menu.Login;
+import com.vdweem.webspotify.servlets.menu.SpotifyLogin;
+import com.vdweem.webspotify.servlets.menu.SpotifyLogout;
 
 /**
  * Start the webserver and initialize the Spotify library.
@@ -20,9 +23,8 @@ import com.vdweem.webspotify.servlets.Status;
 public class Main {
 
 	public static void main(String... args) {
-		// Setup the Spotify library
 		Session.getInstance().initialize(new SessionListenerImpl(), new PlaylistListenerImpl());
-		Session.getInstance().login(Setup.username, Setup.password); // TODO: Make username and password configurable.
+		Setup.getInstance().initSession();
 		
 		class MyServer extends Acme.Serve.Serve {
 			private static final long serialVersionUID = -2268615199362928333L;
@@ -60,6 +62,10 @@ public class Main {
 		srv.addServlet("/ArtistBrowse", new ArtistBrowse());
 		srv.addServlet("/AlbumBrowse", new AlbumBrowse());
 		srv.addServlet("/Playlist", new Playlist());
+		
+		srv.addServlet("/Login", new Login());
+		srv.addServlet("/SpotifyLogin", new SpotifyLogin());
+		srv.addServlet("/SpotifyLogout", new SpotifyLogout());
 		
 		 
 		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {

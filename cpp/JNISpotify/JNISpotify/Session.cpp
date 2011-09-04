@@ -81,6 +81,10 @@ JNIEXPORT void JNICALL Java_spotify_Session_Login(JNIEnv * env, jobject, jstring
 	sp_session_login(session, username, password, false); 
 }
 
+JNIEXPORT void JNICALL Java_spotify_Session_Logout(JNIEnv *, jobject) {
+	sp_session_logout(getSession());
+}
+
 JNIEXPORT jint JNICALL Java_spotify_Session_ProcessEvents(JNIEnv *, jobject) {
 	if (!session) return 1000;
 	int next_timeout = 0;

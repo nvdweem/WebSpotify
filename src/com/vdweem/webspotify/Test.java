@@ -14,7 +14,6 @@ public class Test {
 	public static void main(String[] args) throws InterruptedException {
 		Session session = Session.getInstance();
 		session.initialize(new SessionListenerImpl(), new PlaylistListenerImpl());
-		session.login(Setup.username, Setup.password);
 		
 		Thread.sleep(1000);
 		

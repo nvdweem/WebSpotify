@@ -20,6 +20,7 @@ public class PlaylistContainer extends Completable {
 	}
 	
 	public void clear() {
+		revision++;
 		playlists.clear();
 	}
 	

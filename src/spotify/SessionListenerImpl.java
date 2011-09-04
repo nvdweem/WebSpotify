@@ -9,12 +9,22 @@ public class SessionListenerImpl implements SessionListener {
 	private boolean initialized = false;
 	private boolean loggedIn = false;
 	private EventProcessor processor;
+	private boolean loginError;
 	
 	public SessionListenerImpl() {
 		processor = new EventProcessor();
 		processor.start();
 	}
 	
+	public boolean isLoggedIn() {
+		return loggedIn;
+	}
+	public boolean isLoginError() {
+		boolean result = loginError;
+		loginError = false;
+		return result;
+	}
+
 	public void initialize() {
 		initialized = true;
 	}
@@ -35,8 +45,8 @@ public class SessionListenerImpl implements SessionListener {
 	}
 	
 	public void cb_logged_in(int error){
-		System.out.println("Logged in: " + error);
 		loggedIn = error == SP_ERROR_OK;
+		loginError = !loggedIn;
 	}
 	
 	public void cb_logged_out(){

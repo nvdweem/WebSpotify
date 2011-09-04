@@ -23,6 +23,7 @@ var Status = function() {
 		Player.updatePosition(data.position);
 		updatePlaying(data.playing);
 		Playlist.update(data.playlistRevision);
+		Menu.update(data.menu);
 	}
 	
 	var playing;

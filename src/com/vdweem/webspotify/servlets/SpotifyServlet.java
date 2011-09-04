@@ -78,4 +78,12 @@ public abstract class SpotifyServlet extends HttpServlet {
 	public void printError(String error) {
 		printLn("{\"error\": \""+error+"\"}");
 	}
+	
+	/**
+	 * Returns the Session object for the current session.
+	 * @return
+	 */
+	protected Session getSession() {
+		return Session.getSession(request.getSession().getId());
+	}
 }

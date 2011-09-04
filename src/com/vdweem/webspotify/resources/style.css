@@ -23,6 +23,12 @@ a:hover {
 	font-weight: bold;
 	font-size: 13px;
 }
+#menu {
+	position: absolute;
+	left: 0px;
+	width: 300px;
+	top: 0px;
+}
 #search {
 	width: 200px;
 	padding-top: 10px;
@@ -107,6 +113,26 @@ a:hover {
 	right: 0px;
 	height: 42px;
 	bottom: 0px;
+}
+
+/****************************************************************
+ *								Menu							*
+ ****************************************************************/
+#menu ol {
+	color: #616161;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+#menu li {
+	padding-left: 15px;
+    border: none;
+    display: inline;
+    margin: 0 0.5em 0 0;
+    cursor: pointer;
+}
+#menu li.hover {
+	color: white;
 }
 
 /****************************************************************

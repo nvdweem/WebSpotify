@@ -29,6 +29,10 @@ public class Search extends SpotifyServlet {
 			printError("Query is required");
 			return;
 		}
+		if (!Session.getInstance().isLoggedIn()) {
+			printError("There is no connection to spotify.");
+			return;
+		}
 
 		Session session = Session.getInstance();
 		spotify.Search search = session.search(query, trackCount, albumCount, artistCount);

@@ -7,6 +7,8 @@ package spotify;
 public interface SessionListener {
 	public void initialize();
 	public void checkLogin() throws RuntimeException;
+	boolean isLoggedIn();
+	boolean isLoginError();
 	public void debug(String text);
 
 	public void cb_notify_main_thread();

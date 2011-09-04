@@ -19,6 +19,10 @@ public class Session {
 	}
 	private Session() {}
 	
+	public boolean isLoggedIn() {
+		return sessionListener.isLoggedIn();
+	}
+	
 	public void initialize(final SessionListener listener, final PlaylistListener playlist)
 	{
 		Init(listener, playlist);
@@ -38,6 +42,16 @@ public class Session {
 	public void login(String username, String password) {
 		if (sessionListener != null)
 			Login(username, password);
+	}
+	
+	public void logout() {
+		if (sessionListener != null)
+			Logout();
+	}
+	
+	public boolean isLoginError() {
+		if (sessionListener == null) return false;
+		return sessionListener.isLoginError();
 	}
 	
 	public Search search(String query, int trackCount, int albumCount, int artistCount) {
@@ -77,6 +91,7 @@ public class Session {
 	
 	private native void Init(SessionListener listener, PlaylistListener playlist);
 	private native void Login(String username, String password);
+	private native void Logout();
 	private native void Search(String query, int trackCount, int albumCount, int artistCount, Search result);
 	protected native int ProcessEvents();
 	

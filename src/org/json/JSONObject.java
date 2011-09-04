@@ -1132,7 +1132,7 @@ public class JSONObject
 	 * @throws JSONException
 	 *             If the key is null.
 	 */
-	public JSONObject put(String key, boolean value) throws JSONException
+	public JSONObject put(String key, boolean value)
 	{
 		put(key, value ? Boolean.TRUE : Boolean.FALSE);
 		return this;

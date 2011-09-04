@@ -26,6 +26,14 @@ JNIEXPORT void JNICALL Java_spotify_Session_Login
 
 /*
  * Class:     spotify_Session
+ * Method:    Logout
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_spotify_Session_Logout
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     spotify_Session
  * Method:    Search
  * Signature: (Ljava/lang/String;IIILspotify/Search;)V
  */
@@ -51,9 +59,9 @@ JNIEXPORT void JNICALL Java_spotify_Session_RegisterPlayer
 /*
  * Class:     spotify_Session
  * Method:    Play
- * Signature: (Lspotify/Track;)V
+ * Signature: (Lspotify/Track;)Z
  */
-JNIEXPORT void JNICALL Java_spotify_Session_Play
+JNIEXPORT jboolean JNICALL Java_spotify_Session_Play
   (JNIEnv *, jobject, jobject);
 
 /*

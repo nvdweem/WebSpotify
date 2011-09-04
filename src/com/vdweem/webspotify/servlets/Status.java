@@ -38,6 +38,14 @@ public class Status extends SpotifyServlet {
 		
 		result.put("playlistRevision", Session.getInstance().getPlaylistContainer().getRevision());
 		
+		JSONObject menu = new JSONObject();
+		menu.put("loggedIn", getSession().isAdmin());
+		if (getSession().isAdmin()) {
+			menu.put("loginError", Session.getInstance().isLoginError());
+			menu.put("spotify", Session.getInstance().isLoggedIn());
+		}
+		result.put("menu", menu);
+		
 		printLn(result.toString());
 	}
 
