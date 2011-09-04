@@ -98,7 +98,7 @@ void readArtist(jobject target, sp_artist *artist, bool complete) {
 	callVoidMethod(target, "setName", sp_artist_name(artist));
 
 	if (complete) {
-		sp_artistbrowse_create(getSession(), artist, &cb_artistbrowse_complete, target);
+		sp_artistbrowse_create(getSession(), artist, &cb_artistbrowse_complete, getEnv()->NewGlobalRef(target));
 	}
 	else
 		callVoidMethod(target, "setComplete");
