@@ -14,6 +14,8 @@ jobject readTrack(sp_track *track, bool complete) {
 }
 
 jobject readTrack(jobject target, sp_track *track, bool complete) {
+	if (SP_ERROR_OTHER_PERMANENT == sp_track_error(track)) return NULL;
+
 	callVoidMethod(target, "setName", sp_track_name(track));
 	callVoidMethod(target, "setDuration", sp_track_duration(track));
 	callVoidMethod(target, "setPopularity", sp_track_popularity(track));
