@@ -43,11 +43,13 @@ var Search = function() {
 				list.append($('<li> - </li>'));
 			list.append($('<li></li>').append(listDecorator(listItems[i])));
 			
-			images.append(
-				listDecorator(listItems[i], true).html("").append(
-						$('<img />').attr("src", "Image?id=" + listItems[i].id)	
-				)
-			);
+			if (i < 15) {
+				images.append(
+					listDecorator(listItems[i], true).html("").append(
+							$('<img />').attr("src", "Image?id=" + listItems[i].id)	
+					)
+				);
+			}
 		}
 		return $('<div class="'+title+'"></div>').append(images).append(list);
 	}

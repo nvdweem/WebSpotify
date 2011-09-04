@@ -14,8 +14,7 @@ can use the Eclise project). The C++ sources can be compiled with MSVC++ for win
 you could use the makefile for Linux binaries (should also work for OSX with XCode 
 installed).
 
-At this point the tool is nearing the usable status. The next step will be allowing playing
-playlists and queueing songs.
+At this point the tool is nearing the usable status. The next step will be queueing songs.
 
 COMPATIBILITY
 =============

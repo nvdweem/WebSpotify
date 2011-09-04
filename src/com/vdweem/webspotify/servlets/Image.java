@@ -20,6 +20,7 @@ public class Image extends SpotifyServlet {
 	@Override
 	protected void doGet(HttpServletRequest arg0, HttpServletResponse response)
 			throws ServletException, IOException {
+		setHeaders(response);
 		String id = Util.nonNullString(getParam("id"));
 		
 		spotify.Image image = null;
@@ -34,6 +35,13 @@ public class Image extends SpotifyServlet {
 		image.waitFor(50);
 		byte[] bytes = image.getBytes();
 		response.getOutputStream().write(bytes, 0, bytes.length);
+	}
+	
+	private void setHeaders(HttpServletResponse response) {
+		response.addHeader("Expires", "Mon, 26 Jul 1990 05:00:00 GMT");
+		response.addHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+		response.addHeader("Cache-Control", "post-check=0, pre-check=0");
+		response.addHeader("Pragma", "no-cache");
 	}
 
 	@Override
