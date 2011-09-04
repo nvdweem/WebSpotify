@@ -3,6 +3,7 @@
  */
 var Search = function() {
 	$(document).ready(init);
+	$("a.search").live('click', searchFromLink);
 	
 	/**
 	 * Initializer.
@@ -23,6 +24,18 @@ var Search = function() {
 				return false;
 			}
 		});
+	}
+	
+	/**
+	 * A search link is clicked.
+	 */
+	function searchFromLink(event) {
+		event.preventDefault();
+		
+		var id = $(this).data('id');
+		/[^:]+:search:(.*)/.test(id);
+		$('input.search').val(unescape(RegExp.$1));
+		$('div.searchRight').click();
 	}
 	
 	/**
@@ -94,9 +107,14 @@ var Search = function() {
 			'    <th class="album">Album</th>' +
 			'  </tr>' +
 			'</table>');
-		for (var i = 0; i < search.tracks.length; i++) {
-			var track = search.tracks[i];
-			table.append(Media.decorateTrack(track).addClass(i % 2 == 0 ? "even" : "odd"));
+		if (search.tracks) {
+			for (var i = 0; i < search.tracks.length; i++) {
+				var track = search.tracks[i];
+				table.append(Media.decorateTrack(track).addClass(i % 2 == 0 ? "even" : "odd"));
+			}
+		}
+		else {
+			table.append($('<tr><td colspan="5">No search results.</td></tr>'));
 		}
 		
 		return result
