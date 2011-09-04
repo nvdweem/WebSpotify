@@ -69,6 +69,7 @@ sp_playlist_callbacks cb_playlist = {
 
 jobject readPlaylist(sp_playlist *pl) {
 	jobject playlist = callObjectMethod(playlistListener, "createPlaylist", "", true);
+
 	callVoidMethod(playlist, "setName", sp_playlist_name(pl));
 	callVoidMethod(playlist, "setDescription", sp_playlist_get_description(pl));
 
@@ -77,9 +78,8 @@ jobject readPlaylist(sp_playlist *pl) {
 		if (!sp_track_is_loaded(track)) continue;
 		callVoidMethod(playlist, "addTrack", readTrack(track, false));
 	}
-
+	
 	sp_playlist_add_callbacks(pl, &cb_playlist, playlist);
-
 	callVoidMethod(playlist, "setComplete");
 	return playlist;
 }
@@ -93,8 +93,10 @@ jobject readPlaylist(sp_playlist *pl) {
  * @param[in]  userdata   Userdata as set in sp_playlistcontainer_add_callbacks()
  */
 void cb_playlist_added(sp_playlistcontainer *pc, sp_playlist *playlist, int position, void *userdata) {
+	/*
 	jobject list = readPlaylist(playlist);
 	callVoidMethod(playlistListener, "cb_playlist_added", list, position);
+	*/
 }
 
 /**
@@ -130,7 +132,6 @@ void cb_playlist_moved(sp_playlistcontainer *pc, sp_playlist *playlist, int posi
  * @param[in]  userdata   Userdata as set in sp_playlistcontainer_add_callbacks()
  */
 void cb_container_loaded(sp_playlistcontainer *pc, void *userdata) {
-	/*
 	callVoidMethod(playlistListener, "clear");
 	for ( int i = 0; i < sp_playlistcontainer_num_playlists ( pc ); ++i ) {
         switch ( sp_playlistcontainer_playlist_type ( pc,i ) ) {
@@ -145,7 +146,6 @@ void cb_container_loaded(sp_playlistcontainer *pc, void *userdata) {
 				break;
         }
     }
-	*/
 	callVoidMethod(playlistListener, "cb_container_loaded");
 }
 
