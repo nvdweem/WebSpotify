@@ -28,7 +28,7 @@ public abstract class SpotifyServlet extends HttpServlet {
 		super.service(arg0, arg1);
 		
 		switch (getResultType()) {
-			case image: response.setContentType("image/png"); break;
+			case image: response.setContentType("image/jpg"); break;
 			case json: response.setContentType("application/json"); break;
 			case plain: response.setContentType("text/plain"); break;
 		}
