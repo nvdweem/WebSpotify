@@ -11,10 +11,14 @@ import javax.servlet.http.HttpServletResponse;
  * Super class for all servlets. Provides some helper functions.
  * @author Niels
  */
-public class SpotifyServlet extends HttpServlet {
+public abstract class SpotifyServlet extends HttpServlet {
 	private static final long serialVersionUID = -3271532191176837879L;
 	private HttpServletRequest request;
 	private HttpServletResponse response;
+	
+	public enum ResultType {
+		plain, json, image
+	}
 	
 	@Override
 	protected void service(HttpServletRequest arg0, HttpServletResponse arg1)
@@ -22,7 +26,19 @@ public class SpotifyServlet extends HttpServlet {
 		request = arg0;
 		response = arg1;
 		super.service(arg0, arg1);
+		
+		switch (getResultType()) {
+			case image: response.setContentType("image/png"); break;
+			case json: response.setContentType("application/json"); break;
+			case plain: response.setContentType("text/plain"); break;
+		}
 	}
+	
+	/**
+	 * Determines the result headers.
+	 * @return
+	 */
+	protected abstract ResultType getResultType();
 	
 	/**
 	 * Get a parameter from the request.

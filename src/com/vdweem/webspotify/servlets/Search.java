@@ -40,4 +40,9 @@ public class Search extends SpotifyServlet {
 		printLn(search.toString());
 	}
 
+	@Override
+	protected ResultType getResultType() {
+		return ResultType.json;
+	}
+
 }

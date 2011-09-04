@@ -29,4 +29,9 @@ public class ArtistBrowse extends SpotifyServlet {
 		printLn(artist.toString());
 	}
 
+	@Override
+	protected ResultType getResultType() {
+		return ResultType.json;
+	}
+
 }

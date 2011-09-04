@@ -35,5 +35,10 @@ public class Image extends SpotifyServlet {
 		byte[] bytes = image.getBytes();
 		response.getOutputStream().write(bytes, 0, bytes.length);
 	}
+
+	@Override
+	protected ResultType getResultType() {
+		return ResultType.image;
+	}
 	
 }

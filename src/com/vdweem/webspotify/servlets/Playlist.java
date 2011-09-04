@@ -48,4 +48,9 @@ public class Playlist extends SpotifyServlet {
 		printLn(playlistObject.toString());
 	}
 	
+	@Override
+	protected ResultType getResultType() {
+		return ResultType.json;
+	}
+	
 }

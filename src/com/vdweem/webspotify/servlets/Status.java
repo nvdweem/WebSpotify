@@ -40,5 +40,10 @@ public class Status extends SpotifyServlet {
 		
 		printLn(result.toString());
 	}
+
+	@Override
+	protected ResultType getResultType() {
+		return ResultType.json;
+	}
 	
 }

@@ -28,5 +28,10 @@ public class AlbumBrowse extends SpotifyServlet {
 		album.waitFor(100);
 		printLn(album.toString());
 	}
+
+	@Override
+	protected ResultType getResultType() {
+		return ResultType.json;
+	}
 	
 }
