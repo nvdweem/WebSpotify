@@ -45,7 +45,7 @@ JNIEXPORT void JNICALL Java_spotify_Session_Search
  * Method:    Play
  * Signature: (Ljava/lang/String;)V
  */
-JNIEXPORT void JNICALL Java_spotify_Session_Play
+JNIEXPORT jboolean JNICALL Java_spotify_Session_Play
   (JNIEnv *, jobject, jobject);
 
 /*

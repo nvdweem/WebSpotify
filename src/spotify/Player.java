@@ -35,10 +35,23 @@ public class Player {
 		positionOffset = 0;
 	}
 	
-	public void play(Track track) {
+	public boolean play(Track track) {
 		playing = track;
-		session.Play(track);
-		changeSong();
+		
+		// Try to wait 5 seconds for the track to become available.
+		for (int i = 0; i < 500; i++) {
+			if (session.Play(track)) {
+				changeSong();
+				return true;
+			}
+
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+			}
+		}
+		return false;
 	}
 	
 	public int getDuration() {
