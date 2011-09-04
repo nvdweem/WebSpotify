@@ -1,0 +1,6 @@
+Debug
+Release
+*.lib
+appkey.c
+*sdf
+ipch
