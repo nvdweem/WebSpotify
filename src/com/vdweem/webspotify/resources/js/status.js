@@ -20,7 +20,7 @@ var Status = function() {
 	 * Delegates the required updates.
 	 */
 	function updateStatus(data) {
-		Player.updatePosition(data.position);
+		Player.updatePosition(data.pause, data.position);
 		updatePlaying(data.playing);
 		Playlist.update(data.playlistRevision);
 		Menu.update(data.menu);

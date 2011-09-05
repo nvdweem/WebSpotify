@@ -3,6 +3,7 @@
  */
 var Player = function() {
 	$(document).ready(init);
+	$("#playpause").live('click', playPause);
 	
 	/**
 	 * Initialize the player.
@@ -22,10 +23,17 @@ var Player = function() {
 		}); 
 	}
 	
+	function playPause() {
+		$.get('PlayPause');
+	}
+	
 	/**
 	 * Update the position of the progress bar.
 	 */
-	function updatePosition(positionObj) {
+	function updatePosition(pause, positionObj) {
+		if (pause) $("#playpause").addClass("pause");
+		else	   $("#playpause").removeClass("pause");
+		
 		var position = positionObj.position;
 		var duration = positionObj.duration;
 		

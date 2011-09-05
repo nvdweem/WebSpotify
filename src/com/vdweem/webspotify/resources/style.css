@@ -142,6 +142,39 @@ a:hover {
 }
 
 /****************************************************************
+ *							Play buttons						*
+ ****************************************************************/
+#buttons {
+	padding-left: 10px;
+}
+#buttons div {
+	float: left;
+	padding-left: 7px;
+	background-repeat: no-repeat;
+	margin-top: 5px;
+}
+#back {
+	background-image: url('images/back.png');
+	width: 25px;
+	height: 31px;
+}
+#playpause {
+	background-image: url('images/pause.png');
+	width: 31px;
+	height: 31px;
+}
+#playpause.pause {
+	background-image: url('images/play.png');
+	width: 31px;
+	height: 31px;
+}
+#skip {
+	background-image: url('images/skip.png');
+	width: 25px;
+	height: 31px;
+}
+
+/****************************************************************
  *							Play progress						*
  ****************************************************************/
 #progress {

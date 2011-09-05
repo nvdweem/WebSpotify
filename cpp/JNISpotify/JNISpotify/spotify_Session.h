@@ -90,6 +90,14 @@ JNIEXPORT void JNICALL Java_spotify_Session_Seek
 
 /*
  * Class:     spotify_Session
+ * Method:    Pause
+ * Signature: (Z)V
+ */
+JNIEXPORT void JNICALL Java_spotify_Session_Pause
+  (JNIEnv *, jobject, jboolean);
+
+/*
+ * Class:     spotify_Session
  * Method:    BrowseArtist
  * Signature: (Ljava/lang/String;)Lspotify/Artist;
  */

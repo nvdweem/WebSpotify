@@ -19,7 +19,8 @@ public class Player {
 	private int rate = 0, channels = 0;
 	int positionOffset = 0;
 	private SourceDataLine audio;
-	private Track playing;
+	private Track currentTrack;
+	public boolean playing = false;
 	
 	public Player(Session session) {
 		this.session = session;
@@ -36,12 +37,13 @@ public class Player {
 	}
 	
 	public boolean play(Track track) {
-		playing = track;
+		currentTrack = track;
 		
 		// Try to wait 5 seconds for the track to become available.
 		for (int i = 0; i < 500; i++) {
 			if (session.Play(track)) {
 				changeSong();
+				playing = true;
 				return true;
 			}
 
@@ -55,8 +57,8 @@ public class Player {
 	}
 	
 	public int getDuration() {
-		if (playing == null) return 0;
-		return playing.getDuration() / 1000;
+		if (currentTrack == null) return 0;
+		return currentTrack.getDuration() / 1000;
 	}
 	
 	public int getPosition() {
@@ -65,7 +67,8 @@ public class Player {
 	}
 	
 	public void pause() {
-		
+		Session.getInstance().Pause(playing);
+		playing = !playing;
 	}
 	
 	public void skip() {
@@ -73,7 +76,7 @@ public class Player {
 	}
 	
 	public void seek(int position) {
-		if (playing != null)
+		if (currentTrack != null)
 			session.Seek(position * 1000);
 	}
 	public void seekCallback(int position) {
@@ -107,8 +110,12 @@ public class Player {
 		} 
 	}
 	
-	public Track getPlaying() {
+	public boolean isPlaying() {
 		return playing;
+	}
+
+	public Track getCurrentTrack() {
+		return currentTrack;
 	}
 	
 }

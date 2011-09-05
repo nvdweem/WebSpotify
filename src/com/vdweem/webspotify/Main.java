@@ -13,6 +13,7 @@ import com.vdweem.webspotify.servlets.Search;
 import com.vdweem.webspotify.servlets.Seek;
 import com.vdweem.webspotify.servlets.Status;
 import com.vdweem.webspotify.servlets.menu.Login;
+import com.vdweem.webspotify.servlets.menu.PlayPause;
 import com.vdweem.webspotify.servlets.menu.SpotifyLogin;
 import com.vdweem.webspotify.servlets.menu.SpotifyLogout;
 
@@ -56,9 +57,12 @@ public class Main {
 		// Add the servlets to the webserver.
 		srv.addServlet("/Search", new Search());
 		srv.addServlet("/Image", new Image());
-		srv.addServlet("/Play", new Play());
 		srv.addServlet("/Status", new Status());
+		
+		srv.addServlet("/Play", new Play());
 		srv.addServlet("/Seek", new Seek());
+		srv.addServlet("/PlayPause", new PlayPause());
+		
 		srv.addServlet("/ArtistBrowse", new ArtistBrowse());
 		srv.addServlet("/AlbumBrowse", new AlbumBrowse());
 		srv.addServlet("/Playlist", new Playlist());

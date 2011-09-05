@@ -98,6 +98,7 @@ public class Session {
 	protected native void RegisterPlayer(Player player);
 	protected native boolean Play(Track track);
 	protected native void Seek(int position);
+	protected native void Pause(boolean pause);
 	
 	private native void ReadArtistImage(String id, Image target);
 	private native void ReadAlbumImage(String id, Image target);

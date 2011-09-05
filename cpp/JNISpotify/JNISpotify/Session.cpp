@@ -194,6 +194,11 @@ JNIEXPORT void JNICALL Java_spotify_Session_Seek(JNIEnv *env, jobject _this, jin
 	callVoidMethod(getPlayer(), "seekCallback", position);
 }
 
+JNIEXPORT void JNICALL Java_spotify_Session_Pause(JNIEnv *, jobject, jboolean pause) {
+	sp_session_player_play(getSession(), !pause);
+}
+
+
 JNIEXPORT void JNICALL Java_spotify_Session_ReadArtistImage(JNIEnv *env, jobject, jstring _artistId, jobject target) {
 	jboolean iscopy;
 	const char *artistId = env->GetStringUTFChars(_artistId, &iscopy);

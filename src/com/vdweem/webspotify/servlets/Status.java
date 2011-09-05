@@ -32,9 +32,10 @@ public class Status extends SpotifyServlet {
 		position.put("position", player.getPosition());
 		result.put("position", position);
 		
-		Track playing = player.getPlaying();
+		Track playing = player.getCurrentTrack();
 		if (playing != null)
 			result.put("playing", playing.toJSON());
+		result.put("pause", !player.isPlaying());
 		
 		result.put("playlistRevision", Session.getInstance().getPlaylistContainer().getRevision());
 		
