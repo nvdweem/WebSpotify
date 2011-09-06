@@ -7,13 +7,16 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.SourceDataLine;
 
+import org.json.JSONObject;
+
 /**
  * Provides an interface for playing songs.
  * @author Niels
  */
 public class Player {
-//	private List<Track> playlist = new ArrayList<Track>();
+	private List<Track> playlist = new ArrayList<Track>();
 	private List<Track> queue = new ArrayList<Track>();
+	private List<Track> played = new ArrayList<Track>();
 	private final Session session;
 	
 	private int rate = 0, channels = 0;
@@ -21,27 +24,113 @@ public class Player {
 	private SourceDataLine audio;
 	private Track currentTrack;
 	public boolean playing = false;
+	private int queueRevision = 0;
 	
 	public Player(Session session) {
 		this.session = session;
 		session.RegisterPlayer(this);
 	}
 	
-	public void queue(Track track) {
-		queue.add(track);
+	public JSONObject toJSON() {
+		JSONObject result = new JSONObject();
+		
+		result.put("playlist", Util.listToArray(playlist));
+		result.put("queue", Util.listToArray(queue));
+		result.put("played", Util.listToArray(played));
+		
+		return result;
 	}
 	
+	public String toString() {
+		return toJSON().toString();
+	}
+	
+	/**
+	 * Suplement the track data.
+	 * @param track
+	 */
+	private void complete(Track track) {
+		for (int i = 0; i < 100; i++) {
+			if (Session.getInstance().CompleteTrack(track)) return;
+			try {
+				Thread.sleep(20);
+			} catch (InterruptedException e) {
+			}
+		}
+	}
+	
+	/**
+	 * Reset counters.
+	 */
 	public void changeSong() {
 		audio = null;
 		positionOffset = 0;
 	}
 	
-	public boolean play(Track track) {
+	/**
+	 * Queue a track.
+	 * @param track
+	 */
+	public void play(Track track) {
+		if (queue.contains(track)) return;
+		complete(track);
+		queue.add(track);
+		start();
+		queueRevision++;
+	}
+	
+	/**
+	 * Start playing if nothing is playing.
+	 */
+	private void start() {
+		if (currentTrack == null)
+			next();
+	}
+	
+	/**
+	 * Go to the next track.
+	 */
+	public void endOfTrack() {
+		// Add the current track to the played list.
+		played.add(0, currentTrack);
+		while (played.size() > 50) played.remove(50); // Max 50 played items
+		
+		currentTrack = null;
+		while (!next())
+			System.out.println("Unplayable track.");
+		
+		queueRevision++;
+	}
+	
+	/**
+	 * Try to play the next track.
+	 * @return
+	 */
+	private boolean next() {
+		Track track = null;
+		
+		if (track == null && queue.size() != 0) track = queue.remove(0);
+		if (track == null && playlist.size() != 0) track = playlist.remove(0);
 		currentTrack = track;
 		
+		// Try to play and update played when it succeeds.
+		if (playNow(track)) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Immediately start playing a song.
+	 * @param track
+	 * @return
+	 */
+	private boolean playNow(Track track) {
 		// Try to wait 5 seconds for the track to become available.
 		for (int i = 0; i < 500; i++) {
 			if (session.Play(track)) {
+				currentTrack = track;
 				changeSong();
 				playing = true;
 				return true;
@@ -56,23 +145,25 @@ public class Player {
 		return false;
 	}
 	
-	public int getDuration() {
-		if (currentTrack == null) return 0;
-		return currentTrack.getDuration() / 1000;
-	}
-	
-	public int getPosition() {
-		if (audio == null) return 0;
-		return positionOffset + (audio.getFramePosition() / this.rate);
-	}
-	
 	public void pause() {
 		Session.getInstance().Pause(playing);
 		playing = !playing;
 	}
 	
 	public void skip() {
-		
+		endOfTrack();
+	}
+	
+	public void prev() {
+		// Prev replays the current song if it is pressed within the first 5 seconds.
+		if (getPosition() > 5 || played.size() == 0) {
+			seek(0);
+			return;
+		}
+		Track played = this.played.remove(0);
+		queue.add(0, currentTrack);
+		if (!playNow(played)) skip();
+		queueRevision++;
 	}
 	
 	public void seek(int position) {
@@ -116,6 +207,20 @@ public class Player {
 
 	public Track getCurrentTrack() {
 		return currentTrack;
+	}
+	
+	public int getDuration() {
+		if (currentTrack == null) return 0;
+		return currentTrack.getDuration() / 1000;
+	}
+	
+	public int getPosition() {
+		if (audio == null) return 0;
+		return positionOffset + (audio.getFramePosition() / this.rate);
+	}
+
+	public int getQueueRevision() {
+		return queueRevision;
 	}
 	
 }

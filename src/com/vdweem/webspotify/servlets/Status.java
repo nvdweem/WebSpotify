@@ -47,6 +47,8 @@ public class Status extends SpotifyServlet {
 		}
 		result.put("menu", menu);
 		
+		result.put("queuerevision", player.getQueueRevision());
+		
 		printLn(result.toString());
 	}
 

@@ -96,6 +96,7 @@ public class Session {
 	protected native int ProcessEvents();
 	
 	protected native void RegisterPlayer(Player player);
+	protected native boolean CompleteTrack(Track track);
 	protected native boolean Play(Track track);
 	protected native void Seek(int position);
 	protected native void Pause(boolean pause);

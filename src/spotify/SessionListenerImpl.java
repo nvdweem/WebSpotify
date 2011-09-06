@@ -70,7 +70,7 @@ public class SessionListenerImpl implements SessionListener {
 		System.out.println("cb_log_message: " + data);
 	}
 	public void cb_end_of_track(){
-		System.out.println("cb_end_of_track");
+		Session.getInstance().getPlayer().endOfTrack();
 	}
 	public void cb_streaming_error(int error){
 		System.out.println("cb_streaming_error: " + error);

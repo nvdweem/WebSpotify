@@ -274,7 +274,7 @@ table.searchResults .artist     { width: 15%; }
 table.searchResults .time       { width: 40px; }
 table.searchResults .popularity { width: 70px; }
 table.searchResults .album      { width: 30%; }
-tr.searchHead {
+tr.searchHead, tr.head {
 	background: url("images/searchGradient.png") repeat-x scroll 0 0 transparent;
 	color: black;
 }
@@ -363,15 +363,21 @@ table.browseTop td { width: 50%; }
 .playlists {
 	overflow: hidden;
 }
-.playlists ol {
+#lists ol {
     list-style: none;
     padding: 0 0 0 10px;
     margin: 0;
 }
-.playlists ol li {
+#lists ol li {
 	padding: 2px 0 2px 20px;
-	background: url('images/playlistIcon.png') left center no-repeat;
 	white-space: nowrap;
+	background: left center no-repeat;
+}
+#lists #queue li {
+	background-image: url('images/queue.png'); 
+}
+#lists .playlists ol li {
+	background-image: url('images/playlistIcon.png'); 
 }
 
 .playlist .title {
@@ -395,3 +401,13 @@ table.playlist .artist     { width: 15%; }
 table.playlist .time       { width: 40px; }
 table.playlist .popularity { width: 70px; }
 table.playlist .album      { width: 30%; }
+
+/****************************************************************
+ *							Queue								*
+ ****************************************************************/
+.playingTable {
+	width: 100%;
+}
+.playingTable tr.queue, .playingTable tr.queue a, span.duration {
+	color: #FFFD7F;
+}

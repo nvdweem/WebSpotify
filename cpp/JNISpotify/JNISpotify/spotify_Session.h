@@ -66,6 +66,14 @@ JNIEXPORT void JNICALL Java_spotify_Session_RegisterPlayer
 
 /*
  * Class:     spotify_Session
+ * Method:    CompleteTrack
+ * Signature: (Lspotify/Track;)Z
+ */
+JNIEXPORT jboolean JNICALL Java_spotify_Session_CompleteTrack
+  (JNIEnv *, jobject, jobject);
+
+/*
+ * Class:     spotify_Session
  * Method:    ReadArtistImage
  * Signature: (Ljava/lang/String;Lspotify/Image;)V
  */

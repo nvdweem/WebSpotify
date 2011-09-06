@@ -24,6 +24,7 @@ var Status = function() {
 		updatePlaying(data.playing);
 		Playlist.update(data.playlistRevision);
 		Menu.update(data.menu);
+		Queue.update(data.queuerevision);
 	}
 	
 	var playing;

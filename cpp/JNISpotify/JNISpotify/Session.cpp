@@ -189,6 +189,16 @@ JNIEXPORT jboolean JNICALL Java_spotify_Session_Play(JNIEnv *env, jobject, jobje
 	return true;
 }
 
+JNIEXPORT jboolean JNICALL Java_spotify_Session_CompleteTrack(JNIEnv *, jobject, jobject trackObject) {
+	const char* trackId = callStringMethod(trackObject, "getId");
+	sp_track *track = sp_link_as_track(sp_link_create_from_string(trackId));
+	if (!sp_track_is_loaded(track)) {
+		return false;
+	}
+	readTrack(trackObject, track, false);
+	return true;
+}
+
 JNIEXPORT void JNICALL Java_spotify_Session_Seek(JNIEnv *env, jobject _this, jint position) {
 	sp_session_player_seek(session, position);
 	callVoidMethod(getPlayer(), "seekCallback", position);

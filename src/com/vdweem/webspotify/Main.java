@@ -7,8 +7,11 @@ import spotify.SessionListenerImpl;
 import com.vdweem.webspotify.servlets.AlbumBrowse;
 import com.vdweem.webspotify.servlets.ArtistBrowse;
 import com.vdweem.webspotify.servlets.Image;
+import com.vdweem.webspotify.servlets.Next;
 import com.vdweem.webspotify.servlets.Play;
 import com.vdweem.webspotify.servlets.Playlist;
+import com.vdweem.webspotify.servlets.Prev;
+import com.vdweem.webspotify.servlets.Queue;
 import com.vdweem.webspotify.servlets.Search;
 import com.vdweem.webspotify.servlets.Seek;
 import com.vdweem.webspotify.servlets.Status;
@@ -59,9 +62,12 @@ public class Main {
 		srv.addServlet("/Image", new Image());
 		srv.addServlet("/Status", new Status());
 		
+		srv.addServlet("/Queue", new Queue());
 		srv.addServlet("/Play", new Play());
 		srv.addServlet("/Seek", new Seek());
 		srv.addServlet("/PlayPause", new PlayPause());
+		srv.addServlet("/Next", new Next());
+		srv.addServlet("/Prev", new Prev());
 		
 		srv.addServlet("/ArtistBrowse", new ArtistBrowse());
 		srv.addServlet("/AlbumBrowse", new AlbumBrowse());

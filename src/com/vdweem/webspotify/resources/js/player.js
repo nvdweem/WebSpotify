@@ -4,6 +4,8 @@
 var Player = function() {
 	$(document).ready(init);
 	$("#playpause").live('click', playPause);
+	$("#skip").live('click', next);
+	$("#back").live('click', prev);
 	
 	/**
 	 * Initialize the player.
@@ -25,6 +27,14 @@ var Player = function() {
 	
 	function playPause() {
 		$.get('PlayPause');
+	}
+	
+	function next() {
+		$.getJSON('Next');
+	}
+	
+	function prev() {
+		$.getJSON('Prev');
 	}
 	
 	/**
