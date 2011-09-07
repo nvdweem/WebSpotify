@@ -27,6 +27,12 @@ public class Artist extends Media {
 		albums = new ArrayList<Album>();
 	}
 	
+	public void unComplete() {
+		if (albums == null || albums.size() == 0) {
+			setComplete(false);
+		}
+	}
+	
 	@Override
 	public boolean isComplete() {
 		return super.isComplete() && allAlbumsComplete();
@@ -37,20 +43,21 @@ public class Artist extends Media {
 		return true;
 	}
 	
-	public JSONObject toJSON() {
-		JSONObject object = super.toJSON();
+	public JSONObject toJSON(boolean includeChildren) {
+		JSONObject object = super.toJSON(includeChildren);
+		if (!includeChildren) return object;
 		
 		if (!com.vdweem.webspotify.Util.isEmpty(bio)) object.put("bio", bio);
 		if (!com.vdweem.webspotify.Util.isEmpty(relatedArtists))
-			object.put("relatedArtists", Util.listToArray(relatedArtists));
+			object.put("relatedArtists", Util.listToArray(relatedArtists, false));
 
 		if (!com.vdweem.webspotify.Util.isEmpty(topTracks)) {
 			keepOnlyTop5Tracks();
-			object.put("topTracks", Util.listToArray(topTracks));
+			object.put("topTracks", Util.listToArray(topTracks, false));
 		}
 		if (!com.vdweem.webspotify.Util.isEmpty(albums)) {
 			Collections.sort(albums, Album.typeYearComparator);
-			object.put("albums", Util.listToArray(albums));
+			object.put("albums", Util.listToArray(albums, true));
 		}
 		
 		return object;

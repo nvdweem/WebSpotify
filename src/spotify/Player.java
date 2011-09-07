@@ -34,9 +34,9 @@ public class Player {
 	public JSONObject toJSON() {
 		JSONObject result = new JSONObject();
 		
-		result.put("playlist", Util.listToArray(playlist));
-		result.put("queue", Util.listToArray(queue));
-		result.put("played", Util.listToArray(played));
+		result.put("playlist", Util.listToArray(playlist, true));
+		result.put("queue", Util.listToArray(queue, true));
+		result.put("played", Util.listToArray(played, true));
 		
 		return result;
 	}

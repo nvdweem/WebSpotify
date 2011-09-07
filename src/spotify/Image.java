@@ -21,6 +21,11 @@ public class Image extends Completable {
 		this.type = type;
 	}
 	
+	public void unComplete() {
+		if (bytes == null || bytes.length == 0) 
+			setComplete(false);
+	}
+	
 	public void setImage(byte[] bytes) {
 		this.bytes = bytes;
 	}

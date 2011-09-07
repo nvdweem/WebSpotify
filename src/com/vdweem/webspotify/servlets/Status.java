@@ -34,7 +34,7 @@ public class Status extends SpotifyServlet {
 		
 		Track playing = player.getCurrentTrack();
 		if (playing != null)
-			result.put("playing", playing.toJSON());
+			result.put("playing", playing.toJSON(true));
 		result.put("pause", !player.isPlaying());
 		
 		result.put("playlistRevision", Session.getInstance().getPlaylistContainer().getRevision());

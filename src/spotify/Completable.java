@@ -4,16 +4,22 @@ package spotify;
  * Provides functions to determine if an object is completed.
  * @author Niels
  */
-public class Completable {
+public abstract class Completable {
 	private boolean complete;
 	
 	public Completable() {
 		this.complete = false;
 	}
 	
+	/**
+	 * Marks the object as not complete. Subclasses should allow or deny this.
+	 */
+	public abstract void unComplete();
+	
 	protected void setComplete(boolean complete) {
 		this.complete = complete;
 	}
+	
 	public void setComplete() {
 		complete = true;
 	}

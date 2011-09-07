@@ -20,6 +20,8 @@ public class Search extends Completable {
 		this.artists = new ArrayList<Artist>();
 	}
 	
+	public void unComplete() {}
+	
 	public void addTrack(Object track) {
 		if ((track instanceof Track))
 			this.tracks.add((Track)track);
@@ -41,9 +43,9 @@ public class Search extends Completable {
 	
 	public JSONObject toJSON() {
 		JSONObject target = new JSONObject();
-		target.put("tracks", Util.listToArray(tracks));
-		target.put("albums", Util.listToArray(albums));
-		target.put("artists", Util.listToArray(artists));
+		target.put("tracks", Util.listToArray(tracks, true));
+		target.put("albums", Util.listToArray(albums, false));
+		target.put("artists", Util.listToArray(artists, false));
 		return target;
 	}
 

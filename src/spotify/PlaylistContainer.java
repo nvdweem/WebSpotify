@@ -19,6 +19,10 @@ public class PlaylistContainer extends Completable {
 		playlists = new ArrayList<Playlist>();
 	}
 	
+	public void unComplete() {
+		setComplete(false);
+	}
+	
 	public void clear() {
 		revision++;
 		playlists.clear();
@@ -40,7 +44,7 @@ public class PlaylistContainer extends Completable {
 	
 	public void reset() {
 		playlists.clear();
-		setComplete(false);
+		unComplete();
 	}
 	
 	public int getPlaylistCount() {

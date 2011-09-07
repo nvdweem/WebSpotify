@@ -1,5 +1,9 @@
 package spotify;
 
+import java.lang.ref.WeakReference;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Implementation for Spotify events and actions.
  * @author Niels
@@ -92,13 +96,28 @@ public class SessionListenerImpl implements SessionListener {
 	}
 
 	// Callbacks from C++
+	private Map<String, WeakReference<Track>> tracks = new HashMap<String, WeakReference<Track>>();
+	private Map<String, WeakReference<Album>> albums = new HashMap<String, WeakReference<Album>>();
+	private Map<String, WeakReference<Artist>> artists = new HashMap<String, WeakReference<Artist>>();
 	public Object createTrack(String id) {
-		return new Track(id);
+		if (!tracks.containsKey(id) || tracks.get(id).get() == null)
+			tracks.put(id, new WeakReference<Track>(new Track(id)));
+		Track track = tracks.get(id).get();
+		track.unComplete();
+		return track;
 	}
 	public Object createAlbum(String id) {
-		return new Album(id);
+		if (!albums.containsKey(id) || albums.get(id).get() == null)
+			albums.put(id, new WeakReference<Album>(new Album(id)));
+		Album album = albums.get(id).get();
+		album.unComplete();
+		return album;
 	}
 	public Object createArtist(String id) {
-		return new Artist(id);
+		if (!artists.containsKey(id) || artists.get(id).get() == null)
+			artists.put(id, new WeakReference<Artist>(new Artist(id)));
+		Artist artist = artists.get(id).get();
+		artist.unComplete();
+		return artist;
 	}
 }

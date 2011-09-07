@@ -24,10 +24,12 @@ public class Playlist extends Media {
 		setComplete();
 	}
 	
+	public void unComplete() {}
+	
 	@Override
-	public JSONObject toJSON() {
-		JSONObject result = super.toJSON();
-		result.put("tracks", Util.listToArray(tracks));
+	public JSONObject toJSON(boolean includeChildren) {
+		JSONObject result = super.toJSON(includeChildren);
+		result.put("tracks", Util.listToArray(tracks, true));
 		result.put("description", description);
 		result.put("index", index);
 		result.put("totalduration", totalDuration);

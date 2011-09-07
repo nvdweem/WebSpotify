@@ -42,6 +42,11 @@ public class Album extends Media {
 		tracks = new ArrayList<Track>();
 	}
 	
+	public void unComplete() {
+		if (tracks == null || tracks.size() == 0)
+			setComplete(false);
+	}
+	
 	public void addTrack(Object track) {
 		if (!(track instanceof Track)) return;
 		Track t = (Track) track;
@@ -51,16 +56,18 @@ public class Album extends Media {
 	}
 	
 	@Override
-	public JSONObject toJSON() {
-		JSONObject json = super.toJSON();
+	public JSONObject toJSON(boolean includeChildren) {
+		JSONObject json = super.toJSON(includeChildren);
 		json.put("type", type);
 		json.put("year", year);
 		json.put("review", review);
-		json.put("artist", artist == null ? null : artist.toJSON());
+		json.put("artist", artist == null ? null : artist.toJSON(false));
+		
+		if (!includeChildren) return json;
 		
 		if (!com.vdweem.webspotify.Util.isEmpty(tracks)) {
 			Collections.sort(tracks, Track.sequenceComparator);
-			json.put("tracks", Util.listToArray(tracks));
+			json.put("tracks", Util.listToArray(tracks, true));
 		}
 		return json;
 	}

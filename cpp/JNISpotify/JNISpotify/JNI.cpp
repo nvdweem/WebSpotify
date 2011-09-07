@@ -51,6 +51,14 @@ void callVoidMethod(jobject object, const char* methodName, int arg0) {
 	detachThread();
 }
 
+void callVoidMethod(jobject object, const char* methodName, bool arg0) {
+	JNIEnv* env = attachThread();
+	jclass cls = env->GetObjectClass(object);
+	jmethodID methodId = env->GetMethodID(cls, methodName, "(Z)V");
+	env->CallVoidMethod(object, methodId, arg0);
+	detachThread();
+}
+
 void callVoidMethod(JNIEnv *env, jobject object, const char* methodName, int arg0) {
 	jclass cls = env->GetObjectClass(object);
 	jmethodID methodId = env->GetMethodID(cls, methodName, "(I)V");
@@ -100,6 +108,15 @@ jobject callObjectMethod(jobject object, const char* methodName, const char* arg
 	jstring _arg0 = env->NewStringUTF(arg0);
 	jobject result = env->CallObjectMethod(object, methodId, _arg0);
 	if (global) result = env->NewGlobalRef(result);
+	detachThread();
+	return result;
+}
+
+jboolean callBoolMethod(jobject object, const char* methodName) {
+	JNIEnv* env = attachThread();
+	jclass cls = env->GetObjectClass(object);
+	jmethodID methodId = env->GetMethodID(cls, methodName, "()Z");
+	jboolean result = env->CallBooleanMethod(object, methodId);
 	detachThread();
 	return result;
 }

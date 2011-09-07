@@ -8,19 +8,25 @@ import org.json.JSONObject;
  * Superclass for media types.
  * @author Niels
  */
-public class Media extends Completable implements Serializable {
+public abstract class Media extends Completable implements Serializable {
 	private static final long serialVersionUID = -6025491409147182598L;
 	
 	protected String id;
 	protected String name;
+	protected boolean busy = false; // Used to indicate start en end of browsing.
 	
 	public Media(String id) {
 		if (id == null) throw new IllegalArgumentException("Media's must have an id.");
 		this.id = id;
 	}
 	
+	@Override
+	public boolean isComplete() {
+		return !busy && super.isComplete();
+	}
+
 	public String toString() {
-		return toJSON().toString();
+		return toJSON(true).toString();
 	}
 
 	public String getId() {
@@ -39,7 +45,7 @@ public class Media extends Completable implements Serializable {
 		this.name = name;
 	}
 	
-	public JSONObject toJSON() {
+	public JSONObject toJSON(boolean includeChildren) {
 		JSONObject object = new JSONObject();
 		object.put("id", id);
 		object.put("name", name);
@@ -54,5 +60,13 @@ public class Media extends Completable implements Serializable {
 	@Override
 	public boolean equals(Object obj) {
 		return obj instanceof Media && getId().equals(((Media) obj).getId());
+	}
+
+	public boolean isBusy() {
+		return busy;
+	}
+
+	public void setBusy(boolean busy) {
+		this.busy = busy;
 	}
 }

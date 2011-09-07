@@ -38,15 +38,17 @@ public class Track extends Media {
 		super(id);
 	}
 	
+	public void unComplete() {}
+	
 	@Override
-	public JSONObject toJSON() {
-		JSONObject json = super.toJSON();
+	public JSONObject toJSON(boolean includeChildren) {
+		JSONObject json = super.toJSON(includeChildren);
 		json.put("duration", duration);
 		json.put("popularity", popularity);
 		json.put("disc", disc);
 		json.put("index", index);
-		json.put("album", album == null ? null : album.toJSON());
-		json.put("artist", artist == null ? null : artist.toJSON());
+		json.put("album", album == null ? null : album.toJSON(false));
+		json.put("artist", artist == null ? null : artist.toJSON(false));
 		
 		return json;
 	}

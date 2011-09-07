@@ -15,11 +15,11 @@ public class Util {
 	 * @param list
 	 * @return
 	 */
-	public static JSONArray listToArray(List<? extends Media> list) {
+	public static JSONArray listToArray(List<? extends Media> list, boolean includeChildren) {
 		if (com.vdweem.webspotify.Util.isEmpty(list)) return null;
 		JSONArray result = new JSONArray();
 		for (Media media : list) {
-			result.put(media.toJSON());
+			result.put(media.toJSON(includeChildren));
 		}
 		return result;
 	}
