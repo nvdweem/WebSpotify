@@ -61,7 +61,7 @@ jobject readAlbum(sp_album *album, bool complete) {
 
 	if (complete) {
 		callVoidMethod(target, "setBusy", true);
-		sp_albumbrowse_create(getSession(), album, &cb_albumbrowse_complete, target);
+		sp_albumbrowse_create(getSession(), album, &cb_albumbrowse_complete, getEnv()->NewGlobalRef(target));
 	}
 	else
 		callVoidMethod(target, "setComplete");
@@ -84,11 +84,12 @@ void cb_artistbrowse_complete(sp_artistbrowse *browse, void *_target) {
 	for (int i = 0; i < sp_artistbrowse_num_similar_artists(browse); i++) 
 		callVoidMethod(target, "addRelatedArtist", readArtist(sp_artistbrowse_similar_artist(browse, i), false));
 	
+	
 	for (int i = 0; i < sp_artistbrowse_num_tracks(browse); i++) {
 		if (!sp_track_is_loaded(sp_artistbrowse_track(browse, i))) continue;
 		callVoidMethod(target, "addTopTrack", readTrack(sp_artistbrowse_track(browse, i), true));
 	}
-	
+
 	for (int i = 0; i < sp_artistbrowse_num_albums(browse); i++) {
 		if (!sp_album_is_available(sp_artistbrowse_album(browse, i))) continue;
 		callVoidMethod(target, "addAlbum", readAlbum(sp_artistbrowse_album(browse, i), true));
