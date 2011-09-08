@@ -32,7 +32,7 @@ public class Image extends SpotifyServlet {
 		if (image == null)
 			return;
 		
-		image.waitFor(50);
+		image.waitFor(10);
 		byte[] bytes = image.getBytes();
 		response.getOutputStream().write(bytes, 0, bytes.length);
 	}
@@ -40,7 +40,6 @@ public class Image extends SpotifyServlet {
 	private void setHeaders(HttpServletResponse response) {
 		response.addHeader("Expires", "Mon, 26 Jul 1990 05:00:00 GMT");
 		response.addHeader("Cache-Control", "no-store, no-cache, must-revalidate");
-		response.addHeader("Cache-Control", "post-check=0, pre-check=0");
 		response.addHeader("Pragma", "no-cache");
 	}
 

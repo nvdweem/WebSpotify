@@ -41,7 +41,7 @@ var Status = function() {
 		
 		playing = t.id;
 		$('#playingArt, #playingText').html("");
-		$('#playingArt').append($('<img src="Image?id='+t.album.id+'"/>'));
+		$('#playingArt').append($('<img src="Image?id='+t.album.id+'&amp;'+new Date()+'"/>'));
 		$('#playingText').append(
 			$('<div class="playing"></div>')
 				.append($('<div class="artist"></div>').append(Media.artistLink(t.artist)))

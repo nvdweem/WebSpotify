@@ -60,7 +60,7 @@ var Search = function() {
 			if (i < 15) {
 				images.append(
 					listDecorator(listItems[i], true).html("").append(
-							$('<img />').attr("src", "Image?id=" + listItems[i].id)	
+							$('<img />').attr("src", "Image?id=" + listItems[i].id + '&amp;'+new Date())	
 					)
 				);
 			}
@@ -85,6 +85,14 @@ var Search = function() {
 	 */
 	function decorateSearch(search) {
 		var result = $('<div></div>');
+		
+		if (search.didyoumean) {
+			result.append($('<span class="didyoumean"></span>')
+							.append('Did you mean: ')
+							.append($('<a></a>').text(search.didyoumean).attr("href", "spotify:search:" + search.didyoumean))
+							.append("?")
+			).bio();
+		}
 		
 		var head;
 		if ((search.artists && search.artists.length != 0) || (search.albums && search.albums.length != 0)) {

@@ -42,7 +42,7 @@ var AlbumBrowse = function() {
 	function decorateAlbum(a) {
 		var result = $('<div class="album"></div>');
 		
-		result.append($('<img src="Image?id='+a.id+'" class="left cover"/>'));
+		result.append($('<img src="Image?id='+a.id+'&amp;'+new Date()+'" class="left cover"/>'));
 		result.append($('<div class="albumTitle"></div>').text(a.name).append($('<span class="year"></span>').text('(' + a.year + ')')));
 		result.append(decorateTracks(a.type > 2, a.tracks)); // No artist for album, compilation and singles.
 		result.append($('<div class="spacer"></div>'));

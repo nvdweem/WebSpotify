@@ -45,7 +45,7 @@ var ArtistBrowse = function() {
 	 */
 	function decorateBio(a) {
 		var result = $('<div class="bio"></div>');
-		result.append($('<img src="Image?id='+a.id+'">'));
+		result.append($('<img src="Image?id='+a.id+'&amp;'+new Date()+'">'));
 		result.append($('<div class="artistname"></div>').text(a.name));
 		result.append($('<div class="text"></span>').html(a.bio || "").bio());
 		return result;
