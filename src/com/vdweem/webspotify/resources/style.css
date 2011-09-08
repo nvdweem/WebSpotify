@@ -39,12 +39,16 @@ a:hover {
 	width: 20px;
 	height: 21px;
 	float: left;
+	padding: 0;
+	margin: 0;
 }
 #search .searchRight {
 	background: url('images/searchRight.png') no-repeat;
 	width: 20px;
 	height: 21px;
 	float: right;
+	padding: 0;
+	margin: 0;
 }
 #search .search {
 	background: url('images/searchCenter.png') repeat-x;
@@ -52,6 +56,8 @@ a:hover {
 	border: 0px;
 	height: 21px;
 	vertical-align: center;
+	padding: 0;
+	margin: 0;
 }
 
 #leftbar {
