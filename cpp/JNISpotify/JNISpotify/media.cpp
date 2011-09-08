@@ -44,7 +44,15 @@ jobject readAlbum(sp_album *album, bool complete) {
 	char url[256];
 	linkToJstring(url, sp_link_create_from_album(album));
 	jobject target = callObjectMethod(getSessionListener(), "createAlbum", url);
+
 	if (callBoolMethod(target, "isComplete")) return target;
+
+	// TODO: Figure out how Spotify somehow knows which replacement album to load
+	// See Jonny Lang's bio, Lie to Me link.
+	if (!sp_album_is_available(album)) {
+		callVoidMethod(target, "setNotAvailable", true);
+		callVoidMethod(target, "setComplete");
+	}
 
 	int type = -1;
 	switch (sp_album_type(album)) {

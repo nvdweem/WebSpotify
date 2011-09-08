@@ -28,8 +28,11 @@ public class Search extends Completable {
 	}
 	
 	public void addAlbum(Object album) {
-		if ((album instanceof Album))
+		if ((album instanceof Album)) {
+			Album _album = (Album) album;
+			if (_album.isNotAvailable()) return;
 			this.albums.add((Album) album);
+		}
 	}
 	
 	public void addArtist(Object artist) {

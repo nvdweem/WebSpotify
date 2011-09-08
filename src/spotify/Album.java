@@ -19,6 +19,7 @@ public class Album extends Media {
 	private String review;
 	private Artist artist;
 	private List<Track> tracks;
+	private boolean notAvailable;
 	
 	public static final int SP_ALBUMTYPE_ALBUM = 0;
 	public static final int SP_ALBUMTYPE_SINGLE = 1;
@@ -106,6 +107,14 @@ public class Album extends Media {
 
 	public void setReview(String review) {
 		this.review = review;
+	}
+
+	public boolean isNotAvailable() {
+		return notAvailable;
+	}
+
+	public void setNotAvailable(boolean notAvailable) {
+		this.notAvailable = notAvailable;
 	}
 
 }

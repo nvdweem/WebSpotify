@@ -98,7 +98,9 @@ public class Artist extends Media {
 	
 	public void addAlbum(Object album) {
 		if (!(album instanceof Album)) return;
-		albums.add((Album) album);
+		Album _album = (Album) album;
+		if (_album.isNotAvailable()) return;
+		albums.add(_album);
 	}
 
 	public String getBio() {
