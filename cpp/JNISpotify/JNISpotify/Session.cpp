@@ -115,6 +115,7 @@ void cb_search_complete(sp_search *search, void *userdata) {
 		callVoidMethod(target, "addArtist", readArtist(artist, false));
 	}
 
+	callVoidMethod(target, "setDidYouMean", sp_search_did_you_mean(search));
 	callVoidMethod(target, "setComplete");
 	sp_search_release(search);
 	removeGlobalRef(target);

@@ -13,6 +13,7 @@ public class Search extends Completable {
 	private List<Track> tracks;
 	private List<Album> albums;
 	private List<Artist> artists;
+	private String didYouMean;
 	
 	public Search() {
 		this.tracks = new ArrayList<Track>();
@@ -49,6 +50,7 @@ public class Search extends Completable {
 		target.put("tracks", Util.listToArray(tracks, true));
 		target.put("albums", Util.listToArray(albums, false));
 		target.put("artists", Util.listToArray(artists, false));
+		target.put("didyoumean", getDidYouMean());
 		return target;
 	}
 
@@ -62,6 +64,14 @@ public class Search extends Completable {
 
 	public List<Artist> getArtists() {
 		return artists;
+	}
+
+	public String getDidYouMean() {
+		return didYouMean;
+	}
+
+	public void setDidYouMean(String didYouMean) {
+		this.didYouMean = didYouMean;
 	}
 	
 }

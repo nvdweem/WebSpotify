@@ -249,7 +249,7 @@ span.duration, td.index {
 .searchTop td, .browseTop td {
 	vertical-align: top;
 }
-.searchTop ol li, .searchTop ol li a, .browseTop ol li, .browseTop ol li a {
+.searchTop ol li, .searchTop ol li a, .browseTop ol li, .browseTop ol li a, .didyoumean {
 	display: inline;	
 	color: #999999;
 }
