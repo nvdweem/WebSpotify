@@ -30,7 +30,7 @@ var AlbumBrowse = function() {
 		if (album.review) {
 			result.append($('<div class="review"></div>')
 					.append('<div class="reviewTitle">Review</div>')
-					.append('<span class="review"></span>').text(album.review)
+					.append('<span class="review"></span>').html(album.review).bio()
 			);
 		}
 		return result;

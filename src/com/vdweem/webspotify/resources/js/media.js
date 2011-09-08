@@ -79,6 +79,10 @@ var Media = function() {
 		"decorateDuration": decorateDuration,
 	}
 }();
-/*
-$.getJSON('Search', {query: "Test"});
-*/
+(function($) {
+    $.fn.bio = function() {
+    	return this.find('a[href^=spotify]').each(function(i, elem) {
+			$(elem).addClass(elem.href.split(':')[1]).data("id", elem.href);
+		}).end();
+    }
+})(jQuery);

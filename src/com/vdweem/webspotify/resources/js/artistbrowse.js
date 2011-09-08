@@ -47,9 +47,7 @@ var ArtistBrowse = function() {
 		var result = $('<div class="bio"></div>');
 		result.append($('<img src="Image?id='+a.id+'">'));
 		result.append($('<div class="artistname"></div>').text(a.name));
-		result.append($('<div class="text"></span>').html(a.bio || "").find('a[href^=spotify]').each(function(i, elem) {
-			$(elem).addClass(elem.href.split(':')[1]).data("id", elem.href);
-		}).end());
+		result.append($('<div class="text"></span>').html(a.bio || "").bio());
 		return result;
 	}
 	
