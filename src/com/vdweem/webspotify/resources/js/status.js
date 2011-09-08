@@ -3,8 +3,9 @@
  */
 var Status = function() {
 	$().ready(init);
-	
+	var windowTitle;
 	function init() {
+		windowTitle = $("title").text();
 		update();
 	}
 	
@@ -47,6 +48,8 @@ var Status = function() {
 				.append($('<div class="artist"></div>').append(Media.artistLink(t.artist)))
 				.append($('<div class="song"></div>').text(t.name))
 		);
+		
+		$("title").text(t.artist.name + " - " + t.name + " -- " + windowTitle);
 	}
 	
 }();
