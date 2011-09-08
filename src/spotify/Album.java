@@ -52,7 +52,7 @@ public class Album extends Media {
 		if (!(track instanceof Track)) return;
 		Track t = (Track) track;
 		tracks.add(t);
-		if (!getArtist().equals(t.getArtist()))
+		if (getArtist() == null || !getArtist().equals(t.getArtist()))
 			type = SP_ALBUMTYPE_APPEARSON;
 	}
 	

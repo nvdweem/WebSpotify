@@ -61,7 +61,6 @@ jobject readAlbum(sp_album *album, bool complete) {
 		case SP_ALBUMTYPE_COMPILATION: type = 2; break;
 		case SP_ALBUMTYPE_UNKNOWN: type = 3; break;
 	}
-
 	callVoidMethod(target, "setName", sp_album_name(album));
 	callVoidMethod(target, "setType", type);
 	callVoidMethod(target, "setYear", sp_album_year(album));
@@ -78,6 +77,7 @@ jobject readAlbum(sp_album *album, bool complete) {
 }
 
 jobject readArtist(sp_artist *artist, bool complete) {
+	if (!artist) return NULL;
 	char url[256];
 	linkToJstring(url, sp_link_create_from_artist(artist));
 	jobject target = callObjectMethod(getSessionListener(), "createArtist", url);
