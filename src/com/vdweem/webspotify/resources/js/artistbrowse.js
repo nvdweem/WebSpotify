@@ -62,9 +62,13 @@ var ArtistBrowse = function() {
 		
 		result.append($('<img src="images/123.png" class="left" />'));
 		var targetTable = $('<table></table>');
-		for (var i = 0; i < ts.length; i++) {
-			
-			targetTable.append(Media.decorateTrack(ts[i], {index: i+1, printArtist: false, printAlbum: false}).addClass(i % 2 == 1 ? "even" : "odd"));
+		if (ts) {
+			for (var i = 0; i < ts.length; i++) {
+				targetTable.append(Media.decorateTrack(ts[i], {index: i+1, printArtist: false, printAlbum: false}).addClass(i % 2 == 1 ? "even" : "odd"));
+			}
+		}
+		else {
+			targetTable.append($('<tr><td>No top tracks</td></tr>'));
 		}
 		return result.append(targetTable);
 	}
@@ -77,7 +81,7 @@ var ArtistBrowse = function() {
 		result.append($('<div class="spacer"></div>'));
 		
 		if (!as) {
-			result.append('<div class="error"> Artists are not yet loaded </div>');
+			result.append('<div class="error"> Albums are not yet loaded </div>');
 			return result;
 		}
 		var type = -1;

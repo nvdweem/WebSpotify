@@ -50,6 +50,7 @@ var Search = function() {
 		
 		if (!listItems) {
 			list.append($('<li>Error: timout retrieving data.</li>'));
+			return $('<div class="'+title+'"></div>').append(images).append(list);
 		}
 		for (var i = 0; i < listItems.length; i++) {
 			if (i != 0)
