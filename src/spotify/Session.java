@@ -25,28 +25,36 @@ public class Session {
 	
 	public void initialize(final SessionListener listener, final PlaylistListener playlist)
 	{
-		Init(listener, playlist);
-		listener.initialize();
-		this.sessionListener = listener;
-		this.playlistListener = playlist;
-		this.player = new Player(this);
-		
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		synchronized(this) {
+			Init(listener, playlist);
+			listener.initialize();
+			this.sessionListener = listener;
+			this.playlistListener = playlist;
+			this.player = new Player(this);
+			
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
 	public void login(String username, String password) {
-		if (sessionListener != null)
-			Login(username, password);
+		if (sessionListener != null) {
+			synchronized(this) {
+				Login(username, password);
+			}
+		}
 	}
 	
 	public void logout() {
-		if (sessionListener != null)
-			Logout();
+		if (sessionListener != null) {
+			synchronized(this) {
+				Logout();
+			}
+		}
 	}
 	
 	public boolean isLoginError() {
@@ -57,19 +65,26 @@ public class Session {
 	public Search search(String query, int trackCount, int albumCount, int artistCount) {
 		sessionListener.checkLogin();
 		Search target = new Search();
-		Search(query, trackCount, albumCount, artistCount, target);
+		
+		synchronized(this) {
+			Search(query, trackCount, albumCount, artistCount, target);
+		}
 		return target;
 	}
 	
 	public Image readArtistImage(String id) {
 		Image result = new Image(Image.Type.artist);
-		ReadArtistImage(id, result);
+		synchronized(this) {
+			ReadArtistImage(id, result);
+		}
 		return result;
 	}
 	
 	public Image readAlbumImage(String id) {
 		Image result = new Image(Image.Type.album);
-		ReadAlbumImage(id, result);
+		synchronized(this) {
+			ReadAlbumImage(id, result);
+		}
 		return result;
 	}
 	
@@ -78,28 +93,68 @@ public class Session {
 	}
 	
 	public Artist browseArtist(String link) {
-		return BrowseArtist(link);
+		synchronized(this) {
+			return BrowseArtist(link);
+		}
 	}
 	
 	public Album  browseAlbum(String link) {
-		return BrowseAlbum(link);
+		synchronized(this) {
+			return BrowseAlbum(link);
+		}
 	}
 	
 	public PlaylistContainer getPlaylistContainer() {
 		return playlistListener.getContainer();
 	}
 	
+	public boolean completeTrack(Track track) {
+		synchronized(this) {
+			return CompleteTrack(track);
+		}
+	}
+	
+	public void pause(boolean pause) {
+		synchronized(this) {
+			Pause(pause);
+		}
+	}
+	
+	public boolean play(Track track) {
+		synchronized(this) {
+			return Play(track);
+		}
+	}
+	
+	public void seek(int position) {
+		synchronized(this) {
+			Seek(position);
+		}
+	}
+	
+	public int processEvents() {
+		synchronized(this) {
+			return ProcessEvents();
+		}
+	}
+	
+	public void registerPlayer(Player player) {
+		synchronized(this) {
+			RegisterPlayer(player);
+		}
+	}
+	
 	private native void Init(SessionListener listener, PlaylistListener playlist);
 	private native void Login(String username, String password);
 	private native void Logout();
 	private native void Search(String query, int trackCount, int albumCount, int artistCount, Search result);
-	protected native int ProcessEvents();
+	private native int ProcessEvents();
 	
-	protected native void RegisterPlayer(Player player);
-	protected native boolean CompleteTrack(Track track);
-	protected native boolean Play(Track track);
-	protected native void Seek(int position);
-	protected native void Pause(boolean pause);
+	private native void RegisterPlayer(Player player);
+	private native boolean CompleteTrack(Track track);
+	private native boolean Play(Track track);
+	private native void Seek(int position);
+	private native void Pause(boolean pause);
 	
 	private native void ReadArtistImage(String id, Image target);
 	private native void ReadAlbumImage(String id, Image target);

@@ -29,7 +29,7 @@ public class EventProcessor extends Thread {
 	}
 	
 	private int processEvents() {
-		return Session.getInstance().ProcessEvents();
+		return Session.getInstance().processEvents();
 	}
 	
 }

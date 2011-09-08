@@ -28,7 +28,7 @@ public class Player {
 	
 	public Player(Session session) {
 		this.session = session;
-		session.RegisterPlayer(this);
+		session.registerPlayer(this);
 	}
 	
 	public JSONObject toJSON() {
@@ -51,7 +51,7 @@ public class Player {
 	 */
 	private void complete(Track track) {
 		for (int i = 0; i < 100; i++) {
-			if (Session.getInstance().CompleteTrack(track)) return;
+			if (Session.getInstance().completeTrack(track)) return;
 			try {
 				Thread.sleep(20);
 			} catch (InterruptedException e) {
@@ -129,7 +129,7 @@ public class Player {
 	private boolean playNow(Track track) {
 		// Try to wait 5 seconds for the track to become available.
 		for (int i = 0; i < 500; i++) {
-			if (session.Play(track)) {
+			if (session.play(track)) {
 				currentTrack = track;
 				changeSong();
 				playing = true;
@@ -146,7 +146,7 @@ public class Player {
 	}
 	
 	public void pause() {
-		Session.getInstance().Pause(playing);
+		Session.getInstance().pause(playing);
 		playing = !playing;
 	}
 	
@@ -168,7 +168,7 @@ public class Player {
 	
 	public void seek(int position) {
 		if (currentTrack != null)
-			session.Seek(position * 1000);
+			session.seek(position * 1000);
 	}
 	public void seekCallback(int position) {
 		audio = null;
