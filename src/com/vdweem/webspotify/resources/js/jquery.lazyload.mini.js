@@ -165,9 +165,10 @@
 
 (function($) {
     $.fn.img = function() {
-    	return this.lazyload({
+    	return this.find("img[src^=Image]").lazyload({
     	       placeholder : "img/grey.gif",
-    	       effect      : "fadeIn"
-	    });
+    	       effect      : "fadeIn",
+    	       container   : $("#center").get(0)
+	    }).end();
     }
 })(jQuery);

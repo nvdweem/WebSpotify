@@ -15,7 +15,7 @@ var Ajax = function() {
 			if (data.error)
 				$('<div title="Error"></div>').text(data.error).dialog({"buttons": {"Ok": function() {$(this).dialog("close");}}});
 			else
-				center.append(decorator(data).img());
+				center.append(decorator(data)).img();
 		});
 	}
 	
