@@ -1,5 +1,10 @@
 package spotify;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,22 +18,54 @@ import org.json.JSONObject;
  * Provides an interface for playing songs.
  * @author Niels
  */
-public class Player {
+public class Player implements Serializable {
+	private static final long serialVersionUID = -4971392287201910194L;
+	
+	public static transient final String playlistFile = "playlist.dat";
 	private List<Track> playlist = new ArrayList<Track>();
 	private List<Track> queue = new ArrayList<Track>();
-	private List<Track> played = new ArrayList<Track>();
-	private final Session session;
+	private transient List<Track> played = new ArrayList<Track>();
+	private transient final Session session;
 	
-	private int rate = 0, channels = 0;
-	int positionOffset = 0;
-	private SourceDataLine audio;
-	private Track currentTrack;
-	public boolean playing = false;
-	private int queueRevision = 0;
+	private transient int rate = 0, channels = 0;
+	transient int positionOffset = 0;
+	private transient SourceDataLine audio;
+	private transient Track currentTrack;
+	public transient boolean playing = false;
+	private transient int queueRevision = 0;
 	
 	public Player(Session session) {
 		this.session = session;
 		session.registerPlayer(this);
+		loadPlaylist();
+	}
+	
+	public void loadPlaylist() {
+		try {
+			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(playlistFile));
+			Player player = (Player) ois.readObject();
+			if (player.playlist != null)
+				this.playlist = player.playlist;
+			if (player.queue != null)
+				this.queue = player.queue;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void savePlaylist() {
+		try {
+			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(playlistFile));
+			oos.writeObject(this);
+			oos.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void triggerChange() {
+		savePlaylist();
+		queueRevision++;
 	}
 	
 	public JSONObject toJSON() {
@@ -77,7 +114,7 @@ public class Player {
 		complete(track);
 		queue.add(track);
 		start();
-		queueRevision++;
+		triggerChange();
 	}
 	
 	public void addToPlaylist(Track track) {
@@ -86,7 +123,7 @@ public class Player {
 		complete(track);
 		playlist.add(track);
 		start();
-		queueRevision++;
+		triggerChange();
 	}
 	
 	/**
@@ -109,7 +146,7 @@ public class Player {
 		while (!next())
 			System.out.println("Unplayable track.");
 		
-		queueRevision++;
+		triggerChange();
 	}
 	
 	/**
@@ -125,6 +162,7 @@ public class Player {
 		
 		// Try to play and update played when it succeeds.
 		if (playNow(track)) {
+			triggerChange();
 			return true;
 		}
 		
@@ -156,6 +194,10 @@ public class Player {
 	}
 	
 	public void pause() {
+		if (!playing && currentTrack == null) {
+			next();
+			return;
+		}
 		Session.getInstance().pause(playing);
 		playing = !playing;
 	}
@@ -173,7 +215,7 @@ public class Player {
 		Track played = this.played.remove(0);
 		queue.add(0, currentTrack);
 		if (!playNow(played)) skip();
-		queueRevision++;
+		triggerChange();
 	}
 	
 	public void seek(int position) {
