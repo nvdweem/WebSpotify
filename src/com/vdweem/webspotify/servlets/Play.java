@@ -29,7 +29,7 @@ public class Play extends SpotifyServlet {
 		
 		Session session = Session.getInstance();
 		session.getPlayer().play(new Track(id));
-		printLn("{\"result\": \"success\"}");
+		printSuccess();
 	}
 
 	@Override

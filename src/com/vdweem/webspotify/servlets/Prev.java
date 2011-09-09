@@ -19,7 +19,7 @@ public class Prev extends SpotifyServlet {
 	protected void doGet(HttpServletRequest arg0, HttpServletResponse arg1)
 			throws ServletException, IOException {
 		Session.getInstance().getPlayer().prev();
-		printLn("{\"result\": \"success\"}");
+		printSuccess();
 	}
 
 	@Override

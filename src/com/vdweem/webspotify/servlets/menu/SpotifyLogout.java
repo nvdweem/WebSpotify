@@ -20,7 +20,7 @@ public class SpotifyLogout extends SpotifyServlet {
 		Setup.getInstance().deleteSettings();
 		Session.getInstance().logout();
 		Session.getInstance().getPlaylistContainer().clear();
-		printLn("{\"result\": \"success\"}");
+		printSuccess();
 	}
 
 	@Override

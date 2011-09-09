@@ -18,7 +18,7 @@ public class PlayPause extends SpotifyServlet {
 			throws ServletException, IOException {
 
 		Session.getInstance().getPlayer().pause();
-		printLn("{\"result\": \"success\"}");
+		printSuccess();
 	}
 
 

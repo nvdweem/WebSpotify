@@ -22,11 +22,11 @@ var Playlist = function() {
 	}
 	
 	function decoratePlaylist(data) {
-		var result = $('<div class="playlist"></div>');
+		var result = $('<div class="playlist"></div>').data("index", data.index);
 		
 		var title = $('<div class="title"></div>');
 		title.append(decorateDuration(data.tracks ? data.tracks.length : -1, data.totalduration));
-		title.append($('<img src="images/playlistIcon.png" />'));
+		title.append($('<img src="images/playlistIcon.png" />').click(queuePlaylist));
 		title.append(data.name);
 		
 		var table = $(
@@ -49,6 +49,10 @@ var Playlist = function() {
 			table.append(Media.decorateTrack(track).addClass(i % 2 == 0 ? "even" : "odd"));
 		}
 		return result.append(title).append(table);
+	}
+	
+	function queuePlaylist() {
+		$.get("PlaylistQueue", {index: $('div.playlist').data("index")});
 	}
 	
 	function decorateDuration(tracks, total) {

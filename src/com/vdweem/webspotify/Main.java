@@ -10,6 +10,7 @@ import com.vdweem.webspotify.servlets.Image;
 import com.vdweem.webspotify.servlets.Next;
 import com.vdweem.webspotify.servlets.Play;
 import com.vdweem.webspotify.servlets.Playlist;
+import com.vdweem.webspotify.servlets.PlaylistQueue;
 import com.vdweem.webspotify.servlets.Prev;
 import com.vdweem.webspotify.servlets.Queue;
 import com.vdweem.webspotify.servlets.Search;
@@ -68,6 +69,7 @@ public class Main {
 		srv.addServlet("/PlayPause", new PlayPause());
 		srv.addServlet("/Next", new Next());
 		srv.addServlet("/Prev", new Prev());
+		srv.addServlet("/PlaylistQueue", new PlaylistQueue());
 		
 		srv.addServlet("/ArtistBrowse", new ArtistBrowse());
 		srv.addServlet("/AlbumBrowse", new AlbumBrowse());

@@ -73,8 +73,18 @@ public class Player {
 	 */
 	public void play(Track track) {
 		if (queue.contains(track)) return;
+		playlist.remove(track);
 		complete(track);
 		queue.add(track);
+		start();
+		queueRevision++;
+	}
+	
+	public void addToPlaylist(Track track) {
+		if (playlist.contains(track)) return;
+		if (queue.contains(track)) return;
+		complete(track);
+		playlist.add(track);
 		start();
 		queueRevision++;
 	}

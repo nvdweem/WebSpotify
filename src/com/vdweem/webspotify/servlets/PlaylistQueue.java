@@ -7,22 +7,25 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import spotify.Session;
+import spotify.Track;
 
 import com.vdweem.webspotify.Util;
 
-/**
- * Seeks a position for a song.
- * @author Niels
- */
-public class Seek extends SpotifyServlet {
-	private static final long serialVersionUID = 1663753237297957525L;
+public class PlaylistQueue extends SpotifyServlet {
+	private static final long serialVersionUID = -1569502590977144891L;
 
 	@Override
 	protected void doGet(HttpServletRequest arg0, HttpServletResponse arg1)
 			throws ServletException, IOException {
-		if (Util.isEmpty(getParam("position"))) return;
-		int position = Util.parseInt(getParam("position"), 0);
-		Session.getInstance().getPlayer().seek(position);
+		
+		int position = Util.parseInt(getParam("index"), -1);
+		if (position == -1) {
+			printError("Unknown playlist index.");
+			return;
+		}
+		for (Track track : Session.getInstance().getPlaylistContainer().getPlaylist(position).getTracks()) {
+			Session.getInstance().getPlayer().addToPlaylist(track);
+		}
 		
 		printSuccess();
 	}

@@ -72,11 +72,19 @@ var Media = function() {
 		return $('<a href="#" class="album"></a>').data("id", a.id).text(a.name);
 	}
 	
+	/**
+	 * Queue all tracks on the screen.
+	 */
+	function queueAll() {
+		$(".track").dblclick();
+	}
+	
 	return {
 		"decorateTrack" : decorateTrack,
 		"artistLink": artistLink,
 		"albumLink": albumLink,
 		"decorateDuration": decorateDuration,
+		"queueAll": queueAll,
 	}
 }();
 (function($) {

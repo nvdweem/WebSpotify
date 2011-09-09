@@ -19,7 +19,7 @@ public class Next extends SpotifyServlet {
 	protected void doGet(HttpServletRequest arg0, HttpServletResponse arg1)
 			throws ServletException, IOException {
 		Session.getInstance().getPlayer().skip();
-		printLn("{\"result\": \"success\"}");
+		printSuccess();
 	}
 
 	@Override

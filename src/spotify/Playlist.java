@@ -83,5 +83,9 @@ public class Playlist extends Media {
 	public int getTotalDuration() {
 		return totalDuration;
 	}
+	
+	public List<Track> getTracks() {
+		return tracks;
+	}
 
 }

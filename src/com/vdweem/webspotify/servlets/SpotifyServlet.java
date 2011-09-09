@@ -80,6 +80,13 @@ public abstract class SpotifyServlet extends HttpServlet {
 	}
 	
 	/**
+	 * Prints a default success message.
+	 */
+	public void printSuccess() {
+		printLn("{\"result\": \"success\"}");
+	}
+	
+	/**
 	 * Returns the Session object for the current session.
 	 * @return
 	 */

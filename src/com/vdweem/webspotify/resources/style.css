@@ -414,6 +414,6 @@ table.playlist .album      { width: 30%; }
 .playingTable {
 	width: 100%;
 }
-.playingTable tr.queue, .playingTable tr.queue a, .playingTable span.duration {
+.playingTable tr.queue, .playingTable tr.queue a, .playingTable .queue span.duration {
 	color: #FFFD7F;
 }

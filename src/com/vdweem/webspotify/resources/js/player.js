@@ -14,6 +14,17 @@ var Player = function() {
 		// Play tracks when the row is double clicked.
 		$("tr.track").live('dblclick', function() {
 			Ajax.get("Play", {"id": $(this).data("id")});
+			queued($(this));
+			
+	        if (document.selection)
+	        {
+	            document.selection.empty();
+	            obj.blur();
+	        }
+	        else
+	        {
+	            window.getSelection().removeAllRanges();
+	        }
 		})
 
 		// Make the progress bar clickable to seek a position.
@@ -23,6 +34,13 @@ var Player = function() {
 		    var seek = Math.round(position / width * $('#controls .duration.progressTime').data('value'));
 		    Ajax.get("Seek", {position: seek});
 		}); 
+	}
+	
+	function queued(_this) {
+		var color = _this.is(".odd") ? "#313131" : "#373737";
+		_this
+		    .animate({"background-color": "black"})
+		    .animate({"background-color": color})
 	}
 	
 	function playPause() {

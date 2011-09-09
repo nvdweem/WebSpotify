@@ -20,7 +20,7 @@ public class Login extends SpotifyServlet {
 		
 		if (true) {
 			getSession().setAdmin(true);
-			printLn("{\"result\": \"success\"}");
+			printSuccess();
 		}
 		else
 			printLn("{\"result\": \"fail\"}");
