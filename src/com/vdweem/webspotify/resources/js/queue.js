@@ -26,16 +26,18 @@ var Queue = function(){
 				'  </tr>' +
 				'</table>');
 		
+		var evenOddOffset = 0;
 		if (q.queue) {
 			for (var i = 0; i < q.queue.length; i++) {
 				var track = q.queue[i];
+				evenOddOffset = (i+1) % 2;
 				playingTable.append(Media.decorateTrack(track).addClass(i % 2 == 0 ? "even" : "odd").addClass("queue"));
 			}
 		}
 		if (q.playlist) {
 			for (var i = 0; i < q.playlist.length; i++) {
 				var track = q.playlist[i];
-				playingTable.append(Media.decorateTrack(track).addClass(i % 2 == 0 ? "even" : "odd"));
+				playingTable.append(Media.decorateTrack(track).addClass((i + evenOddOffset) % 2 == 0 ? "even" : "odd"));
 			}
 		}
 		
