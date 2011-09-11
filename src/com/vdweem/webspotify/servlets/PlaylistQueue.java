@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import spotify.Player;
 import spotify.Session;
 import spotify.Track;
 
@@ -23,9 +24,13 @@ public class PlaylistQueue extends SpotifyServlet {
 			printError("Unknown playlist index.");
 			return;
 		}
-		for (Track track : Session.getInstance().getPlaylistContainer().getPlaylist(position).getTracks()) {
-			Session.getInstance().getPlayer().addToPlaylist(track);
-		}
+		
+		
+		Player player = Session.getInstance().getPlayer();
+		player.setEditing(true);
+		for (Track track : Session.getInstance().getPlaylistContainer().getPlaylist(position).getTracks())
+			player.addToPlaylist(track);
+		player.setEditing(false);
 		
 		printSuccess();
 	}

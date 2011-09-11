@@ -34,6 +34,8 @@ public class Player implements Serializable {
 	public transient boolean playing = false;
 	private transient int queueRevision = 0;
 	
+	private transient boolean editing = false;
+	
 	public Player(Session session) {
 		this.session = session;
 		session.registerPlayer(this);
@@ -49,7 +51,7 @@ public class Player implements Serializable {
 			if (player.queue != null)
 				this.queue = player.queue;
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("Could not load playlist.");
 		}
 	}
 	
@@ -64,15 +66,19 @@ public class Player implements Serializable {
 	}
 	
 	private void triggerChange() {
+		if (isEditing()) return;
 		savePlaylist();
 		queueRevision++;
+		
+		for (int i = 0; i < 100 && i < playlist.size(); i++)
+			complete(playlist.get(i));
 	}
 	
 	public JSONObject toJSON() {
 		JSONObject result = new JSONObject();
 		
-		result.put("playlist", Util.listToArray(playlist, true));
-		result.put("queue", Util.listToArray(queue, true));
+		result.put("playlist", Util.listToArray(playlist, true, 100));
+		result.put("queue", Util.listToArray(queue, true, 100));
 		result.put("played", Util.listToArray(played, true));
 		
 		return result;
@@ -273,6 +279,15 @@ public class Player implements Serializable {
 
 	public int getQueueRevision() {
 		return queueRevision;
+	}
+
+	public boolean isEditing() {
+		return editing;
+	}
+
+	public void setEditing(boolean editing) {
+		this.editing = editing;
+		triggerChange();
 	}
 	
 }

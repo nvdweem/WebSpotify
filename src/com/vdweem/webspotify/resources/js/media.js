@@ -84,6 +84,7 @@ var Media = function() {
 		"artistLink": artistLink,
 		"albumLink": albumLink,
 		"decorateDuration": decorateDuration,
+		"decoratePopularity": decoratePopularity,
 		"queueAll": queueAll,
 	}
 }();

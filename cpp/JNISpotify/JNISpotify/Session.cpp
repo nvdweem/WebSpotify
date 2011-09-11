@@ -235,3 +235,41 @@ JNIEXPORT jobject JNICALL Java_spotify_Session_BrowseAlbum(JNIEnv *env, jobject,
 	sp_album *album = sp_link_as_album(sp_link_create_from_string(link));
 	return readAlbum(album, true);
 }
+
+void cb_toplistbrowse_complete(sp_toplistbrowse *result, void* userdata) {
+	jobject target = (jobject) userdata;
+
+	debug(sp_toplistbrowse_num_tracks(result) + "");
+	for (int i = 0; i < sp_toplistbrowse_num_tracks(result); i++) {
+		sp_track *track = sp_toplistbrowse_track(result, i);
+		debug(sp_track_name(track));
+		if (!sp_track_is_loaded(track)) continue;
+		callVoidMethod(target, "addTrack", readTrack(track, false));
+	}
+
+	for (int i = 0; i < sp_toplistbrowse_num_albums(result); i++) {
+		sp_album *album = sp_toplistbrowse_album(result, i);
+		if (!sp_album_is_available(album)) continue;
+		callVoidMethod(target, "addAlbum", readAlbum(album, false));
+	}
+
+	for (int i = 0; i < sp_toplistbrowse_num_artists(result); i++) {
+		sp_artist *artist = sp_toplistbrowse_artist(result, i);
+		callVoidMethod(target, "addArtist", readArtist(artist, false));
+	}
+
+	callVoidMethod(target, "setComplete");
+	sp_toplistbrowse_release(result);
+	removeGlobalRef(target);
+}
+
+JNIEXPORT void JNICALL Java_spotify_Session_TopList(JNIEnv *env, jobject, jint type, jobject target) {
+	sp_toplisttype _type;
+	switch (type) {
+		case 0: _type = SP_TOPLIST_TYPE_ALBUMS; break;
+		case 1: _type = SP_TOPLIST_TYPE_ARTISTS; break;
+		case 2: _type = SP_TOPLIST_TYPE_TRACKS; break;
+	}
+	int region = sp_session_user_country(getSession()); 
+	sp_toplistbrowse_create(getSession(), _type, (sp_toplistregion) region, NULL, &cb_toplistbrowse_complete, env->NewGlobalRef(target));
+}

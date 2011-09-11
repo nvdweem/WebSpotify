@@ -382,6 +382,9 @@ table.browseTop td { width: 50%; }
 #lists #queue li {
 	background-image: url('images/queue.png'); 
 }
+#lists .toplist li {
+	background-image: url('images/toplist.png'); 
+}
 #lists .playlists ol li {
 	background-image: url('images/playlistIcon.png'); 
 }
@@ -416,4 +419,24 @@ table.playlist .album      { width: 30%; }
 }
 .playingTable tr.queue, .playingTable tr.queue a, .playingTable .queue span.duration {
 	color: #FFFD7F;
+}
+
+/****************************************************************
+ *							Queue								*
+ ****************************************************************/
+.toplist table {
+	width: 100%;
+}
+.toplist td {
+	vertical-align: top;
+}
+.toplist td.position { width: 30px; }
+.toplist img.cover {
+	float: left;
+	width: 60px;
+	height: 60px;
+	padding-right: 20px;
+}
+.toplist .position, .toplist .by, .toplist .by a {
+	color: #666666;	
 }

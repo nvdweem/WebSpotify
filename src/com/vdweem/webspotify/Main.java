@@ -16,6 +16,7 @@ import com.vdweem.webspotify.servlets.Queue;
 import com.vdweem.webspotify.servlets.Search;
 import com.vdweem.webspotify.servlets.Seek;
 import com.vdweem.webspotify.servlets.Status;
+import com.vdweem.webspotify.servlets.TopList;
 import com.vdweem.webspotify.servlets.menu.Login;
 import com.vdweem.webspotify.servlets.menu.PlayPause;
 import com.vdweem.webspotify.servlets.menu.SpotifyLogin;
@@ -74,6 +75,7 @@ public class Main {
 		srv.addServlet("/ArtistBrowse", new ArtistBrowse());
 		srv.addServlet("/AlbumBrowse", new AlbumBrowse());
 		srv.addServlet("/Playlist", new Playlist());
+		srv.addServlet("/TopList", new TopList());
 		
 		srv.addServlet("/Login", new Login());
 		srv.addServlet("/SpotifyLogin", new SpotifyLogin());

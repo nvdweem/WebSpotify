@@ -120,6 +120,15 @@ JNIEXPORT jobject JNICALL Java_spotify_Session_BrowseArtist
 JNIEXPORT jobject JNICALL Java_spotify_Session_BrowseAlbum
   (JNIEnv *, jobject, jstring);
 
+/*
+ * Class:     spotify_Session
+ * Method:    TopList
+ * Signature: (ILspotify/Search;)V
+ */
+JNIEXPORT void JNICALL Java_spotify_Session_TopList
+  (JNIEnv *, jobject, jint, jobject);
+
+
 #ifdef __cplusplus
 }
 #endif

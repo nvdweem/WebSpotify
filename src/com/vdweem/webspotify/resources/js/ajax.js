@@ -20,7 +20,7 @@ var Ajax = function() {
 	}
 	
 	function get(link, params, whenDone) {
-		$.get(link, params, whenDone);
+		$.getJSON(link, params, whenDone);
 	}
 	return {
 		call: call,

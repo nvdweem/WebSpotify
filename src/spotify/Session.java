@@ -144,6 +144,20 @@ public class Session {
 		}
 	}
 	
+	/**
+	 * Types:
+	 *   0: album
+	 *   1: artist
+	 *   2: track
+	 * @param type
+	 * @return
+	 */
+	public Search topList(int type) {
+		Search search = new Search();
+		TopList(type, search);
+		return search;
+	}
+	
 	private native void Init(SessionListener listener, PlaylistListener playlist);
 	private native void Login(String username, String password);
 	private native void Logout();
@@ -156,6 +170,7 @@ public class Session {
 	private native void Seek(int position);
 	private native void Pause(boolean pause);
 	
+	private native void TopList(int type, Search search);
 	private native void ReadArtistImage(String id, Image target);
 	private native void ReadAlbumImage(String id, Image target);
 	private native Artist BrowseArtist(String link);
