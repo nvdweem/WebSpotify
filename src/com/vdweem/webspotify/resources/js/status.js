@@ -22,6 +22,7 @@ var Status = function() {
 	 */
 	function updateStatus(data) {
 		Player.updatePosition(data.pause, data.position);
+		Player.updateShuffling(data.shuffling);
 		updatePlaying(data.playing);
 		Playlist.update(data.playlistRevision);
 		Menu.update(data.menu);

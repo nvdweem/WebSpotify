@@ -20,20 +20,22 @@ import org.json.JSONObject;
  */
 public class Player implements Serializable {
 	private static final long serialVersionUID = -4971392287201910194L;
-	
 	public static transient final String playlistFile = "playlist.dat";
+	
 	private List<Track> playlist = new ArrayList<Track>();
+	private List<Track> playlistOrdered = new ArrayList<Track>();
 	private List<Track> queue = new ArrayList<Track>();
+	public boolean shuffling = false;
+	
 	private transient List<Track> played = new ArrayList<Track>();
 	private transient final Session session;
 	
 	private transient int rate = 0, channels = 0;
-	transient int positionOffset = 0;
+	private transient int positionOffset = 0;
 	private transient SourceDataLine audio;
 	private transient Track currentTrack;
-	public transient boolean playing = false;
+	private transient boolean playing = false;
 	private transient int queueRevision = 0;
-	
 	private transient boolean editing = false;
 	
 	public Player(Session session) {
@@ -50,6 +52,9 @@ public class Player implements Serializable {
 				this.playlist = player.playlist;
 			if (player.queue != null)
 				this.queue = player.queue;
+			if (player.playlistOrdered != null)
+				this.playlistOrdered = player.playlistOrdered;
+			this.shuffling = player.shuffling;
 		} catch (Exception e) {
 			System.out.println("Could not load playlist.");
 		}
@@ -89,6 +94,23 @@ public class Player implements Serializable {
 	}
 	
 	/**
+	 * Toggles shuffling
+	 */
+	public void shuffle() {
+		if (shuffling == true) {
+			playlist.clear();
+			playlist.addAll(playlistOrdered);
+		}
+		else {
+			playlist.clear();
+			for (int i = 0; i < playlistOrdered.size(); i++)
+				playlist.add((int) Math.round(Math.random() * playlist.size()), playlistOrdered.get(i));
+		}
+		shuffling = !shuffling;
+		triggerChange();
+	}
+	
+	/**
 	 * Suplement the track data.
 	 * @param track
 	 */
@@ -117,6 +139,7 @@ public class Player implements Serializable {
 	public void play(Track track) {
 		if (queue.contains(track)) return;
 		playlist.remove(track);
+		playlistOrdered.remove(track);
 		complete(track);
 		queue.add(track);
 		start();
@@ -127,7 +150,12 @@ public class Player implements Serializable {
 		if (playlist.contains(track)) return;
 		if (queue.contains(track)) return;
 		complete(track);
-		playlist.add(track);
+		playlistOrdered.add(track);
+		
+		if (shuffling)
+			playlist.add((int) Math.round(Math.random() * playlist.size()), track);
+		else
+			playlist.add(track);
 		start();
 		triggerChange();
 	}
@@ -163,7 +191,10 @@ public class Player implements Serializable {
 		Track track = null;
 		
 		if (track == null && queue.size() != 0) track = queue.remove(0);
-		if (track == null && playlist.size() != 0) track = playlist.remove(0);
+		if (track == null && playlist.size() != 0) {
+			track = playlist.remove(0);
+			playlistOrdered.remove(track);
+		}
 		currentTrack = track;
 		
 		// Try to play and update played when it succeeds.
@@ -288,6 +319,10 @@ public class Player implements Serializable {
 	public void setEditing(boolean editing) {
 		this.editing = editing;
 		triggerChange();
+	}
+
+	public boolean isShuffling() {
+		return shuffling;
 	}
 	
 }

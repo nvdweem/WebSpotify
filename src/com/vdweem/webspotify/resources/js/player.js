@@ -6,6 +6,7 @@ var Player = function() {
 	$("#playpause").live('click', playPause);
 	$("#skip").live('click', next);
 	$("#back").live('click', prev);
+	$("#shuffle").live('click', toggleShuffle);
 	
 	/**
 	 * Initialize the player.
@@ -75,7 +76,17 @@ var Player = function() {
 			.append(Media.decorateDuration(duration * 1000).addClass("progressTime"));
 	}
 	
+	function toggleShuffle() {
+		$.get("Shuffle");
+	}
+	
+	function updateShuffling(shuffling) {
+		if (shuffling) $("#shuffle").addClass("on");
+		else		   $("#shuffle").removeClass("on");
+	}
+	
 	return {
 		"updatePosition": updatePosition,
+		"updateShuffling": updateShuffling,
 	};
 }();

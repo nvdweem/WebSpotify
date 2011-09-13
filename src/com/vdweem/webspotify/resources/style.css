@@ -230,6 +230,18 @@ a:hover {
     color: white;
 }
 
+#shuffle {
+	background-image: url('images/shuffleOff.png');
+	width: 19px;
+	height: 17px;
+	position: absolute;
+	right: 15px;
+	top: 14px;
+}
+#shuffle.on {
+	background-image: url('images/shuffleOn.png');
+}
+
 
 #center table tr.odd {
 	background-color: #313131;
