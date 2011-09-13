@@ -239,7 +239,6 @@ JNIEXPORT jobject JNICALL Java_spotify_Session_BrowseAlbum(JNIEnv *env, jobject,
 void cb_toplistbrowse_complete(sp_toplistbrowse *result, void* userdata) {
 	jobject target = (jobject) userdata;
 
-	debug(sp_toplistbrowse_num_tracks(result) + "");
 	for (int i = 0; i < sp_toplistbrowse_num_tracks(result); i++) {
 		sp_track *track = sp_toplistbrowse_track(result, i);
 		debug(sp_track_name(track));
