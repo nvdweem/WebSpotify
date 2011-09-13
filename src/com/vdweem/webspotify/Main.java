@@ -1,5 +1,8 @@
 package com.vdweem.webspotify;
 
+import java.io.FileInputStream;
+import java.util.Properties;
+
 import spotify.PlaylistListenerImpl;
 import spotify.Session;
 import spotify.SessionListenerImpl;
@@ -18,6 +21,7 @@ import com.vdweem.webspotify.servlets.Seek;
 import com.vdweem.webspotify.servlets.Shuffle;
 import com.vdweem.webspotify.servlets.Status;
 import com.vdweem.webspotify.servlets.TopList;
+import com.vdweem.webspotify.servlets.Volume;
 import com.vdweem.webspotify.servlets.menu.Login;
 import com.vdweem.webspotify.servlets.menu.PlayPause;
 import com.vdweem.webspotify.servlets.menu.SpotifyLogin;
@@ -29,6 +33,15 @@ import com.vdweem.webspotify.servlets.menu.SpotifyLogout;
  */
 public class Main {
 
+	static Properties settings = new Properties();
+	static {
+		try {
+			settings.load(new FileInputStream("WebSpotify.properties"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public static void main(String... args) {
 		Session.getInstance().initialize(new SessionListenerImpl(), new PlaylistListenerImpl());
 		Setup.getInstance().initSession();
@@ -55,7 +68,7 @@ public class Main {
 		
 		// setting properties for the server, and exchangeable Acceptors
 		java.util.Properties properties = new java.util.Properties();
-		properties.put("port", 80); // TODO: Make the port configurable.
+		properties.put("port", Util.parseInt(getProperty("WebSpotify.port"), 8080));
 		properties.setProperty(Acme.Serve.Serve.ARG_NOHUP, "nohup");
 		srv.arguments = properties;
 		srv.addDefaultServlets(null);
@@ -71,6 +84,7 @@ public class Main {
 		srv.addServlet("/PlayPause", new PlayPause());
 		srv.addServlet("/Next", new Next());
 		srv.addServlet("/Prev", new Prev());
+		srv.addServlet("/Volume", new Volume());
 		srv.addServlet("/Shuffle", new Shuffle());
 		srv.addServlet("/PlaylistQueue", new PlaylistQueue());
 		
@@ -91,6 +105,10 @@ public class Main {
 			}
 		}));
 		srv.serve();
+	}
+	
+	public static String getProperty(String property) {
+		return settings.getProperty(property);
 	}
 
 }

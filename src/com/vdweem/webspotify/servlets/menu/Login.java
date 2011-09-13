@@ -6,6 +6,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.vdweem.webspotify.Main;
+import com.vdweem.webspotify.Util;
 import com.vdweem.webspotify.servlets.SpotifyServlet;
 
 public class Login extends SpotifyServlet {
@@ -15,10 +17,10 @@ public class Login extends SpotifyServlet {
 	protected void doGet(HttpServletRequest arg0, HttpServletResponse arg1)
 			throws ServletException, IOException {
 		
-		String username = getParam("username");
-		String password = getParam("password");
+		String username = Util.nonNullString(getParam("username"));
+		String password = Util.nonNullString(getParam("password"));
 		
-		if (true) {
+		if (username.equals(Main.getProperty("WebSpotify.username")) && password.equals(Main.getProperty("WebSpotify.password"))) {
 			getSession().setAdmin(true);
 			printSuccess();
 		}

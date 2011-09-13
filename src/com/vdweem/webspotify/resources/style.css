@@ -184,7 +184,6 @@ a:hover {
  *							Play progress						*
  ****************************************************************/
 #progress {
-	background-color: red;
 	position: absolute;
 	top: 17px;
 	height: 10px;
@@ -228,6 +227,51 @@ a:hover {
 #controls .duration {
     right: 53px;
     color: white;
+}
+
+/****************************************************************
+ *							Play progress						*
+ ****************************************************************/
+#volumeImg {
+    background-image: url("images/volume.png");
+    position: absolute;
+    height: 31px;
+    left: 227px;
+    top: 6px;
+    width: 9px;
+}
+#volume {
+	position: absolute;
+	top: 17px;
+	height: 10px;
+	left: 130px;
+	width: 90px;
+}
+#volume .left {
+	background: url('images/playedGradient.png') repeat-x;
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+}
+#volume .position {
+	background: url('images/playing.png') no-repeat;
+	width: 9px;
+	height: 10px;
+	
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	z-index: 1;
+}
+#volume .right {
+	background: url('images/playGradient.png') repeat-x;
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
 }
 
 #shuffle {

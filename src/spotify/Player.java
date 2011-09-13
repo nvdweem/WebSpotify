@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.SourceDataLine;
 
 import org.json.JSONObject;
@@ -37,6 +38,7 @@ public class Player implements Serializable {
 	private transient boolean playing = false;
 	private transient int queueRevision = 0;
 	private transient boolean editing = false;
+	private transient int volume = 100;
 	
 	public Player(Session session) {
 		this.session = session;
@@ -283,6 +285,7 @@ public class Player implements Serializable {
 			format = new AudioFormat(format.getEncoding(), format.getSampleRate(), format.getSampleSizeInBits(), format.getChannels(), format.getFrameSize(), format.getFrameRate(), false);
 			
 			audio = AudioSystem.getSourceDataLine(format);
+			setVolumeToAudio(volume);
 			audio.open(format);
 			audio.start();
 		} catch (Exception e) {
@@ -323,6 +326,25 @@ public class Player implements Serializable {
 
 	public boolean isShuffling() {
 		return shuffling;
+	}
+
+	public int getVolume() {
+		return volume;
+	}
+
+	public void setVolume(int volume) {
+		this.volume = volume;
+		setVolumeToAudio(volume);
+	}
+
+	private void setVolumeToAudio(int volume) {
+		if (audio.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
+			FloatControl volumeControl = (FloatControl) audio.getControl(FloatControl.Type.MASTER_GAIN);
+			float range = volumeControl.getMaximum() - volumeControl.getMinimum();
+			volumeControl.setValue(volumeControl.getMinimum() + range * (volume / 100f));
+		}
+		else
+			System.out.println("Cant set volume.");
 	}
 	
 }

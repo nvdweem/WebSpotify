@@ -29,10 +29,15 @@ var Menu = function() {
 	}
 	
 	function showLogin() {
-		$('<div title="Login">'
+		var dialog = $('<div title="Login">'
 		 +'<table><tr><td>Username: </td><td> <input type="text" class="username" /> </td></tr>'
 		 +'       <tr><td>Password: </td><td> <input type="password" class="password" /> </td></tr></table>'
-		 +'</div>').dialog({"buttons": {"Ok": doLogin, "Cancel": closeDialog}});
+		 +'</div>');
+		dialog.find('.password').keypress(function(e) {
+			if (e.which == 13)
+				$(this).parents('div.ui-dialog').find('button:first').click()
+		});
+		dialog.dialog({"buttons": {"Ok": doLogin, "Cancel": closeDialog}});
 	}
 	
 	function doLogin() {
