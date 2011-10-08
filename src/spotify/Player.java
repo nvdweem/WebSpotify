@@ -258,8 +258,10 @@ public class Player implements Serializable {
 	}
 	
 	public void seek(int position) {
-		if (currentTrack != null)
+		if (currentTrack != null) {
+			audio.flush();
 			session.seek(position * 1000);
+		}
 	}
 	public void seekCallback(int position) {
 		audio = null;
@@ -343,8 +345,6 @@ public class Player implements Serializable {
 			float range = volumeControl.getMaximum() - volumeControl.getMinimum();
 			volumeControl.setValue(volumeControl.getMinimum() + range * (volume / 100f));
 		}
-		else
-			System.out.println("Cant set volume.");
 	}
 	
 }
