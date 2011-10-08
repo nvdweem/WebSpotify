@@ -7,10 +7,24 @@ void linkToJstring(char *url, sp_link* l) {
 
 jobject readTrack(sp_track *track, bool complete) {
 	char url[256];
-	linkToJstring(url, sp_link_create_from_track(track, 0));
+	sp_link* link = sp_link_create_from_track(track, 0);
+	linkToJstring(url, link);
+	sp_link_release(link);
 	jobject target = callObjectMethod(getSessionListener(), "createTrack", url);
 	readTrack(target, track, complete);
 	return target;
+}
+
+void setImage(jobject target, const byte* imageId) {
+	if (!imageId)
+		return;
+
+	char url[256];
+	sp_image *image = sp_image_create(getSession(), imageId);
+	sp_link* link = sp_link_create_from_image(image);
+	linkToJstring(url, link);
+	callVoidMethod(target, "setImage", url);
+	sp_link_release(link);
 }
 
 jobject readTrack(jobject target, sp_track *track, bool complete) {
@@ -24,6 +38,7 @@ jobject readTrack(jobject target, sp_track *track, bool complete) {
 	callVoidMethod(target, "setIndex", sp_track_index(track));
 	callVoidMethod(target, "setAlbum", readAlbum(sp_track_album(track), false));
 	callVoidMethod(target, "setArtist", readArtist(sp_track_artist(track, 0), false));
+	setImage(target, sp_album_cover(sp_track_album(track)));
 
 	callVoidMethod(target, "setComplete");
 	return target;
@@ -37,12 +52,16 @@ void cb_albumbrowse_complete(sp_albumbrowse *browse, void* _target) {
 
 	callVoidMethod(target, "setComplete");
 	callVoidMethod(target, "setBusy", false);
+	removeGlobalRef(target);
 	sp_albumbrowse_release(browse);
 }
 
 jobject readAlbum(sp_album *album, bool complete) {
 	char url[256];
-	linkToJstring(url, sp_link_create_from_album(album));
+	sp_link* link = sp_link_create_from_album(album);
+	linkToJstring(url, link);
+	sp_link_release(link);
+
 	jobject target = callObjectMethod(getSessionListener(), "createAlbum", url);
 
 	if (callBoolMethod(target, "isComplete")) return target;
@@ -65,6 +84,7 @@ jobject readAlbum(sp_album *album, bool complete) {
 	callVoidMethod(target, "setType", type);
 	callVoidMethod(target, "setYear", sp_album_year(album));
 	callVoidMethod(target, "setArtist", readArtist(sp_album_artist(album), false));
+	setImage(target, sp_album_cover(album));
 
 	if (complete) {
 		callVoidMethod(target, "setBusy", true);
@@ -79,7 +99,9 @@ jobject readAlbum(sp_album *album, bool complete) {
 jobject readArtist(sp_artist *artist, bool complete) {
 	if (!artist) return NULL;
 	char url[256];
-	linkToJstring(url, sp_link_create_from_artist(artist));
+	sp_link* link = sp_link_create_from_artist(artist);
+	linkToJstring(url, link);
+	sp_link_release(link);
 	jobject target = callObjectMethod(getSessionListener(), "createArtist", url);
 	readArtist(target, artist, complete);
 	return target;
@@ -92,7 +114,6 @@ void cb_artistbrowse_complete(sp_artistbrowse *browse, void *_target) {
 	for (int i = 0; i < sp_artistbrowse_num_similar_artists(browse); i++) 
 		callVoidMethod(target, "addRelatedArtist", readArtist(sp_artistbrowse_similar_artist(browse, i), false));
 	
-	
 	for (int i = 0; i < sp_artistbrowse_num_tracks(browse); i++) {
 		if (!sp_track_is_loaded(sp_artistbrowse_track(browse, i))) continue;
 		callVoidMethod(target, "addTopTrack", readTrack(sp_artistbrowse_track(browse, i), true));
@@ -103,6 +124,9 @@ void cb_artistbrowse_complete(sp_artistbrowse *browse, void *_target) {
 		callVoidMethod(target, "addAlbum", readAlbum(sp_artistbrowse_album(browse, i), true));
 	}
 
+	if (sp_artistbrowse_num_portraits(browse) > 0)
+		setImage(target, sp_artistbrowse_portrait(browse, 0));
+
 	callVoidMethod(target, "setComplete");
 	callVoidMethod(target, "setBusy", false);
 	sp_artistbrowse_release(browse);
@@ -111,7 +135,7 @@ void cb_artistbrowse_complete(sp_artistbrowse *browse, void *_target) {
 void readArtist(jobject target, sp_artist *artist, bool complete) {
 	if (callBoolMethod(target, "isComplete")) return;
 	callVoidMethod(target, "setName", sp_artist_name(artist));
-
+	
 	if (complete) {
 		callVoidMethod(target, "setBusy", true);
 		sp_artistbrowse_create(getSession(), artist, &cb_artistbrowse_complete, getEnv()->NewGlobalRef(target));
@@ -121,11 +145,13 @@ void readArtist(jobject target, sp_artist *artist, bool complete) {
 }
 
 void cb_image_loaded(sp_image *image, void *userdata) {
+	debug("Plaatje gelezen...");
 	jobject target = (jobject) userdata;
 	JNIEnv *env = attachThread();
 
 	if (!image) {
 		callVoidMethod(target, "setComplete");
+		sp_image_release(image);
 		env->DeleteGlobalRef(target);
 		detachThread();
 		return;
@@ -170,6 +196,7 @@ void cb_artistbrowse_image_complete(sp_artistbrowse *result, void *userdata) {
 
 	const byte* album = sp_artistbrowse_portrait(result, 0);
 	imageToByteArray(album, target);
+	sp_artistbrowse_release(result);
 }
 void readArtistImage(sp_artist *artist, jobject target) {
 	if (callBoolMethod(target, "isComplete")) return;
@@ -178,6 +205,10 @@ void readArtistImage(sp_artist *artist, jobject target) {
 
 void readAlbumImage(sp_album *album, jobject target) {
 	if (callBoolMethod(target, "isComplete")) return;
+	debug("Album image ophalen: ");
+	if (sp_album_is_loaded(album)) debug("Album geladen...");
+	else debug("Album nog niet geladen!");
+	debug(sp_album_name(album));
 	const byte* albumCover = sp_album_cover(album);
 	imageToByteArray(albumCover, target);
 }

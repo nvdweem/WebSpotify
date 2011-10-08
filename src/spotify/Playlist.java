@@ -15,7 +15,6 @@ public class Playlist extends Media {
 	private int index;
 	private String description;
 	private List<Track> tracks;
-	private byte[] image;
 	private int totalDuration = 0;
 	
 	public Playlist(String id) {
@@ -43,7 +42,7 @@ public class Playlist extends Media {
 	
 	public void putTrack(Object track, int position) {
 		if (!(track instanceof Track)) return;
-		tracks.add(position, (Track) track);
+		tracks.add(Math.min(tracks.size(), position), (Track) track);
 	}
 	
 	public void removeTrack(int position) {
@@ -62,14 +61,6 @@ public class Playlist extends Media {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public byte[] getImage() {
-		return image;
-	}
-
-	public void setImage(byte[] image) {
-		this.image = image;
 	}
 
 	public int getIndex() {

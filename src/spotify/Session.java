@@ -1,5 +1,7 @@
 package spotify;
 
+import spotify.Image.Type;
+
 /**
  * Session God class. Handles all interactions between the Java code and the Spotify library.
  * @author Niels
@@ -70,6 +72,14 @@ public class Session {
 			Search(query, trackCount, albumCount, artistCount, target);
 		}
 		return target;
+	}
+	
+	public Image getImage(String id, Type type) {
+		Image result = new Image(type);
+		synchronized (this) {
+			ReadImage(id, result);
+		}
+		return result;
 	}
 	
 	public Image readArtistImage(String id) {
@@ -173,6 +183,7 @@ public class Session {
 	private native void TopList(int type, Search search);
 	private native void ReadArtistImage(String id, Image target);
 	private native void ReadAlbumImage(String id, Image target);
+	private native void ReadImage(String id, Image target);
 	private native Artist BrowseArtist(String link);
 	private native Album BrowseAlbum(String link);
 }

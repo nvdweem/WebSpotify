@@ -11,3 +11,4 @@ void readAlbumImage(sp_album *album, jobject target);
 
 void linkToJstring(char *url, sp_link* l);
 void imageToByteArray(const byte* coverId, jobject target);
+void cb_image_loaded(sp_image *image, void *userdata);

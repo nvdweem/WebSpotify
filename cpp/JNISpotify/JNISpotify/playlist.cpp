@@ -65,7 +65,7 @@ sp_playlist_callbacks cb_playlist = {
 	NULL, // void (SP_CALLCONV *track_message_changed)(sp_playlist *pl, int position, const char *message, void *userdata);
 	NULL // void (SP_CALLCONV *subscribers_changed)(sp_playlist *pl, void *userdata);
 };
-
+ 
 
 jobject readPlaylist(sp_playlist *pl) {
 	jobject playlist = callObjectMethod(playlistListener, "createPlaylist", "", true);

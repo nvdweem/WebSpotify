@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import spotify.Image.Type;
 import spotify.Session;
 
 import com.vdweem.webspotify.Util;
@@ -24,7 +25,9 @@ public class Image extends SpotifyServlet {
 		String id = Util.nonNullString(getParam("id"));
 		
 		spotify.Image image = null;
-		if (id.startsWith("spotify:artist"))
+		if (id.startsWith("spotify:image"))
+			image = Session.getInstance().getImage(id, Type.album);
+		else if (id.startsWith("spotify:artist"))
 			image = Session.getInstance().readArtistImage(id);
 		else if (id.startsWith("spotify:album"))
 			image = Session.getInstance().readAlbumImage(id);

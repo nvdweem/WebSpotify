@@ -90,6 +90,14 @@ JNIEXPORT void JNICALL Java_spotify_Session_ReadAlbumImage
 
 /*
  * Class:     spotify_Session
+ * Method:    ReadImage
+ * Signature: (Ljava/lang/String;Lspotify/Image;)V
+ */
+JNIEXPORT void JNICALL Java_spotify_Session_ReadImage
+  (JNIEnv *, jobject, jstring, jobject);
+
+/*
+ * Class:     spotify_Session
  * Method:    Seek
  * Signature: (I)V
  */

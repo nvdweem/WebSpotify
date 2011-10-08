@@ -40,8 +40,8 @@ public class Playlist extends SpotifyServlet {
 		
 		spotify.Playlist playlistObject = container.getPlaylist(index);
 		if (getParam("image") != null) {
-			byte[] bytes = playlistObject.getImage();
-			response.getOutputStream().write(bytes, 0, bytes.length);
+//			byte[] bytes = playlistObject.getImage();
+//			response.getOutputStream().write(bytes, 0, bytes.length);
 			return;
 		}
 		

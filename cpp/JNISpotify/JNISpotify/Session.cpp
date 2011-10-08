@@ -117,13 +117,13 @@ void cb_search_complete(sp_search *search, void *userdata) {
 
 	callVoidMethod(target, "setDidYouMean", sp_search_did_you_mean(search));
 	callVoidMethod(target, "setComplete");
+
 	sp_search_release(search);
 	removeGlobalRef(target);
 }
 JNIEXPORT void JNICALL Java_spotify_Session_Search(JNIEnv *env, jobject, jstring _query, jint trackCount, jint albumCount, jint artistCount, jobject _target) {
 	jboolean iscopy;
 	const char *query = env->GetStringUTFChars(_query, &iscopy);
-
 	sp_search_create(session, query, 0, trackCount, 0, albumCount, 0, artistCount, &cb_search_complete, env->NewGlobalRef(_target));
 }
 
@@ -180,23 +180,27 @@ JNIEXPORT void JNICALL Java_spotify_Session_RegisterPlayer(JNIEnv *env, jobject,
 
 JNIEXPORT jboolean JNICALL Java_spotify_Session_Play(JNIEnv *env, jobject, jobject trackObject) {
 	const char* trackId = callStringMethod(trackObject, "getId");
-	sp_track *track = sp_link_as_track(sp_link_create_from_string(trackId));
+	sp_link* link = sp_link_create_from_string(trackId);
+	sp_track *track = sp_link_as_track(link);
 	if (!sp_track_is_available(getSession(), track)) {
 		return false;
 	}
 	readTrack(trackObject, track, false);
 	sp_session_player_load(session, track);
 	sp_session_player_play(session, true);
+	sp_link_release(link);
 	return true;
 }
 
 JNIEXPORT jboolean JNICALL Java_spotify_Session_CompleteTrack(JNIEnv *, jobject, jobject trackObject) {
 	const char* trackId = callStringMethod(trackObject, "getId");
-	sp_track *track = sp_link_as_track(sp_link_create_from_string(trackId));
+	sp_link* link = sp_link_create_from_string(trackId);
+	sp_track *track = sp_link_as_track(link);
 	if (!sp_track_is_loaded(track)) {
 		return false;
 	}
 	readTrack(trackObject, track, false);
+	sp_link_release(link);
 	return true;
 }
 
@@ -213,27 +217,47 @@ JNIEXPORT void JNICALL Java_spotify_Session_Pause(JNIEnv *, jobject, jboolean pa
 JNIEXPORT void JNICALL Java_spotify_Session_ReadArtistImage(JNIEnv *env, jobject, jstring _artistId, jobject target) {
 	jboolean iscopy;
 	const char *artistId = env->GetStringUTFChars(_artistId, &iscopy);
-	readArtistImage(sp_link_as_artist(sp_link_create_from_string(artistId)), env->NewGlobalRef(target));
+	sp_link* link = sp_link_create_from_string(artistId);
+	readArtistImage(sp_link_as_artist(link), env->NewGlobalRef(target));
+	sp_link_release(link);
 }
 
 JNIEXPORT void JNICALL Java_spotify_Session_ReadAlbumImage(JNIEnv *env, jobject, jstring _albumId, jobject target) {
 	jboolean iscopy;
 	const char *albumId = env->GetStringUTFChars(_albumId, &iscopy);
-	readAlbumImage(sp_link_as_album(sp_link_create_from_string(albumId)), env->NewGlobalRef(target));
+	sp_link* link = sp_link_create_from_string(albumId);
+	readAlbumImage(sp_link_as_album(link), env->NewGlobalRef(target));
+	sp_link_release(link);
+}
+
+JNIEXPORT void JNICALL Java_spotify_Session_ReadImage(JNIEnv *env, jobject, jstring _imageId, jobject target) {
+	jboolean iscopy;
+	const char *imageId = env->GetStringUTFChars(_imageId, &iscopy);
+	sp_link* link = sp_link_create_from_string(imageId);
+	sp_image* image = sp_image_create_from_link(getSession(), link);
+	debug("Lees plaatje!");
+	sp_image_add_load_callback(image, &cb_image_loaded, env->NewGlobalRef(target));
+	sp_link_release(link);
 }
 
 JNIEXPORT jobject JNICALL Java_spotify_Session_BrowseArtist(JNIEnv *env, jobject, jstring _link) {
 	jboolean iscopy;
 	const char *link = env->GetStringUTFChars(_link, &iscopy);
-	sp_artist *artist = sp_link_as_artist(sp_link_create_from_string(link));
-	return readArtist(artist, true);
+	sp_link* splink = sp_link_create_from_string(link);
+	sp_artist *artist = sp_link_as_artist(splink);
+	jobject result = readArtist(artist, true);
+	sp_link_release(splink);
+	return result;
 }
 
 JNIEXPORT jobject JNICALL Java_spotify_Session_BrowseAlbum(JNIEnv *env, jobject, jstring _link) {
 	jboolean iscopy;
 	const char *link = env->GetStringUTFChars(_link, &iscopy);
-	sp_album *album = sp_link_as_album(sp_link_create_from_string(link));
-	return readAlbum(album, true);
+	sp_link* splink = sp_link_create_from_string(link);
+	sp_album *album = sp_link_as_album(splink);
+	jobject result = readAlbum(album, true);
+	sp_link_release(splink);
+	return result;
 }
 
 void cb_toplistbrowse_complete(sp_toplistbrowse *result, void* userdata) {

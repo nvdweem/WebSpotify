@@ -14,6 +14,7 @@ public abstract class Media extends Completable implements Serializable {
 	protected String id;
 	protected String name;
 	protected boolean busy = false; // Used to indicate start en end of browsing.
+	protected String image;
 	
 	public Media(String id) {
 		if (id == null) throw new IllegalArgumentException("Media's must have an id.");
@@ -49,6 +50,7 @@ public abstract class Media extends Completable implements Serializable {
 		JSONObject object = new JSONObject();
 		object.put("id", id);
 		object.put("name", name);
+		object.put("image", image);
 		return object;
 	}
 
@@ -68,5 +70,13 @@ public abstract class Media extends Completable implements Serializable {
 
 	public void setBusy(boolean busy) {
 		this.busy = busy;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String imageId) {
+		this.image = imageId;
 	}
 }
