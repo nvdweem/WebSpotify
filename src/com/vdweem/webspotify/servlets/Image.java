@@ -35,7 +35,7 @@ public class Image extends SpotifyServlet {
 		if (image == null)
 			return;
 		
-		image.waitFor(10);
+		image.waitFor(30);
 		byte[] bytes = image.getBytes();
 		response.getOutputStream().write(bytes, 0, bytes.length);
 	}
