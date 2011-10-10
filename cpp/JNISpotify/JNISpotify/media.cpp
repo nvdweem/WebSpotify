@@ -145,7 +145,6 @@ void readArtist(jobject target, sp_artist *artist, bool complete) {
 }
 
 void cb_image_loaded(sp_image *image, void *userdata) {
-	debug("Plaatje gelezen...");
 	jobject target = (jobject) userdata;
 	JNIEnv *env = attachThread();
 
@@ -205,10 +204,6 @@ void readArtistImage(sp_artist *artist, jobject target) {
 
 void readAlbumImage(sp_album *album, jobject target) {
 	if (callBoolMethod(target, "isComplete")) return;
-	debug("Album image ophalen: ");
-	if (sp_album_is_loaded(album)) debug("Album geladen...");
-	else debug("Album nog niet geladen!");
-	debug(sp_album_name(album));
 	const byte* albumCover = sp_album_cover(album);
 	imageToByteArray(albumCover, target);
 }

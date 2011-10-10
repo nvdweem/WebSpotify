@@ -235,7 +235,6 @@ JNIEXPORT void JNICALL Java_spotify_Session_ReadImage(JNIEnv *env, jobject, jstr
 	const char *imageId = env->GetStringUTFChars(_imageId, &iscopy);
 	sp_link* link = sp_link_create_from_string(imageId);
 	sp_image* image = sp_image_create_from_link(getSession(), link);
-	debug("Lees plaatje!");
 	sp_image_add_load_callback(image, &cb_image_loaded, env->NewGlobalRef(target));
 	sp_link_release(link);
 }
@@ -265,7 +264,6 @@ void cb_toplistbrowse_complete(sp_toplistbrowse *result, void* userdata) {
 
 	for (int i = 0; i < sp_toplistbrowse_num_tracks(result); i++) {
 		sp_track *track = sp_toplistbrowse_track(result, i);
-		debug(sp_track_name(track));
 		if (!sp_track_is_loaded(track)) continue;
 		callVoidMethod(target, "addTrack", readTrack(track, false));
 	}
