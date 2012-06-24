@@ -1,0 +1,23 @@
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<constant name="struts.devMode" value="true"/>
+	<constant name="struts.convention.classes.reload" value="true" /> 
+
+	<constant name="struts.custom.i18n.resources" value="i18n" />
+	<constant name="struts.convention.default.parent.package" value="webspotify" />
+	<constant name="struts.convention.action.name.lowercase" value="false" />
+	<constant name="struts.convention.action.name.lowercase" value="struts.convention.action.name.separator" />
+	
+	<package name="webspotify" extends="struts-default">
+
+		<interceptors>
+			<interceptor-stack name="defaultstack">
+				<interceptor-ref name="basicStack" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="defaultstack" />
+		
+	</package>
+</struts>

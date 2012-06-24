@@ -1,8 +1,0 @@
-<project name="WebSpotify" default="headers">
-	
-	<!-- copy the complete application to the deployment directory -->
-	<target name="headers" depends="">
-		<javah classpath="bin" destdir="headers" class="spotify.Session" />
-	</target>
-	
-</project>
