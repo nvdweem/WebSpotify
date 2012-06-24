@@ -111,12 +111,4 @@ public abstract class SpotifyServlet {
 	public void printSuccess() {
 		printLn("{\"result\": \"success\"}");
 	}
-
-	/**
-	 * Returns the Session object for the current session.
-	 * @return
-	 */
-	protected Session getSession() {
-		return Session.getSession(request.getSession().getId());
-	}
 }

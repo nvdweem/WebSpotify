@@ -7,7 +7,7 @@ import java.util.Collection;
  * @author Niels
  */
 public class Util {
-	
+
 	/**
 	 * Check if an object is empty. Works for null values, empty strings and empty collections.
 	 * @param o
@@ -19,7 +19,7 @@ public class Util {
 		if ("".equals(o.toString())) return true;
 		return false;
 	}
-	
+
 	/**
 	 * Checks to see if object is empty, if so it returns the def parameter.
 	 * @param object
@@ -30,9 +30,9 @@ public class Util {
 		if (isEmpty(object)) return def;
 		return object;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param o
 	 * @return
 	 */
@@ -40,7 +40,7 @@ public class Util {
 		if (o == null) return "";
 		return o.toString();
 	}
-	
+
 	/**
 	 * Parse an integer and return the default on error.
 	 * @param o

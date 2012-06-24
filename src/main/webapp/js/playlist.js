@@ -16,7 +16,7 @@ var Playlist = function() {
 		var list = $('<ol></ol>');
 		result.append(list);
 		for (var i = 0; i < ps.length; i++)
-			list.append($('<li class="playlist"></li>').text(ps[i]).data("index", i));
+			list.append($('<li class="playlist"></li>').text(ps[i].name).data("index", i));
 		
 		$("#lists").find('.playlists').detach().end().append(result);
 	}
@@ -25,7 +25,8 @@ var Playlist = function() {
 		var result = $('<div class="playlist"></div>').data("index", data.index);
 		
 		var title = $('<div class="title"></div>');
-		title.append(decorateDuration(data.tracks ? data.tracks.length : -1, data.totalduration));
+		var duration = $('<span class="duration"></span>');
+		title.append(duration);
 		title.append($('<img src="images/playlistIcon.png" />').click(queuePlaylist));
 		title.append(data.name);
 		
@@ -44,10 +45,15 @@ var Playlist = function() {
 			table.append($('<tr><td colspan="5">Playlist not (yet) loaded</td></tr>'));
 			return table;
 		}
+		var totalduration = 0;
 		for (var i = 0; i < data.tracks.length; i++) {
 			var track = data.tracks[i];
+			totalduration += track.duration;
 			table.append(Media.decorateTrack(track).addClass(i % 2 == 0 ? "even" : "odd"));
 		}
+		
+		decorateDuration(duration, data.tracks ? data.tracks.length : -1, totalduration);
+		
 		return result.append(title).append(table);
 	}
 	
@@ -55,7 +61,7 @@ var Playlist = function() {
 		$.get("PlaylistQueue", {index: $('div.playlist').data("index")});
 	}
 	
-	function decorateDuration(tracks, total) {
+	function decorateDuration(duration, tracks, total) {
 		var seconds = total / 1000;
 		var minutes = seconds / 60;
 		var hours = minutes / 60;
@@ -69,7 +75,7 @@ var Playlist = function() {
 		else 					{resultNr = Math.floor(seconds); result = resultNr + ' second'; }
 		if (resultNr > 1) result += 's';
 		
-		return $('<span class="duration"></span>').text(tracks + ' tracks, ' + result);
+		return duration.text(tracks + ' tracks, ' + result);
 	}
 	
 	var lastRevision = -1;

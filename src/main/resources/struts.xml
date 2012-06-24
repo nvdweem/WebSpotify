@@ -8,7 +8,7 @@
 	<constant name="struts.custom.i18n.resources" value="i18n" />
 	<constant name="struts.convention.default.parent.package" value="webspotify" />
 	<constant name="struts.convention.action.name.lowercase" value="false" />
-	<constant name="struts.convention.action.name.lowercase" value="struts.convention.action.name.separator" />
+	<constant name="struts.convention.action.name.separator" value="" />
 	
 	<package name="webspotify" extends="struts-default">
 

@@ -13,9 +13,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.struts2.convention.annotation.Action;
-import org.apache.struts2.convention.annotation.Namespace;
-
 import com.vdweem.webspotify.Gsonner;
 import com.vdweem.webspotify.Util;
 
@@ -23,10 +20,8 @@ import com.vdweem.webspotify.Util;
  * Browse for artists.
  * @author Niels
  */
-@Namespace("/")
 public class ArtistBrowseAction extends SpotifyServlet {
 
-	@Action("ArtistBrowse")
 	@Override
 	public void execute() {
 		super.execute();

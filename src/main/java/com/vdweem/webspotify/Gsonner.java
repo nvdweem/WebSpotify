@@ -3,15 +3,21 @@ package com.vdweem.webspotify;
 import jahspotify.SearchResult;
 import jahspotify.media.Album;
 import jahspotify.media.Artist;
+import jahspotify.media.LibraryEntry;
 import jahspotify.media.Link;
 import jahspotify.media.Media;
+import jahspotify.media.Playlist;
 import jahspotify.media.Track;
 import jahspotify.services.JahSpotifyService;
+import jahspotify.services.Queue;
+import jahspotify.services.QueueTrack;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.struts2.ServletActionContext;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -99,7 +105,7 @@ public class Gsonner {
 				if (!artist)
 					return result;
 
-				result.add("topTracks", new JsonArray());
+				result.add("topTracks", jsc.serialize(a.getTopHitTracks()));
 				result.add("albums", getGson(Album.class, replacements).toJsonTree(a.getAlbums()));
 				result.add("relatedArtists", getGson(null, replacements).toJsonTree(a.getSimilarArtists()));
 
@@ -135,13 +141,63 @@ public class Gsonner {
 				result.add("album", jsc.serialize(a.getAlbum()));
 				result.addProperty("index", a.getTrackNumber());
 				result.addProperty("name", a.getTitle());
-				result.add("artist", jsc.serialize(a.getArtists().get(0)));
+				if (!a.getArtists().isEmpty())
+					result.add("artist", jsc.serialize(a.getArtists().get(0)));
+				else
+					result.add("artist", null);
 				result.addProperty("duration", a.getLength());
 				result.addProperty("popularity", a.getPopularity());
 
 				return result;
 			}
 		});
+		gson.registerTypeAdapter(Queue.class, new JsonSerializer<Queue>() {
+
+			@Override
+			public JsonElement serialize(Queue q, Type arg1, JsonSerializationContext jsc) {
+				JsonObject result = new JsonObject();
+
+				List<QueueTrack> tracks = new ArrayList<QueueTrack>(q.getQueuedTracks());
+				result.add("queue", jsc.serialize(tracks));
+
+				return result;
+			}
+		});
+		gson.registerTypeAdapter(QueueTrack.class, new JsonSerializer<QueueTrack>() {
+
+			@Override
+			public JsonElement serialize(QueueTrack q, Type arg1, JsonSerializationContext jsc) {
+				return jsc.serialize(q.getTrackUri());
+			}
+		});
+		gson.registerTypeAdapter(LibraryEntry.class, new JsonSerializer<LibraryEntry>() {
+
+			@Override
+			public JsonElement serialize(LibraryEntry le, Type arg1, JsonSerializationContext jsc) {
+				JsonObject result = new JsonObject();
+
+				result.addProperty("id", le.getId());
+				result.addProperty("name", le.getName());
+				result.add("playlists", jsc.serialize(new ArrayList<LibraryEntry>(le.getSubEntries())));
+
+				return result;
+			}
+		});
+		gson.registerTypeAdapter(Playlist.class, new JsonSerializer<Playlist>() {
+
+			@Override
+			public JsonElement serialize(Playlist p, Type arg1, JsonSerializationContext jsc) {
+				JsonObject result = new JsonObject();
+
+				result.add("tracks", jsc.serialize(p.getTracks()));
+				result.addProperty("title", p.getName());
+				result.addProperty("index", ServletActionContext.getRequest().getParameter("index"));
+
+				return result;
+			}
+		});
+
+
 		return gson.create();
 	}
 }

@@ -46,7 +46,7 @@ var Media = function() {
 		var printAlbum = options ? options.printAlbum !== false : true;
 		var index = options ? options.index : false;
 		
-		var row = $('<tr class="track"></tr>').data("id", t.id).data("album", t.album.id);
+		var row = $('<tr class="track"></tr>').data("id", t.id).data("album", t.album ? t.album.id : '');
 		if (index) row.append(cell('index').text(index));
 		row.append(cell('name').text(t.name));
 		if (printArtist)
@@ -70,7 +70,9 @@ var Media = function() {
 	 * Decorate an album to a link.
 	 */
 	function albumLink(a) {
-		return $('<a href="#" class="album"></a>').data("id", a.id).text(a.name);
+		if (a)
+			return $('<a href="#" class="album"></a>').data("id", a.id).text(a.name);
+		return $('<span>Unknown</span>');
 	}
 	
 	/**
