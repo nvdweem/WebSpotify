@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	version="3.0">
 
-	<display-name>ScrumPoker</display-name>
+	<display-name>WebSpotify</display-name>
 
 	<filter>
 		<filter-name>struts2</filter-name>
@@ -13,6 +13,11 @@
 		<filter-name>struts2</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+
+	<listener>
+		<listener-class>com.vdweem.webspotify.SpotifyInitializer</listener-class>
+	</listener>
+
 
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
