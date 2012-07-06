@@ -1,5 +1,10 @@
 package com.vdweem.webspotify.action;
 
+import jahspotify.media.Link;
+import jahspotify.media.Playlist;
+import jahspotify.services.MediaPlayer;
+import jahspotify.services.QueueManager;
+
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -19,12 +24,16 @@ public class PlaylistQueueAction extends SpotifyServlet {
 			return;
 		}
 
-//		Player player = Session.getInstance().getPlayer();
-//		player.setEditing(true);
-//		for (Track track : Session.getInstance().getPlaylistContainer().getPlaylist(position).getTracks())
-//			player.addToPlaylist(track);
-//		player.setEditing(false);
 
+		Playlist pl = spotify.getJahSpotify().getPlaylistContainer().getPlaylist(position);
+		for (Link track : pl.getTracks()) {
+			System.out.println(track);
+			QueueManager.getInstance().addToQueue(null, track);
+		}
+
+		MediaPlayer player = MediaPlayer.getInstance();
+		if (!player.isPlaying())
+			player.play();
 		printSuccess();
 	}
 

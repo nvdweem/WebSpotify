@@ -3,10 +3,10 @@ package com.vdweem.webspotify;
 import jahspotify.SearchResult;
 import jahspotify.media.Album;
 import jahspotify.media.Artist;
-import jahspotify.media.LibraryEntry;
 import jahspotify.media.Link;
 import jahspotify.media.Media;
 import jahspotify.media.Playlist;
+import jahspotify.media.PlaylistContainer;
 import jahspotify.media.Track;
 import jahspotify.services.JahSpotifyService;
 import jahspotify.services.Queue;
@@ -16,6 +16,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.struts2.ServletActionContext;
 
@@ -170,16 +171,22 @@ public class Gsonner {
 				return jsc.serialize(q.getTrackUri());
 			}
 		});
-		gson.registerTypeAdapter(LibraryEntry.class, new JsonSerializer<LibraryEntry>() {
+		gson.registerTypeAdapter(PlaylistContainer.class, new JsonSerializer<PlaylistContainer>() {
 
 			@Override
-			public JsonElement serialize(LibraryEntry le, Type arg1, JsonSerializationContext jsc) {
+			public JsonElement serialize(PlaylistContainer le, Type arg1, JsonSerializationContext jsc) {
 				JsonObject result = new JsonObject();
+				JsonArray arr = new JsonArray();
 
-				result.addProperty("id", le.getId());
-				result.addProperty("name", le.getName());
-				result.add("playlists", jsc.serialize(new ArrayList<LibraryEntry>(le.getSubEntries())));
+				int i = 0;
+				for (Entry<Link, String> e : le.getPlaylists().entrySet()) {
+					JsonObject playlist = new JsonObject();
+					playlist.addProperty("id", i++);
+					playlist.addProperty("name", e.getValue());
+					arr.add(playlist);
+				}
 
+				result.add("playlists", arr);
 				return result;
 			}
 		});
