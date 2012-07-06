@@ -10,18 +10,7 @@
 	<repositories>
 		<repository>
 			<id>jahspotify</id>
-			<url>file:///C:/Users/Niels/git/jahspotifyfork/pom.xml</url>
-		</repository>
-		<repository>
-			<id>oss.sonatype.org</id>
-			<name>OrientDB Maven2 Repository</name>
-			<url>https://oss.sonatype.org/content/groups/public/</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
+			<url>../libjahspotify/pom.xml</url>
 		</repository>
 	</repositories>
 
@@ -75,8 +64,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.3.2</version>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>1.6</source>
+					<target>1.6</target>
 				</configuration>
 			</plugin>
 		</plugins>
