@@ -16,7 +16,7 @@ public class SpotifyInitializer implements ServletContextListener{
 
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
-		File root = new File(sce.getServletContext().getRealPath(".")).getParentFile().getParentFile();
+		File root = new File(sce.getServletContext().getRealPath(".")).getParentFile().getParentFile().getParentFile();
 		File config = new File(root, "jahspotify");
 		config.mkdirs();
 		JahSpotifyService.initialize(config);
