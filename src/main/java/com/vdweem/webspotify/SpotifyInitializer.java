@@ -13,6 +13,7 @@ import javax.servlet.ServletContextListener;
  *
  */
 public class SpotifyInitializer implements ServletContextListener{
+	private static File appFolder;
 
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
@@ -21,10 +22,17 @@ public class SpotifyInitializer implements ServletContextListener{
 		config.mkdirs();
 		JahSpotifyService.initialize(config);
 		QueueHandler.initialize();
+		appFolder = config;
+
+		StateSaver.getInstance();
 	}
 
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {
+		StateSaver.getInstance().terminate();
 	}
 
+	public static File getAppFolder() {
+		return appFolder;
+	}
 }

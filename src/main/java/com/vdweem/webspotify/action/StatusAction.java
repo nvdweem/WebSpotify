@@ -36,7 +36,7 @@ public class StatusAction extends SpotifyServlet {
 			result.add("playing", Gsonner.getGson(Track.class).toJsonTree(mp.getCurrentTrack()));
 		}
 		result.addProperty("pause", !mp.isPlaying());
-		result.addProperty("shuffling", false);
+		result.addProperty("shuffling", QueueHandler.isShuffle());
 		result.addProperty("volume", mp.getVolume());
 
 		result.addProperty("queuerevision", QueueHandler.getRevision());

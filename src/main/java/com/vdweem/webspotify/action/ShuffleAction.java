@@ -6,12 +6,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.vdweem.webspotify.QueueHandler;
+
 public class ShuffleAction extends SpotifyServlet {
 	@Override
 	protected void doGet(HttpServletRequest arg0, HttpServletResponse arg1)
 			throws ServletException, IOException {
 
-//		Session.getInstance().getPlayer().shuffle();
+		QueueHandler.setShuffle(!QueueHandler.isShuffle());
 		printSuccess();
 	}
 
