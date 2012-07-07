@@ -18,7 +18,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>jahspotify</groupId>
-			<artifactId>jahspotify-services</artifactId>
+			<artifactId>jahspotify-api</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
