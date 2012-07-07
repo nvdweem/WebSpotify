@@ -66,7 +66,7 @@ var Player = function() {
 		var position = positionObj.position;
 		var duration = positionObj.duration;
 		
-		var left = (position / duration) * $("#progress").width();
+		var left = duration == 0 ? 0 : (position / duration) * $("#progress").width();
 		$('#position').css("left", left - 4);
 		$('#play').css("left", left);
 		
