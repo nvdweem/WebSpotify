@@ -452,6 +452,24 @@ table.browseTop td { width: 50%; }
 	background-image: url('images/playlistIcon.png'); 
 }
 
+.playlist .title .playlistImage {
+	width: 125px;
+	width: 125px;
+	float: left;
+	margin-right: 20px;
+}
+.playlist .title .playlistImage img {
+	width: 125px;
+	width: 125px;
+}
+.playlist .title .playlistImage .smallimages img {
+	width: 62px;
+	width: 62px;
+	float: none;
+	padding: 0;
+	margin: 0;
+}
+
 .playlist .title {
 	font-size: 14px;
 	font-weight: bold;

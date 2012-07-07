@@ -197,7 +197,7 @@ public class Gsonner {
 				JsonObject result = new JsonObject();
 
 				result.add("tracks", jsc.serialize(p.getTracks()));
-				result.addProperty("title", p.getName());
+				result.addProperty("name", p.getName());
 				result.addProperty("index", ServletActionContext.getRequest().getParameter("index"));
 
 				return result;

@@ -26,8 +26,10 @@ var Playlist = function() {
 		
 		var title = $('<div class="title"></div>');
 		var duration = $('<span class="duration"></span>');
+		var image = $('<div class="playlistImage"/>');
 		title.append(duration);
 		title.append($('<img src="images/playlistIcon.png" />').click(queuePlaylist));
+		title.append(image);
 		title.append(data.name);
 		
 		var table = $(
@@ -46,15 +48,39 @@ var Playlist = function() {
 			return table;
 		}
 		var totalduration = 0;
+		var albums = {};
+		var albumCount = 0;
 		for (var i = 0; i < data.tracks.length; i++) {
 			var track = data.tracks[i];
 			totalduration += track.duration;
 			table.append(Media.decorateTrack(track).addClass(i % 2 == 0 ? "even" : "odd"));
+			if (albumCount < 4 && !albums[track.album.id]) {
+				albums[track.album.id] = true;
+				albumCount++;
+			}
 		}
+		decorateImage(image, albums);
 		
 		decorateDuration(duration, data.tracks ? data.tracks.length : -1, totalduration);
 		
 		return result.append(title).append(table);
+	}
+	
+	function decorateImage(imageTarget, albums) {
+		var covers = [];
+		for (cover in albums)
+			covers.push(cover);
+		
+		if (covers.length < 4) {
+		    return $('<img />').attr('src', 'Image?id=' + covers[0]).appendTo(imageTarget);
+		}
+		var target = $('<div/>').addClass('smallimages');
+		for (var i = 0; i < covers.length; i++) {
+		    $('<img />').attr('src', 'Image?id=' + covers[i]).appendTo(target);
+		    if (i == 1)
+		        $('<br/>').appendTo(target);
+		}
+		return target.appendTo(imageTarget);
 	}
 	
 	function queuePlaylist() {
