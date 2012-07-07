@@ -1,5 +1,6 @@
 package com.vdweem.webspotify.action;
 
+import jahspotify.media.Link;
 import jahspotify.media.Track;
 import jahspotify.services.MediaPlayer;
 
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.JsonObject;
 import com.vdweem.webspotify.Gsonner;
+import com.vdweem.webspotify.QueueHandler;
 
 /**
  * Performs a status update.
@@ -37,8 +39,12 @@ public class StatusAction extends SpotifyServlet {
 		result.addProperty("shuffling", false);
 		result.addProperty("volume", mp.getVolume());
 
-		result.addProperty("playlistRevision", 0);
-		result.addProperty("queuerevision", 0);
+		result.addProperty("queuerevision", QueueHandler.getRevision());
+
+		StringBuffer hashBuff = new StringBuffer();
+		for (Link key : spotify.getJahSpotify().getPlaylistContainer().getPlaylists().keySet())
+			hashBuff.append(key.getId());
+		result.addProperty("playlistRevision", hashBuff.toString().hashCode());
 
 		printLn(result.toString());
 	}

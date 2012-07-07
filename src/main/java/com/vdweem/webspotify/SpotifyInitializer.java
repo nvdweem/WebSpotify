@@ -20,6 +20,7 @@ public class SpotifyInitializer implements ServletContextListener{
 		File config = new File(root, "jahspotify");
 		config.mkdirs();
 		JahSpotifyService.initialize(config);
+		QueueHandler.initialize();
 	}
 
 	@Override

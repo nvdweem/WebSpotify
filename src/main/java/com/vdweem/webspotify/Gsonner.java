@@ -9,8 +9,6 @@ import jahspotify.media.Playlist;
 import jahspotify.media.PlaylistContainer;
 import jahspotify.media.Track;
 import jahspotify.services.JahSpotifyService;
-import jahspotify.services.Queue;
-import jahspotify.services.QueueTrack;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -150,25 +148,6 @@ public class Gsonner {
 				result.addProperty("popularity", a.getPopularity());
 
 				return result;
-			}
-		});
-		gson.registerTypeAdapter(Queue.class, new JsonSerializer<Queue>() {
-
-			@Override
-			public JsonElement serialize(Queue q, Type arg1, JsonSerializationContext jsc) {
-				JsonObject result = new JsonObject();
-
-				List<QueueTrack> tracks = new ArrayList<QueueTrack>(q.getQueuedTracks());
-				result.add("queue", jsc.serialize(tracks));
-
-				return result;
-			}
-		});
-		gson.registerTypeAdapter(QueueTrack.class, new JsonSerializer<QueueTrack>() {
-
-			@Override
-			public JsonElement serialize(QueueTrack q, Type arg1, JsonSerializationContext jsc) {
-				return jsc.serialize(q.getTrackUri());
 			}
 		});
 		gson.registerTypeAdapter(PlaylistContainer.class, new JsonSerializer<PlaylistContainer>() {
