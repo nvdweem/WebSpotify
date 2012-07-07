@@ -25,6 +25,7 @@ public abstract class SpotifyServlet {
 	}
 
 	public void execute() {
+		ServletActionContext.getResponse().setCharacterEncoding("UTF-8");
 		try {
 			service(ServletActionContext.getRequest(), ServletActionContext.getResponse());
 		} catch (ServletException e) {
