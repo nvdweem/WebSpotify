@@ -65,6 +65,7 @@ var Queue = function(){
 			if (playingTable.find('.selected').length == 0) {
 				$(tracks.get(selectedIndex-1)).addClass('selected');
 			}
+			selectedIndex = -1;
 		}
 		
 		return queue;
