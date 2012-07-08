@@ -14,7 +14,7 @@ var TopList = function() {
 	}
 	
 	function showAlbums() {
-		Ajax.call("TopList", {"type": 0}, decorateAlbums);
+		Ajax.call("TopList", {"type": 1}, decorateAlbums);
 	}
 	
 	function decorateTracks(data) {

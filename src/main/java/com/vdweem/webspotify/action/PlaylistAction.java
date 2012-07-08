@@ -22,6 +22,12 @@ public class PlaylistAction extends SpotifyServlet {
 		int playlist = Integer.parseInt(getParam("index") == null ? "-1" : getParam("index"));
 		PlaylistContainer container = spotify.getJahSpotify().getPlaylistContainer();
 
+		if (playlist == -2) {
+			Playlist pl = spotify.getJahSpotify().readPlaylist(null, 0, 0);
+			printLn(Gsonner.getGson(Playlist.class).toJson(pl));
+			return;
+		}
+
 		if (playlist != -1) {
 			Playlist pl = container.getPlaylist(playlist);
 			printLn(Gsonner.getGson(Playlist.class).toJson(pl));
