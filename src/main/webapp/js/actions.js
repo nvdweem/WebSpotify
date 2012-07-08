@@ -90,6 +90,7 @@
 		    prev.addClass('current').addClass('selected');
 		}
 		blurText();
+		return !isInView(current, e.which == 38);
 	});
 	
 	/**
