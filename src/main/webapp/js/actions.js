@@ -10,7 +10,7 @@
 	{
 		if (!elem && elem.length == 0) return false;
 		var margin = 60;
-		var top = 56 + margin;
+		var top = $('#topbar').height() + margin;
 		var bottom = $('#center').height() + top - margin*2;
 		
 		if (up)
