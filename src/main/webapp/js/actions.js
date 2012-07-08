@@ -31,8 +31,10 @@
 	 */
 	$(document).on('click', '.track', function(e) {
 		var current = $('.current');
-		
-		if (e.shiftKey && current.length != 0) {
+
+		if (e.ctrlKey || e.metaKey) {
+			$(this).toggleClass('selected');
+		} else if (e.shiftKey && current.length != 0) {
 			var clicked = $(this);
 			if (current.position().top > clicked.position().top) {
 			    var c = current;
@@ -41,8 +43,7 @@
 			}
 			current.nextUntil(clicked).add(current).add(clicked).addClass('selected');
 		} else {
-			if (!e.ctrlKey && !e.metaKey)
-				$('.selected').removeClass('selected');
+			$('.selected').removeClass('selected');
 			$(this).addClass('selected');
 		}
 		$('.current').removeClass('current');
