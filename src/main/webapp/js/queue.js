@@ -61,8 +61,10 @@ var Queue = function(){
 		        $(this).addClass('selected');
 		});
 		// None selected, probably deleted, select the correct index.
-		if (playingTable.find('.selected').length == 0) {
-			$(tracks.get(selectedIndex-1)).addClass('selected');
+		if (selectedIndex > 0) {
+			if (playingTable.find('.selected').length == 0) {
+				$(tracks.get(selectedIndex-1)).addClass('selected');
+			}
 		}
 		
 		return queue;
