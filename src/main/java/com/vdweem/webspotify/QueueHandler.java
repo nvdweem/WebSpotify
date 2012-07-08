@@ -49,7 +49,10 @@ public class QueueHandler {
 	 * @return
 	 */
 	public static String getRevision() {
-		return String.format("%s_%s_%s", list.size(), queue.size(), shuffle);
+		int firstId = 0;
+		if (queue.size() != 0)
+			firstId = queue.peek().getId().hashCode();
+		return String.format("%s_%s_%s_%s", list.size(), queue.size(), shuffle, firstId);
 	}
 
 	public static JsonObject toJson() {
