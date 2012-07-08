@@ -101,6 +101,18 @@ public class QueueHandler {
 		queue.add(track);
 	}
 
+	/**
+	 * Removes a track from both queues.
+	 * @param track
+	 */
+	public static void remove(Link track) {
+		queue.remove(track);
+		list.remove(track);
+	}
+
+	/**
+	 * Shuffles the queue
+	 */
 	private static void shuffle() {
 		Collections.shuffle(list);
 	}

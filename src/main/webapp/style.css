@@ -294,6 +294,17 @@ span.duration, td.index {
 	color: #999999;
 }
 /****************************************************************
+ *								Global							*
+ ****************************************************************/
+#center tr.track.selected {
+	background-color: #A9D9FE;
+	color: black;
+}
+#center tr.track.selected td a {
+	color: black;
+}
+ 
+/****************************************************************
  *								Search							*
  ****************************************************************/
 .searchTop div.images, .browseTop div.images {

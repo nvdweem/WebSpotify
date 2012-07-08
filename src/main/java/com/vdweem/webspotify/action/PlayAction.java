@@ -22,12 +22,19 @@ public class PlayAction extends SpotifyServlet {
 	protected void doGet(HttpServletRequest arg0, HttpServletResponse arg1)
 			throws ServletException, IOException {
 		String id = getParam("id");
+		boolean delete = "true".equals(getParam("delete"));
+
 		if (Util.isEmpty(id)) {
 			printError("No id specified");
 			return;
 		}
 
-		QueueHandler.addToQueue(Link.create(id));
+		Link link = Link.create(id);
+		if (delete) {
+			QueueHandler.remove(link);
+			return;
+		}
+		QueueHandler.addToQueue(link);
 		MediaPlayer player = MediaPlayer.getInstance();
 		if (!player.isPlaying())
 			player.play();

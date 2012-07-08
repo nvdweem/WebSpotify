@@ -13,19 +13,10 @@ var Player = function() {
 	 */
 	function init() {
 		// Play tracks when the row is double clicked.
-		$("tr.track").live('dblclick', function() {
+		$(document).on('dblclick', 'tr.track', function() {
 			Ajax.get("Play", {"id": $(this).data("id")});
 			queued($(this));
-			
-	        if (document.selection)
-	        {
-	            document.selection.empty();
-	            obj.blur();
-	        }
-	        else
-	        {
-	            window.getSelection().removeAllRanges();
-	        }
+			blurText();
 		});
 
 		// Make the progress bar clickable to seek a position.
@@ -38,10 +29,11 @@ var Player = function() {
 	}
 	
 	function queued(_this) {
-		var color = _this.is(".odd") ? "#313131" : "#373737";
 		_this
 		    .animate({"background-color": "black"})
-		    .animate({"background-color": color});
+		    .animate({"background-color": '#A9D9FE'}, function() {
+		    	$(this).css('background-color', '');
+		    });
 	}
 	
 	function playPause() {

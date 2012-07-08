@@ -1,5 +1,8 @@
 var Queue = function(){
 	var currentRevision = -1;
+	var selected = {};
+	var selectedIndex = 0;
+	
 	$("#lists #queue li").live('click', showQueue);
 	
 	function showQueue() {
@@ -7,8 +10,16 @@ var Queue = function(){
 	}
 	
 	function update(revision) {
-		if (revision !== currentRevision && $(".playingTable:visible").length != 0)
+		if (revision !== currentRevision && $(".playingTable:visible").length != 0) {
+			// Store the current selection
+			selected = {};
+			$('.selected').each(function() {
+			    selected[$(this).data('id')] = true;;
+			});
+			selectedIndex = $('.selected:first').index();
+			
 			showQueue();
+		}
 		
 		currentRevision = revision;
 	}
@@ -41,7 +52,20 @@ var Queue = function(){
 			}
 		}
 		
-		return queue.append(playingTable);
+		queue.append(playingTable);
+		
+		//// Restore selection
+		// Select all selected id's
+		var tracks = playingTable.find('tr.track').each(function() {
+		    if (selected[$(this).data('id')])
+		        $(this).addClass('selected');
+		});
+		// None selected, probably deleted, select the correct index.
+		if (playingTable.find('.selected').length == 0) {
+			$(tracks.get(selectedIndex-1)).addClass('selected');
+		}
+		
+		return queue;
 	}
 	
 	return {
