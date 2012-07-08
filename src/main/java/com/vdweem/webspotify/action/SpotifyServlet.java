@@ -26,6 +26,10 @@ public abstract class SpotifyServlet {
 
 	public void execute() {
 		ServletActionContext.getResponse().setCharacterEncoding("UTF-8");
+		ServletActionContext.getResponse().addHeader("Cache-Control", "no-cache");
+		ServletActionContext.getResponse().addHeader("Pragma", "no-cache");
+		ServletActionContext.getResponse().addHeader("Expires", "Thu, 01 Jan 1970 00:00:00 GMT");
+
 		try {
 			service(ServletActionContext.getRequest(), ServletActionContext.getResponse());
 		} catch (ServletException e) {
