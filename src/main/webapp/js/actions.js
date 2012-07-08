@@ -30,47 +30,67 @@
 	 * Select tracks. Multiple tracks can be selected by shift clicking.
 	 */
 	$(document).on('click', '.track', function(e) {
-		if (e.shiftKey) {
-			var a = $('.selected');
-			var b = $(this);
-			if (a.position().top > b.position().top) {
-			    var c = a;
-			    a = b;
-			    b = c;
+		var current = $('.current');
+		
+		if (e.shiftKey && current.length != 0) {
+			var clicked = $(this);
+			if (current.position().top > clicked.position().top) {
+			    var c = current;
+			    current = clicked;
+			    clicked = c;
 			}
-			a.nextUntil(b).add(a).add(b).addClass('selected');
-			blurText();
+			current.nextUntil(clicked).add(current).add(clicked).addClass('selected');
 		} else {
-			$('.selected').removeClass('selected');
+			if (!e.ctrlKey && !e.metaKey)
+				$('.selected').removeClass('selected');
 			$(this).addClass('selected');
 		}
+		$('.current').removeClass('current');
+		$(this).addClass('current');
+		blurText();
 	});
 	
 	/**
 	 * Navigating through the tracks.
 	 */
-	key('up', function() {
+	key('up, down', function(e) {
 		var dontScroll = false;
-	    var selected = $('.selected').removeClass('selected').filter(':last');
-	    var prev = selected.prev('.track');
+	    var selected = $('.selected').removeClass('selected').filter('.current');
+	    var prev;
+	    if (e.which == 38)
+			prev = selected.prev('.track');
+		else
+			prev = selected.next('.track');
+	    
 	    if (prev.length == 0) {
-	    	prev = scrollTo($('tr.track:last'));
+	    	prev = scrollTo($('tr.track:' + (e.which == 38 ? 'last' : 'first')));
 	    	dontScroll = true;
 	    }
-	    prev.addClass('selected');
-	    return !dontScroll && !isInView(selected, true);
+	    $('.current').removeClass('current');
+	    prev.addClass('selected').addClass('current');
+	    return !dontScroll && !isInView(selected, e.which == 38);
 	});
-	key('down', function() {
-		var dontScroll = false;
-	    var selected = $('.selected').removeClass('selected').filter(':last');
-	    var prev = selected.next('.track');
-	    if (prev.length == 0) {
-	    	prev = scrollTo($('tr.track:first'));
-	    	dontScroll = true;
-	    }
-	    prev.addClass('selected');
-	    return !dontScroll && !isInView(selected, false);
+	/**
+	 * Altering selection
+	 */
+	key('shift+up, shift+down', function(e) {
+		var current = $('.current').removeClass('current');
+		var prev;
+		if (e.which == 38)
+			prev = current.prev();
+		else
+			prev = current.next();
+		
+		if (prev.is('.selected')) {
+		    current.removeClass('selected').removeClass('.current');
+		    prev.addClass('current');
+		} else {
+		    current.removeClass('current');
+		    prev.addClass('current').addClass('selected');
+		}
+		blurText();
 	});
+	
 	/**
 	 * Add a track to the queue.
 	 */
@@ -93,14 +113,34 @@
 		});
 		return false;
 	});
+	/** Prev */
+	key('ctrl+,', function() {
+		$('#back').click();
+		return false;
+	});
+	/** Next */
+	key('ctrl+.', function() {
+		$('#skip').click();
+		return false;
+	});
+	/** Pause/play */
+	key('ctrl+/', function() {
+		$('#playpause').click();
+		return false;
+	});
+	/** Volume */
+	key('ctrl+up,ctrl+down', function(e) {
+		var change = e.which == 38 ? 1 : -1;
+		Volume.setVolume(Math.max(0, Math.min(100, Volume.getVolume() + change)));
+		return false;
+	});
 	
 	/**
-	 * Function for blurring text (after shift clicking).
+	 * Global function for blurring text (after shift clicking).
 	 */
 	window.blurText = function() {
 		if (document.selection) {
             document.selection.empty();
-            obj.blur();
         } else {
             window.getSelection().removeAllRanges();
         }
