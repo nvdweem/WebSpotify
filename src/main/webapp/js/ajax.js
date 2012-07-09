@@ -22,6 +22,6 @@ var Ajax = function() {
 	}
 	return {
 		call: call,
-		get: get,
+		get: get
 	};
 }();

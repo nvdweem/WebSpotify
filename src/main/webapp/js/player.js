@@ -79,6 +79,6 @@ var Player = function() {
 	
 	return {
 		"updatePosition": updatePosition,
-		"updateShuffling": updateShuffling,
+		"updateShuffling": updateShuffling
 	};
 }();

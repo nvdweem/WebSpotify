@@ -134,6 +134,6 @@ var Search = function() {
 	return {
 		"decorateSearch": decorateSearch,
 		"decorateList": decorateList,
-		"decorateAlbumAndArtist": decorateAlbumAndArtist,
+		"decorateAlbumAndArtist": decorateAlbumAndArtist
 	};
 }();
