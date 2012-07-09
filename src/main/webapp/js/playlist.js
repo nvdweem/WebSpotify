@@ -104,6 +104,16 @@ var Playlist = function() {
 		return duration.text(tracks + ' tracks, ' + result);
 	}
 	
+	function deleteSelected() {
+		$('.playingTable .selected').each(function() {
+			$.get('Play', {'delete': true, 'id': $(this).data('id')});
+		});
+	}
+	
+	function clear() {
+		$.get('Play', {'delete': 'all'});
+	}
+	
 	var lastRevision = -1;
 	function update(revision) {
 		if (revision != lastRevision) {
@@ -114,5 +124,7 @@ var Playlist = function() {
 	
 	return {
 		"update": update,
+		"deleteSelected": deleteSelected,
+		"clear": clear
 	};
 }();

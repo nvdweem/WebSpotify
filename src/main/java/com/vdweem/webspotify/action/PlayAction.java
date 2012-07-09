@@ -23,7 +23,11 @@ public class PlayAction extends SpotifyServlet {
 			throws ServletException, IOException {
 		String id = getParam("id");
 		boolean delete = "true".equals(getParam("delete"));
+		boolean deleteAll = "all".equals(getParam("delete"));
 
+		if (deleteAll) {
+			QueueHandler.clear();
+		}
 		if (Util.isEmpty(id)) {
 			printError("No id specified");
 			return;

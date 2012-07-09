@@ -110,9 +110,7 @@
 	 * Remove a track from the queue.
 	 */
 	key('delete, backspace', function() {
-		$('.playingTable .selected').each(function() {
-			$.get('Play', {'delete': true, 'id': $(this).data('id')});
-		});
+		Playlist.deleteSelected();
 		return false;
 	});
 	/** Prev */
@@ -131,12 +129,26 @@
 		return false;
 	});
 	/** Volume */
-	key('ctrl+up,ctrl+down', function(e) {
+	key('ctrl+up,ctrl+down,alt+up,alt+down', function(e) {
 		var change = e.which == 38 ? 1 : -1;
 		Volume.setVolume(Math.max(0, Math.min(100, Volume.getVolume() + change)));
 		return false;
 	});
-	
+	/** Clear queue */
+	key('ctrl+alt+d', function() {
+		$('<div title="Clear playlist">Are you sure you want to clear the playlist?</div>').dialog({
+			close: function() {
+				$(this).dialog('destroy').detach();
+			},
+			buttons: [{text: 'Yes', click: function() {
+				Playlist.clear();
+				$(this).dialog('close');
+			}}, {text: 'No', click: function() {
+				$(this).dialog('close');
+			}}]
+		});
+		return false;
+	});
 	/**
 	 * Global function for blurring text (after shift clicking).
 	 */

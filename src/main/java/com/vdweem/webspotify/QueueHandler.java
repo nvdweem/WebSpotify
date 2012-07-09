@@ -114,6 +114,13 @@ public class QueueHandler {
 	}
 
 	/**
+	 * Removes all items from the list.
+	 */
+	public static void clear() {
+		list.clear();
+	}
+
+	/**
 	 * Shuffles the queue
 	 */
 	private static void shuffle() {
