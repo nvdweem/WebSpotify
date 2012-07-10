@@ -55,7 +55,7 @@ public class StateSaver extends Thread {
 		while (running) {
 			try {
 				synchronized(this) {
-					wait(1000 * 60 * 60 * 5); // 5 minutes
+					wait(1000 * 60 * 5); // 5 minutes
 				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
