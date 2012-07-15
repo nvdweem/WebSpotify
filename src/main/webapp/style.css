@@ -111,6 +111,12 @@ a:hover {
 	bottom: 42px;
 	overflow: auto;
 }
+.login #center {
+	left: 0px;
+	right: 0px;
+	top: 0px;
+	bottom: 0px;
+}
 
 #controls {
 	background: url('images/controlsGradient.png') repeat-x;

@@ -13,7 +13,9 @@
 	<package name="webspotify" extends="struts-default">
 
 		<interceptors>
+			<interceptor name="webspotifyLoginInterceptor" class="com.vdweem.webspotify.interceptor.LoginInterceptor"></interceptor>
 			<interceptor-stack name="defaultstack">
+				<interceptor-ref name="webspotifyLoginInterceptor" />
 				<interceptor-ref name="basicStack" />
 			</interceptor-stack>
 		</interceptors>
