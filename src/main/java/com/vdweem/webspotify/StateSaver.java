@@ -26,7 +26,7 @@ public class StateSaver extends Thread {
 		return instance;
 	}
 
-	private StateSaver() {}
+	private StateSaver() {super("State saver");}
 
 	/**
 	 * Save every 5 minutes.
