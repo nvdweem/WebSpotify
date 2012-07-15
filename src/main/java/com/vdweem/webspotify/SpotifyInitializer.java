@@ -17,12 +17,23 @@ public class SpotifyInitializer implements ServletContextListener{
 
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
-		File root = new File(sce.getServletContext().getRealPath(".")).getParentFile().getParentFile().getParentFile();
-		File config = new File(root, "jahspotify");
+		File userDir = new File(System.getProperty("user.home"));
+		File config = new File(userDir, ".libjahspotify");
 		config.mkdirs();
+
 		JahSpotifyService.initialize(config);
 		QueueHandler.initialize();
 		appFolder = config;
+
+		for (int i = 0; i < 10; i++) {
+			try {
+				Thread.sleep(250);
+				JahSpotifyService.getInstance().getJahSpotify().login(System.getProperty("jahspotify.spotify.username"), System.getProperty("jahspotify.spotify.password"), false);
+				break;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 
 		StateSaver.getInstance();
 	}
@@ -30,6 +41,7 @@ public class SpotifyInitializer implements ServletContextListener{
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {
 		StateSaver.getInstance().terminate();
+		JahSpotifyService.getInstance().getJahSpotify().destroy();
 	}
 
 	public static File getAppFolder() {
