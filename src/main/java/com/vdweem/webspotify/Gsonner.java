@@ -88,8 +88,8 @@ public class Gsonner {
 					case ALBUM: return jsc.serialize(spotify.getJahSpotify().readAlbum(link));
 					case TRACK: return jsc.serialize(spotify.getJahSpotify().readTrack(link));
 					case IMAGE: return jsc.serialize(spotify.getJahSpotify().readImage(link));
+					default: return null;
 				}
-				return null;
 			}
 		});
 		gson.registerTypeAdapter(Artist.class, new JsonSerializer<Artist>() {

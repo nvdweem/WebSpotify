@@ -2,36 +2,37 @@ package com.vdweem.webspotify.action;
 
 import jahspotify.SearchResult;
 import jahspotify.media.TopListType;
+import jahspotify.services.JahSpotifyService;
 import jahspotify.services.MediaHelper;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.opensymphony.xwork2.Result;
 import com.vdweem.webspotify.Gsonner;
-import com.vdweem.webspotify.Util;
+import com.vdweem.webspotify.result.JsonResult;
 
-public class TopListAction extends SpotifyServlet {
-	@Override
-	protected void doGet(HttpServletRequest arg0, HttpServletResponse arg1)
-			throws ServletException, IOException {
-		int typeInt = Util.parseInt(getParam("type"), 2);
-		if (typeInt < 0 || typeInt > TopListType.values().length) {
-			printError("Type must be 0 <= type <= 2");
-			return;
+/**
+ * Shows a toplist.
+ * @author Niels
+ */
+public class TopListAction {
+	private int type = 2;
+
+	public Result execute() {
+		if (type < 0 || type > TopListType.values().length) {
+			return new JsonResult("Type must be 0 <= type <= 2", true);
 		}
 
-		TopListType type = TopListType.values()[typeInt];
-		SearchResult result = spotify.getJahSpotify().getTopList(type);
+		TopListType typeObj = TopListType.values()[type];
+		SearchResult result = JahSpotifyService.getInstance().getJahSpotify().getTopList(typeObj);
 		MediaHelper.waitFor(result, 10);
-		printLn(Gsonner.getGson(SearchResult.class).toJson(result));
+		return new JsonResult(Gsonner.getGson(SearchResult.class).toJson(result));
 	}
 
-	@Override
-	protected ResultType getResultType() {
-		return ResultType.json;
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
 	}
 
 }

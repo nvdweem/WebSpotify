@@ -2,27 +2,18 @@ package com.vdweem.webspotify.action;
 
 import jahspotify.services.MediaPlayer;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import com.opensymphony.xwork2.Result;
+import com.vdweem.webspotify.result.JsonResult;
 
 /**
  * Goes to the next song.
  * @author Niels
  */
-public class NextAction extends SpotifyServlet {
-	@Override
-	protected void doGet(HttpServletRequest arg0, HttpServletResponse arg1)
-			throws ServletException, IOException {
-		MediaPlayer.getInstance().skip();
-		printSuccess();
-	}
+public class NextAction {
 
-	@Override
-	protected ResultType getResultType() {
-		return ResultType.json;
+	public Result execute() {
+		MediaPlayer.getInstance().skip();
+		return JsonResult.SUCCESS;
 	}
 
 }

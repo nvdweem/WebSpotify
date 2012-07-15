@@ -2,27 +2,24 @@ package com.vdweem.webspotify.action;
 
 import jahspotify.services.MediaPlayer;
 
-import java.io.IOException;
+import com.opensymphony.xwork2.Result;
+import com.vdweem.webspotify.result.JsonResult;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+public class VolumeAction {
+	private int volume;
 
-import com.vdweem.webspotify.Util;
-
-public class VolumeAction extends SpotifyServlet {
-	@Override
-	protected void doGet(HttpServletRequest arg0, HttpServletResponse arg1)
-			throws ServletException, IOException {
-		int volume = Util.parseInt(getParam("volume"), 100);
+	public Result execute() {
 		volume = Math.min(100, Math.max(0, volume)); // Between 0 and 100.
-
 		MediaPlayer.getInstance().setVolume(volume);
+		return JsonResult.SUCCESS;
 	}
 
-	@Override
-	protected ResultType getResultType() {
-		return ResultType.json;
+	public int getVolume() {
+		return volume;
+	}
+
+	public void setVolume(int volume) {
+		this.volume = volume;
 	}
 
 }

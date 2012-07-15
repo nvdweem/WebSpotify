@@ -2,27 +2,18 @@ package com.vdweem.webspotify.action;
 
 import jahspotify.services.MediaPlayer;
 
-import java.io.IOException;
+import com.opensymphony.xwork2.Result;
+import com.vdweem.webspotify.result.JsonResult;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+/**
+ * Toggles the play state for the player.
+ * @author Niels
+ */
+public class PlayPauseAction {
 
-public class PlayPauseAction extends SpotifyServlet {
-
-	@Override
-	protected void doGet(HttpServletRequest arg0, HttpServletResponse arg1)
-			throws ServletException, IOException {
-
+	public Result execute() {
 		MediaPlayer.getInstance().pause();
-		printSuccess();
-	}
-
-
-
-	@Override
-	protected ResultType getResultType() {
-		return ResultType.json;
+		return JsonResult.SUCCESS;
 	}
 
 }

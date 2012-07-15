@@ -2,30 +2,26 @@ package com.vdweem.webspotify.action;
 
 import jahspotify.media.Link;
 import jahspotify.media.Playlist;
+import jahspotify.services.JahSpotifyService;
 import jahspotify.services.MediaPlayer;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.opensymphony.xwork2.Result;
 import com.vdweem.webspotify.QueueHandler;
-import com.vdweem.webspotify.Util;
+import com.vdweem.webspotify.result.JsonResult;
 
-public class PlaylistQueueAction extends SpotifyServlet {
-	@Override
-	protected void doGet(HttpServletRequest arg0, HttpServletResponse arg1)
-			throws ServletException, IOException {
+/**
+ * Queues a playlist.
+ * @author Niels
+ */
+public class PlaylistQueueAction {
+	private int index = -1;
 
-		int position = Util.parseInt(getParam("index"), -1);
-		if (position == -1) {
-			printError("Unknown playlist index.");
-			return;
+	public Result execute() {
+		if (index == -1) {
+			return new JsonResult("Unknown playlist index.", true);
 		}
 
-
-		Playlist pl = spotify.getJahSpotify().getPlaylistContainer().getPlaylist(position);
+		Playlist pl = JahSpotifyService.getInstance().getJahSpotify().getPlaylistContainer().getPlaylist(index);
 		for (Link track : pl.getTracks()) {
 			QueueHandler.addToList(track);
 		}
@@ -33,12 +29,15 @@ public class PlaylistQueueAction extends SpotifyServlet {
 		MediaPlayer player = MediaPlayer.getInstance();
 		if (!player.isPlaying())
 			player.play();
-		printSuccess();
+		return JsonResult.SUCCESS;
 	}
 
-	@Override
-	protected ResultType getResultType() {
-		return ResultType.json;
+	public int getIndex() {
+		return index;
+	}
+
+	public void setIndex(int index) {
+		this.index = index;
 	}
 
 }

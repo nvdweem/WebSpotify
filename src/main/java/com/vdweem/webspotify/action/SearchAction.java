@@ -4,52 +4,72 @@ import jahspotify.Query;
 import jahspotify.SearchResult;
 import jahspotify.services.SearchEngine;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.opensymphony.xwork2.Result;
 import com.vdweem.webspotify.Gsonner;
 import com.vdweem.webspotify.Util;
+import com.vdweem.webspotify.result.JsonResult;
 
 /**
  * Perform a search.
  * @author Niels
  */
-public class SearchAction extends SpotifyServlet {
+public class SearchAction {
     private SearchEngine searchEngine = SearchEngine.getInstance();
 
-	@Override
-	protected void doGet(HttpServletRequest arg0, HttpServletResponse arg1)
-			throws ServletException, IOException {
-		String query = getParam("query");
-		int trackCount = Util.parseInt(getParam("tracks"), 50);
-		int artistCount = Util.parseInt(getParam("artists"), 15);
-		int albumCount = Util.parseInt(getParam("albums"), 15);
+    private String query;
+    private int tracks = 50;
+    private int artists = 15;
+    private int albums = 15;
 
+    public Result execute() {
 		if (Util.isEmpty(query)) {
-			printError("Query is required");
-			return;
+			return new JsonResult("You are required to enter a query.", true);
 		}
 
 		jahspotify.Search search = new jahspotify.Search(Query.token(query));
-		search.setNumAlbums(albumCount);
-		search.setNumArtists(artistCount);
-		search.setNumTracks(trackCount);
+		search.setNumTracks(tracks);
+		search.setNumAlbums(albums);
+		search.setNumArtists(artists);
 		SearchResult result = searchEngine.search(search);
 
 		try {
-			printLn(Gsonner.getGson(null).toJson(result));
+			return new JsonResult(Gsonner.getGson(null).toJson(result));
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new JsonResult("Error", true);
 	}
 
-	@Override
-	protected ResultType getResultType() {
-		return ResultType.json;
+	public String getQuery() {
+		return query;
 	}
 
+	public void setQuery(String query) {
+		this.query = query;
+	}
+
+	public int getTracks() {
+		return tracks;
+	}
+
+	public void setTracks(int tracks) {
+		this.tracks = tracks;
+	}
+
+	public int getArtists() {
+		return artists;
+	}
+
+	public void setArtists(int artists) {
+		this.artists = artists;
+	}
+
+	public int getAlbums() {
+		return albums;
+	}
+
+	public void setAlbums(int albums) {
+		this.albums = albums;
+	}
 }

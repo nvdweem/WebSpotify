@@ -2,28 +2,22 @@ package com.vdweem.webspotify.action;
 
 import jahspotify.media.Link;
 import jahspotify.media.Track;
+import jahspotify.services.JahSpotifyService;
 import jahspotify.services.MediaPlayer;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.google.gson.JsonObject;
+import com.opensymphony.xwork2.Result;
 import com.vdweem.webspotify.Gsonner;
 import com.vdweem.webspotify.QueueHandler;
+import com.vdweem.webspotify.result.JsonResult;
 
 /**
  * Performs a status update.
  * @author Niels
  */
-public class StatusAction extends SpotifyServlet {
+public class StatusAction {
 
-	@Override
-	protected void doGet(HttpServletRequest arg0, HttpServletResponse arg1)
-			throws ServletException, IOException {
-
+	public Result execute() {
 		JsonObject result = new JsonObject();
 		Track playing = MediaPlayer.getInstance().getCurrentTrack();
 		MediaPlayer mp = MediaPlayer.getInstance();
@@ -42,16 +36,11 @@ public class StatusAction extends SpotifyServlet {
 		result.addProperty("queuerevision", QueueHandler.getRevision());
 
 		StringBuffer hashBuff = new StringBuffer();
-		for (Link key : spotify.getJahSpotify().getPlaylistContainer().getPlaylists().keySet())
+		for (Link key : JahSpotifyService.getInstance().getJahSpotify().getPlaylistContainer().getPlaylists().keySet())
 			hashBuff.append(key.getId());
 		result.addProperty("playlistRevision", hashBuff.toString().hashCode());
 
-		printLn(result.toString());
-	}
-
-	@Override
-	protected ResultType getResultType() {
-		return ResultType.json;
+		return new JsonResult(result.toString());
 	}
 
 }

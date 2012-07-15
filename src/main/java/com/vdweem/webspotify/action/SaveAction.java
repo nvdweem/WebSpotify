@@ -1,27 +1,18 @@
 package com.vdweem.webspotify.action;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.opensymphony.xwork2.Result;
 import com.vdweem.webspotify.StateSaver;
+import com.vdweem.webspotify.result.JsonResult;
 
 /**
  * Saves the current state.
  * @author Niels
  */
-public class SaveAction extends SpotifyServlet {
+public class SaveAction {
 
-	@Override
-	protected void doGet(HttpServletRequest arg0, HttpServletResponse arg1) throws ServletException, IOException {
+	public Result execute() {
 		StateSaver.getInstance().saveNow();
-		printSuccess();
+		return JsonResult.SUCCESS;
 	}
 
-	@Override
-	protected ResultType getResultType() {
-		return ResultType.json;
-	}
 }

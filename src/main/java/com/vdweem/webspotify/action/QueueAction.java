@@ -1,23 +1,17 @@
 package com.vdweem.webspotify.action;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.opensymphony.xwork2.Result;
 import com.vdweem.webspotify.QueueHandler;
+import com.vdweem.webspotify.result.JsonResult;
 
-public class QueueAction extends SpotifyServlet {
-	@Override
-	protected void doGet(HttpServletRequest arg0, HttpServletResponse arg1)
-			throws ServletException, IOException {
-		printLn(QueueHandler.toJson().toString());
-	}
+/**
+ * Shows the current queue.
+ * @author Niels
+ */
+public class QueueAction {
 
-	@Override
-	protected ResultType getResultType() {
-		return ResultType.json;
+	public Result execute() {
+		return new JsonResult(QueueHandler.toJson().toString());
 	}
 
 }

@@ -14,27 +14,28 @@
 
 package org.xiph.libshout;
 
+@SuppressWarnings("rawtypes")
 public class Base64EncoderDecoder extends java.util.prefs.AbstractPreferences {
-	   private java.util.Hashtable encodedStore = new java.util.Hashtable();
-	 
+	private java.util.Hashtable encodedStore = new java.util.Hashtable();
+
 	public Base64EncoderDecoder(java.util.prefs.AbstractPreferences prefs, java.lang.String string) {
 	   super(prefs, string);
 	}
-	 
+
 	public java.lang.String encodeBase64(java.lang.String raw)
 	                                         throws java.io.UnsupportedEncodingException{
 	   byte[] rawUTF8 = raw.getBytes("UTF8");
 	   this.putByteArray(raw, rawUTF8);
 	   return (java.lang.String)this.encodedStore.get(raw);
 	}
-	 
+
 	public java.lang.String encodeBase64(java.lang.String key, java.lang.String raw)
 	                                         throws java.io.UnsupportedEncodingException{
-	   byte[] rawUTF8 = raw.getBytes("UTF8"); 
+	   byte[] rawUTF8 = raw.getBytes("UTF8");
 	   this.putByteArray(key, rawUTF8);
 	   return (java.lang.String)this.encodedStore.get(key);
-	} 
-	 
+	}
+
 	@SuppressWarnings("unchecked")
 	public java.lang.String decodeBase64(java.lang.String key, java.lang.String base64String)
 	                                         throws java.io.UnsupportedEncodingException, java.io.IOException{
@@ -43,26 +44,37 @@ public class Base64EncoderDecoder extends java.util.prefs.AbstractPreferences {
 	   byte[] byteResults = this.getByteArray(key, def);
 	   return new java.lang.String(byteResults, "UTF8");
 	}
-	 
+
+	@Override
 	public String get(String key, String def) {
 	   return (java.lang.String)this.encodedStore.get(key);
 	}
-	 
-	 
+
+
+	@Override
 	@SuppressWarnings("unchecked")
 	public void put(String key, String value){
 	   this.encodedStore.put(key, value);
 	}
-	 
-	 
+
+
 //	dummy implementation as AbstractPreferences is extended to access methods above
+	@Override
 	protected java.util.prefs.AbstractPreferences childSpi(String name) {return null;}
+	@Override
 	protected String[] childrenNamesSpi() throws java.util.prefs.BackingStoreException {return null;}
+	@Override
 	protected void flushSpi() throws java.util.prefs.BackingStoreException {}
+	@Override
 	protected String getSpi(String key) {return null;}
+	@Override
 	protected String[] keysSpi() throws java.util.prefs.BackingStoreException {return null;}
+	@Override
 	protected void putSpi(String key, String value) {}
+	@Override
 	protected void removeNodeSpi() throws java.util.prefs.BackingStoreException {}
+	@Override
 	protected void removeSpi(String key) {}
+	@Override
 	protected void syncSpi() throws java.util.prefs.BackingStoreException {}
 }

@@ -1,25 +1,17 @@
 package com.vdweem.webspotify.action;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.opensymphony.xwork2.Result;
 import com.vdweem.webspotify.QueueHandler;
+import com.vdweem.webspotify.result.JsonResult;
 
-public class ShuffleAction extends SpotifyServlet {
-	@Override
-	protected void doGet(HttpServletRequest arg0, HttpServletResponse arg1)
-			throws ServletException, IOException {
-
+/**
+ * Shuffles the queue.
+ * @author Niels
+ */
+public class ShuffleAction {
+	public Result execute() {
 		QueueHandler.setShuffle(!QueueHandler.isShuffle());
-		printSuccess();
-	}
-
-	@Override
-	protected ResultType getResultType() {
-		return ResultType.json;
+		return JsonResult.SUCCESS;
 	}
 
 }

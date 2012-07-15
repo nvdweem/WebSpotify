@@ -2,36 +2,35 @@ package com.vdweem.webspotify.action;
 
 import jahspotify.media.Album;
 import jahspotify.media.Link;
+import jahspotify.services.JahSpotifyService;
 import jahspotify.services.MediaHelper;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.opensymphony.xwork2.Result;
 import com.vdweem.webspotify.Gsonner;
 import com.vdweem.webspotify.Util;
+import com.vdweem.webspotify.result.JsonResult;
 
 /**
  * Browse for albums.
  * @author Niels
  */
-public class AlbumBrowseAction extends SpotifyServlet {
-	@Override
-	protected void doGet(HttpServletRequest arg0, HttpServletResponse arg1)
-			throws ServletException, IOException {
-		String id = getParam("id");
-		if (Util.isEmpty(id)) return;
+public class AlbumBrowseAction {
+	private String id;
 
-		Album album = spotify.getJahSpotify().readAlbum(Link.create(id), true);
+	public Result execute() {
+		if (Util.isEmpty(id)) return new JsonResult("No id given.", true);
+
+		Album album = JahSpotifyService.getInstance().getJahSpotify().readAlbum(Link.create(id), true);
 		MediaHelper.waitFor(album, 5);
-		printLn(Gsonner.getGson(Album.class).toJson(album));
+		return new JsonResult(Gsonner.getGson(Album.class).toJson(album));
 	}
 
-	@Override
-	protected ResultType getResultType() {
-		return ResultType.json;
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 }

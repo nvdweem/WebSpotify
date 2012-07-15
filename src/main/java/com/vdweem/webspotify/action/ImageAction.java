@@ -3,70 +3,62 @@ package com.vdweem.webspotify.action;
 import jahspotify.media.Artist;
 import jahspotify.media.Image;
 import jahspotify.media.Link;
+import jahspotify.services.JahSpotifyService;
 import jahspotify.services.MediaHelper;
 
-import java.io.IOException;
 import java.util.List;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import com.vdweem.webspotify.Util;
+import com.opensymphony.xwork2.Result;
+import com.vdweem.webspotify.result.ImageResult;
 
 /**
  * Show an image. If no image is found then show the corresponding placeholder.
  * @author Niels
  */
-public class ImageAction extends SpotifyServlet {
+public class ImageAction {
+	private String id;
 
-	@Override
-	protected void doGet(HttpServletRequest arg0, HttpServletResponse response)
-			throws ServletException, IOException {
-		setHeaders(response);
-		String id = Util.nonNullString(getParam("id"));
-
+	public Result execute() {
 		Link link = Link.create(id);
 		String img = null;
 
 		switch (link.getType()) {
 		case ALBUM:
 			img = "noAlbum.png";
-			link = spotify.getJahSpotify().readAlbum(link).getCover();
+			link = JahSpotifyService.getInstance().getJahSpotify().readAlbum(link).getCover();
 			break;
 		case ARTIST:
 			img = "noArtist.png";
-			Artist artist = spotify.getJahSpotify().readArtist(link, true);
+			Artist artist = JahSpotifyService.getInstance().getJahSpotify().readArtist(link, true);
 			if (!MediaHelper.waitFor(artist, 2)) break;
 			List<Link> links = artist.getPortraits();
 			if (links.size() > 0) link = links.get(0);
 			else link = null;
 			break;
 		case TRACK:
-			link = Link.create(spotify.getJahSpotify().readTrack(link).getCover());
+			link = Link.create(JahSpotifyService.getInstance().getJahSpotify().readTrack(link).getCover());
 			break;
+		case IMAGE:
+			break;
+		default:
+				throw new IllegalArgumentException("Images should be created from an artist, album, track or image link.");
 		}
 
 		if (link != null) {
-			Image image = spotify.getJahSpotify().readImage(link);
-			if (image == null) return;
+			Image image = JahSpotifyService.getInstance().getJahSpotify().readImage(link);
+			if (image == null) return null;
 			if (MediaHelper.waitFor(image, 2)) {
-				byte[] bytes = image.getBytes();
-				response.getOutputStream().write(bytes, 0, bytes.length);
-				return;
+				return new ImageResult(image.getBytes());
 			}
 		}
-		response.sendRedirect("images/" + img);
-	}
-	private void setHeaders(HttpServletResponse response) {
-		response.addHeader("Expires", "Mon, 26 Jul 1990 05:00:00 GMT");
-		response.addHeader("Cache-Control", "no-store, no-cache, must-revalidate");
-		response.addHeader("Pragma", "no-cache");
+		return new ImageResult("images/" + img);
 	}
 
-	@Override
-	protected ResultType getResultType() {
-		return ResultType.image;
+	public String getId() {
+		return id;
 	}
 
+	public void setId(String id) {
+		this.id = id;
+	}
 }
