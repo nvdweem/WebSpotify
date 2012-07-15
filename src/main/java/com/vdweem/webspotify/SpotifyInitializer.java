@@ -28,7 +28,7 @@ public class SpotifyInitializer implements ServletContextListener{
 		for (int i = 0; i < 10; i++) {
 			try {
 				Thread.sleep(250);
-				JahSpotifyService.getInstance().getJahSpotify().login(System.getProperty("jahspotify.spotify.username"), System.getProperty("jahspotify.spotify.password"), false);
+				JahSpotifyService.getInstance().getJahSpotify().login(System.getProperty("jahspotify.spotify.username"), System.getProperty("jahspotify.spotify.password"), null, false);
 				break;
 			} catch (Exception e) {
 				e.printStackTrace();
