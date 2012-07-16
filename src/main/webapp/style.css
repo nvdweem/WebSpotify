@@ -480,7 +480,7 @@ table.browseTop td { width: 50%; }
 	width: 125px;
 }
 .playlist .title .playlistImage .smallimages img {
-	width: 62px;
+	height: 62px;
 	width: 62px;
 	float: none;
 	padding: 0;
