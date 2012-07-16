@@ -125,6 +125,7 @@ var Playlist = function() {
 	return {
 		"update": update,
 		"deleteSelected": deleteSelected,
-		"clear": clear
+		"clear": clear,
+		"decorateDuration": decorateDuration
 	};
 }();

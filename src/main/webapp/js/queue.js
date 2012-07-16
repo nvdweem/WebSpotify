@@ -52,6 +52,10 @@ var Queue = function(){
 			}
 		}
 		
+		var duration = $('<span class="duration"></span>');
+		Playlist.decorateDuration(duration, q.size ? q.size : 0, q.duration);
+		queue.append($('<div class="playlist" />').append($('<span class="title"/>').append(duration)));
+		
 		queue.append(playingTable);
 		
 		//// Restore selection

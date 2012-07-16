@@ -2,6 +2,7 @@ package com.vdweem.webspotify;
 
 import jahspotify.media.Link;
 import jahspotify.media.Track;
+import jahspotify.services.JahSpotifyService;
 import jahspotify.services.MediaPlayer;
 
 import java.io.IOException;
@@ -62,16 +63,32 @@ public class QueueHandler {
 
 		JsonArray queue = new JsonArray();
 		Iterator<Link> itt = QueueHandler.getQueue().iterator();
-		while (itt.hasNext())
-			queue.add(jsc.toJsonTree(itt.next()));
+		int totalDuration = 0;
+		int totalTracks = 0;
+		while (itt.hasNext()) {
+			Link link = itt.next();
+			Track track = JahSpotifyService.getInstance().getJahSpotify().readTrack(link);
+			totalDuration += track.getLength();
+			totalTracks++;
+			queue.add(jsc.toJsonTree(track));
+		}
 		result.add("queue", queue);
 
 		JsonArray list = new JsonArray();
 		itt = QueueHandler.getList().iterator();
-		int count = 100;
-		while (itt.hasNext() && count-- > 0)
-			list.add(jsc.toJsonTree(itt.next()));
+		int count = 0;
+		while (itt.hasNext()) {
+			Link link = itt.next();
+			Track track = JahSpotifyService.getInstance().getJahSpotify().readTrack(link);
+			totalDuration += track.getLength();
+			count++;
+			if (count < 100)
+				list.add(jsc.toJsonTree(track));
+		}
+		totalTracks += count;
 		result.add("playlist", list);
+		result.addProperty("duration", totalDuration);
+		result.addProperty("size", totalTracks);
 
 		return result;
 	}
