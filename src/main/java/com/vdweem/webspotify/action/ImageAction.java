@@ -51,7 +51,7 @@ public class ImageAction {
 				return new ImageResult(image.getBytes());
 			}
 		}
-		return new ImageResult("images/" + img);
+		return new ImageResult(img);
 	}
 
 	public String getId() {
