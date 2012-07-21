@@ -89,17 +89,16 @@ var Playlist = function() {
 	
 	function decorateDuration(duration, tracks, total) {
 		var seconds = total / 1000;
-		var minutes = seconds / 60;
-		var hours = minutes / 60;
-		var days = hours / 24;
+		var minutes = seconds / 60;	seconds = seconds % 60;
+		var hours = minutes / 60;	minutes = minutes % 60;
+		var days = hours / 24; 		hours = hours % 24;
 		
-		var result;
-		var resultNr;
-		if (days >= 1) 			{resultNr = Math.floor(days);	 result = resultNr + ' day'; }
-		else if (hours >= 1) 	{resultNr = Math.floor(hours);	 result = resultNr + ' hour'; }
-		else if (minutes >= 1)  {resultNr = Math.floor(minutes); result = resultNr + ' minute'; }
-		else 					{resultNr = Math.floor(seconds); result = resultNr + ' second'; }
-		if (resultNr > 1) result += 's';
+		
+		var result = "";
+		if (days >= 1) 		{ result += Math.floor(days) + ' day'; 		if (Math.floor(days)) result += 's'; result += ' '; }
+		if (hours >= 1) 	{ result += Math.floor(hours) + ' hour'; 	if (Math.floor(hours)) result += 's'; result += ' ';}
+		if (minutes >= 1)	{ result += Math.floor(minutes) + ' minute';if (Math.floor(minutes)) result += 's'; }
+		else 				{ result += Math.floor(seconds) + ' second';if (Math.floor(seconds)) result += 's'; }
 		
 		return duration.text(tracks + ' tracks, ' + result);
 	}
