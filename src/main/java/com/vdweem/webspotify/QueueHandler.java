@@ -98,11 +98,15 @@ public class QueueHandler {
 	 * @param track
 	 */
 	public static void addToList(Link track) {
-		if (list.contains(track) || queue.contains(track))
+		if (queue.contains(track))
 			return;
-		int position = list.size();
+
+		if (list.contains(track))
+			list.remove(track);
+
+		int position = 0;
 		if (shuffle)
-			position = (int) (Math.random() * position);
+			position = (int) (Math.random() * list.size());
 
 		list.add(position, track);
 	}
