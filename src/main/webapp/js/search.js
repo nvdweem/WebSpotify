@@ -2,6 +2,8 @@
  * Provides functions to search for songs.
  */
 var Search = function() {
+	var lastSearch = '';
+	var pageCount = 0;
 	$(document).ready(init);
 	$("a.search").live('click', searchFromLink);
 	
@@ -13,7 +15,10 @@ var Search = function() {
 			if (event) event.preventDefault();
 			var query = $('input.search').val();
 			if (query == '') return;
-			Ajax.call("Search", {query: query}, Search.decorateSearch);
+			lastSearch = query;
+			pageCount = 0;
+			$('#center').scrollTop(0); // Scroll to the top so that the next search won't be fired immediately.
+			Ajax.call("Search", {query: query}, decorateSearch);
 		};
 		
 		// Make the search bar usable.
@@ -23,6 +28,12 @@ var Search = function() {
 				search(e);
 				return false;
 			}
+		});
+		
+		$('#center').scroll(function() {
+		  if (this.offsetHeight + this.scrollTop >= this.scrollHeight) {
+		    scrolledToBottom();
+		  }
 		});
 	}
 	
@@ -116,19 +127,39 @@ var Search = function() {
 			'    <th class="album">Album</th>' +
 			'  </tr>' +
 			'</table>');
-		if (search.tracks) {
+		appendSearch(search, table);
+		
+		return result
+				  .append(head)
+				  .append(table);
+	}
+	
+	/**
+	 * Appends results to a table for search results.
+	 */
+	function appendSearch(search, table) {
+		if (!table)
+			table = $('.searchResults');
+		
+		if (search.tracks && search.tracks.length != 0) {
 			for (var i = 0; i < search.tracks.length; i++) {
 				var track = search.tracks[i];
 				table.append(Media.decorateTrack(track).addClass(i % 2 == 0 ? "even" : "odd"));
 			}
 		}
 		else {
-			table.append($('<tr><td colspan="5">No search results.</td></tr>'));
+			var msg = (pageCount == 0) ? "No search results." : "&nbsp;";
+			table.append($('<tr class="endRow"><td colspan="5">'+msg+'</td></tr>'));
 		}
-		
-		return result
-				  .append(head)
-				  .append(table);
+	}
+	
+	/**
+	 * Triggers when the user scrolls to the bottom of a page and tries to get the content for the next page.
+	 */
+	function scrolledToBottom() {
+		if (!lastSearch || $('.searchResults').length != 1 || $('.endRow').length != 0) return;
+		pageCount++;
+		Ajax.call({"page": "Search", "params": {query: lastSearch, page: pageCount}, "decorator": appendSearch, "clear": false});
 	}
 	
 	return {

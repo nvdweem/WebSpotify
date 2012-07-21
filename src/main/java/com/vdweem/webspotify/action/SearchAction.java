@@ -20,6 +20,7 @@ public class SearchAction {
     private int tracks = 50;
     private int artists = 15;
     private int albums = 15;
+    private int page = 0;
 
     public Result execute() {
 		if (Util.isEmpty(query)) {
@@ -27,9 +28,15 @@ public class SearchAction {
 		}
 
 		jahspotify.Search search = new jahspotify.Search(Query.token(query));
+		if (page == 0) {
+			search.setNumAlbums(albums);
+			search.setNumArtists(artists);
+		} else {
+			search.setNumAlbums(0);
+			search.setNumArtists(0);
+		}
 		search.setNumTracks(tracks);
-		search.setNumAlbums(albums);
-		search.setNumArtists(artists);
+		search.setTrackOffset(tracks * page);
 		SearchResult result = searchEngine.search(search);
 
 		try {
@@ -71,5 +78,13 @@ public class SearchAction {
 
 	public void setAlbums(int albums) {
 		this.albums = albums;
+	}
+
+	public int getPage() {
+		return page;
+	}
+
+	public void setPage(int page) {
+		this.page = page;
 	}
 }
