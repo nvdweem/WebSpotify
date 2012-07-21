@@ -22,7 +22,7 @@ $(function(){
         }
     });
 	$.contextMenu({
-        selector: '.toplist .track, .playlist .track, .browse .track', 
+        selector: '.toplist .track, .playlist .track, .browse .track, .searchResults .track', 
         items: {
         	"atq": addToQueue,
         	"atp": addToPlaylist,
