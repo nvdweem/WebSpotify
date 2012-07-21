@@ -68,6 +68,15 @@ var Player = function() {
 			.append(Media.decorateDuration(duration * 1000).addClass("progressTime"));
 	}
 	
+	function addSelectedToPlaylist() {
+		var ids = [];
+		$('.selected').each(function() {
+			ids.push($(this).data('id'));
+		});
+		if (ids.length > 0)
+			Ajax.post("Play", {"ids": ids, "playlist": true});
+	}
+	
 	function toggleShuffle() {
 		$.get("Shuffle");
 	}
@@ -79,6 +88,7 @@ var Player = function() {
 	
 	return {
 		"updatePosition": updatePosition,
-		"updateShuffling": updateShuffling
+		"updateShuffling": updateShuffling,
+		"addSelectedToPlaylist": addSelectedToPlaylist
 	};
 }();

@@ -2,11 +2,13 @@
  * Allows a few interfaces for jQuery ajax calls.
  */
 var Ajax = function() {
+	$.ajaxSetup({ "traditional": true });
+	
 	/**
 	 * Calls the page with specified parameters. Then decorates the result and places it in the center div.
 	 */
 	function call(page, params, decorator) {
-		var def = {clear: true, params: '', 'decorator': window.console ? console.log : alert};
+		var def = {"clear": true, "params": '', "method": "get"};
 		if (typeof(page) != 'object') {
 			page = {
 				page: page,
@@ -19,7 +21,8 @@ var Ajax = function() {
 		if (args.clear)
 			$('#center').html('<div class="loader"></div>');
 		
-		$.getJSON(args.page, args.params, function(data) {
+		var fnc = /get/i.test(args.methos) ? $.getJSON : $.post;
+		fnc(args.page, args.params, function(data) {
 			var center = $('#center');
 			if (args.clear)
 				center.html("");
@@ -34,8 +37,12 @@ var Ajax = function() {
 	function get(link, params, whenDone) {
 		$.getJSON(link, params, whenDone);
 	}
+	function post(link, params, whenDone) {
+		$.post(link, params, whenDone);
+	}
 	return {
-		call: call,
-		get: get
+		"call": call,
+		"get": get,
+		"post": post
 	};
 }();
