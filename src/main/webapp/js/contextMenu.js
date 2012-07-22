@@ -14,11 +14,24 @@ $(function(){
 		Playlist.deleteSelected();
 	}};
 	
+	function showMenu(e) {
+		if (!e.$trigger.is('.selected'))
+			$('.selected').removeClass('selected');
+			
+		if ($('.selected').length == 0) {
+			e.$trigger.click();
+			selectedOnShow = true;
+		}
+	}
+	
 	$.contextMenu({
         selector: '.playingTable .track', 
         items: {
         	"mtt": moveToTop,
         	"rfq": removeFromQueue,
+        },
+        events: {
+        	"show": showMenu
         }
     });
 	$.contextMenu({
@@ -26,6 +39,9 @@ $(function(){
         items: {
         	"atq": addToQueue,
         	"atp": addToPlaylist,
+        },
+        events: {
+        	"show": showMenu
         }
     });
     
