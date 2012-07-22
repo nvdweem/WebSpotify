@@ -35,6 +35,20 @@ public class JsonResult extends WebSpotifyResult {
 			return new NotAjaxRedirect(json);
 		}
 	}
+	/**
+	 * Returns the JSON response if this was an Ajax request,
+	 * if not, then it returns the index page with an initializer.
+	 * @param json
+	 * @return
+	 */
+	public static Result onAjax(String json, boolean message) {
+		JsonResult result = new JsonResult(json, message);
+		if (isAjax()) {
+			return result;
+		} else {
+			return new NotAjaxRedirect(result.json);
+		}
+	}
 
 	/**
 	 * Determines if the current request is an Ajax request.

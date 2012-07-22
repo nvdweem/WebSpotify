@@ -24,7 +24,7 @@ public class SearchAction {
 
     public Result execute() {
 		if (Util.isEmpty(query)) {
-			return new JsonResult("You are required to enter a query.", true);
+			return JsonResult.onAjax("You are required to enter a query.", true);
 		}
 
 		jahspotify.Search search = new jahspotify.Search(Query.token(query));
@@ -40,12 +40,12 @@ public class SearchAction {
 		SearchResult result = searchEngine.search(search);
 
 		try {
-			return new JsonResult(Gsonner.getGson(null).toJson(result));
+			return JsonResult.onAjax(Gsonner.getGson(null).toJson(result));
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new JsonResult("Error", true);
+		return JsonResult.onAjax("Error", true);
 	}
 
 	public String getQuery() {

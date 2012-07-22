@@ -86,10 +86,12 @@ a:hover {
 	height: 240px;
 	bottom: 50px;
 }
+img {
+	border: 0px;
+}
 #playingArt img {
 	width: 240px;
 	height: 240px;
-	border: 0px;
 }
 #playingText {
 	background: url('../images/playingGradient.png') repeat-x;
@@ -484,6 +486,9 @@ table.browseTop td { width: 50%; }
 .playlist .title .playlistImage img {
 	width: 125px;
 	width: 125px;
+}
+.playlist .title .playlistImage .smallimages {
+	line-height: 0px;
 }
 .playlist .title .playlistImage .smallimages img {
 	height: 62px;
