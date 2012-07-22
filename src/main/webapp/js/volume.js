@@ -24,7 +24,8 @@ var Volume = function() {
 	function update(volume) {
 		vol = volume;
 		var left = (volume / 100) * $("#volume").width();
-		$('#volume .position').css("left", left - 4);
+		if (!$('#volume .position').is('.dragging'))
+			$('#volume .position').css("left", left - 4);
 		$('#volume .right').css("left", left);
 	}
 	

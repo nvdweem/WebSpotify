@@ -59,7 +59,8 @@ var Player = function() {
 		var duration = positionObj.duration;
 		
 		var left = duration == 0 ? 0 : (position / duration) * $("#progress").width();
-		$('#position').css("left", left - 4);
+		if (!$('#position').is('.dragging'))
+			$('#position').css("left", left - 4);
 		$('#play').css("left", left);
 		
 		$('#controls .progressTime').detach();

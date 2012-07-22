@@ -7,6 +7,12 @@ var Status = function() {
 	function init() {
 		windowTitle = $("title").text();
 		update();
+		
+		$('.position, #position').draggable({"axis": "x", "containment": "parent", "stop": function() {
+		    $(this).click().removeClass('dragging');
+		}, "start": function() {
+		    $(this).addClass('dragging');
+		}});
 	}
 	
 	/**
