@@ -93,4 +93,15 @@ var TopList = function() {
 		
 		return result.append(table);
 	}
+	
+	function decorate(data) {
+		if (data.tracks && data.tracks.length > 0)
+			return decorateTracks(data);
+		else
+			return decorateAlbums(data);
+	}
+	
+	return {
+		"decorate": decorate
+	};
 }();

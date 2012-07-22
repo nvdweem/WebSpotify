@@ -76,6 +76,7 @@ var Queue = function(){
 	}
 	
 	return {
-		"update": update
+		"update": update,
+		"decorate": decorateQueue
 	};
 }();

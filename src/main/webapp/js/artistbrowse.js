@@ -108,6 +108,7 @@ var ArtistBrowse = function() {
 	}
 	
 	return {
-		"decorateArtistBrowse": decorateArtistBrowse
+		"decorateArtistBrowse": decorateArtistBrowse,
+		"decorate": decorateArtistBrowse
 	};
 }();

@@ -4,6 +4,7 @@ import org.apache.struts2.ServletActionContext;
 
 import com.google.gson.JsonObject;
 import com.opensymphony.xwork2.ActionInvocation;
+import com.opensymphony.xwork2.Result;
 
 public class JsonResult extends WebSpotifyResult {
 	public static final JsonResult SUCCESS = new JsonResult("{\"message\": \"success\"}");
@@ -19,6 +20,28 @@ public class JsonResult extends WebSpotifyResult {
 			json = jso.toString();
 		}
 		this.json = json;
+	}
+
+	/**
+	 * Returns the JSON response if this was an Ajax request,
+	 * if not, then it returns the index page with an initializer.
+	 * @param json
+	 * @return
+	 */
+	public static Result onAjax(String json) {
+		if (isAjax()) {
+			return new JsonResult(json);
+		} else {
+			return new NotAjaxRedirect(json);
+		}
+	}
+
+	/**
+	 * Determines if the current request is an Ajax request.
+	 * @return
+	 */
+	public static boolean isAjax() {
+		return "XMLHttpRequest".equals(ServletActionContext.getRequest().getHeader("x-requested-with"));
 	}
 
 	@Override

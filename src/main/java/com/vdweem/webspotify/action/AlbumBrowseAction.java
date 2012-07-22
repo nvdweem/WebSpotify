@@ -22,7 +22,7 @@ public class AlbumBrowseAction {
 
 		Album album = JahSpotifyService.getInstance().getJahSpotify().readAlbum(Link.create(id), true);
 		MediaHelper.waitFor(album, 5);
-		return new JsonResult(Gsonner.getGson(Album.class).toJson(album));
+		return JsonResult.onAjax(Gsonner.getGson(Album.class).toJson(album));
 	}
 
 	public String getId() {

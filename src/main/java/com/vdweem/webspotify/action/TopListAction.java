@@ -24,7 +24,7 @@ public class TopListAction {
 		TopListType typeObj = TopListType.values()[type];
 		SearchResult result = JahSpotifyService.getInstance().getJahSpotify().getTopList(typeObj);
 		MediaHelper.waitFor(result, 10);
-		return new JsonResult(Gsonner.getGson(SearchResult.class).toJson(result));
+		return JsonResult.onAjax(Gsonner.getGson(SearchResult.class).toJson(result));
 	}
 
 	public int getType() {

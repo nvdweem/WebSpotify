@@ -20,15 +20,15 @@ public class PlaylistAction {
 
 		if (index == -2) {
 			Playlist pl = JahSpotifyService.getInstance().getJahSpotify().readPlaylist(null, 0, 0);
-			return new JsonResult(Gsonner.getGson(Playlist.class).toJson(pl));
+			return JsonResult.onAjax(Gsonner.getGson(Playlist.class).toJson(pl));
 		}
 
 		if (index != -1) {
 			Playlist pl = container.getPlaylist(index);
-			return new JsonResult(Gsonner.getGson(Playlist.class).toJson(pl));
+			return JsonResult.onAjax(Gsonner.getGson(Playlist.class).toJson(pl));
 		}
 
-		return new JsonResult(Gsonner.getGson(PlaylistContainer.class).toJson(container));
+		return JsonResult.onAjax(Gsonner.getGson(PlaylistContainer.class).toJson(container));
 	}
 
 	public int getIndex() {

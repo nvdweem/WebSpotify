@@ -12,7 +12,7 @@ import com.vdweem.webspotify.result.StdResult;
 public class IndexAction {
 
 	public Result execute() {
-		return new StdResult("_index.html");
+		return new StdResult("_index.jsp");
 	}
 
 }

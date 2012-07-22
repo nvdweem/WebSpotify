@@ -125,6 +125,7 @@ var Playlist = function() {
 		"update": update,
 		"deleteSelected": deleteSelected,
 		"clear": clear,
-		"decorateDuration": decorateDuration
+		"decorateDuration": decorateDuration,
+		"decorate": decoratePlaylist
 	};
 }();

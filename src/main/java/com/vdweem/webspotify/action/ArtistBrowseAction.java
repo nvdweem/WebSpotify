@@ -33,7 +33,7 @@ public class ArtistBrowseAction {
 		}
 		MediaHelper.waitFor(albums.values(), 10);
 
-		return new JsonResult(Gsonner.getGson(Artist.class, albums).toJson(artist));
+		return JsonResult.onAjax(Gsonner.getGson(Artist.class, albums).toJson(artist));
 	}
 
 	public String getId() {

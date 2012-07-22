@@ -11,7 +11,7 @@ import com.vdweem.webspotify.result.JsonResult;
 public class QueueAction {
 
 	public Result execute() {
-		return new JsonResult(QueueHandler.toJson().toString());
+		return JsonResult.onAjax(QueueHandler.toJson().toString());
 	}
 
 }

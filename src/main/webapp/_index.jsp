@@ -2,18 +2,19 @@
 <html>
   <head>
   	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title> WebSpotify v0.2 </title>
+    <title> WebSpotify </title>
     
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
     <script type="text/javascript" src="js/jquery.lazyload.mini.js"></script>
     <script type="text/javascript" src="js/jquery.contextMenu.js"></script>
+    <script type="text/javascript" src="js/jquery.history.js"></script>
+    <script type="text/javascript" src="js/keymaster.js"></script>
     
     <link rel="stylesheet" type="text/css" href="css/jquery.contextMenu.css" />
     <link rel="stylesheet" type="text/css" href="css/style.css" />
     <link rel="stylesheet" type="text/css" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/base/jquery-ui.css" />
     
-    <script type="text/javascript" src="js/keymaster.js"></script>
     <script type="text/javascript" src="js/actions.js"></script>
     <script type="text/javascript" src="js/contextMenu.js"></script>
     <script type="text/javascript" src="js/ajax.js"></script>
@@ -27,10 +28,15 @@
     <script type="text/javascript" src="js/player.js"></script>
     <script type="text/javascript" src="js/volume.js"></script>
     <script type="text/javascript" src="js/status.js"></script>
+    <script type="text/javascript">
+      $(function() {
+    	  ${invocation}
+      });
+    </script>
   </head>
   <body>
     <div id="topbar">
-      <div id="applicationTitle">WebSpotify v0.2</div>
+      <div id="applicationTitle"> WebSpotify </div>
       <div id="menu"></div>
       <div id="search">
         <div class="searchLeft"></div><div class="searchRight"></div><input type="text" class="search" />

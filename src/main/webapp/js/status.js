@@ -38,7 +38,9 @@ var Status = function() {
 			$('#playingArt, #playingText').html("");
 			return;
 		}
-		else if (t.id == playing) 
+		
+		$("title").text(t.artist.name + " - " + t.name + " -- " + windowTitle);
+		if (t.id == playing) 
 			return;
 		
 		playing = t.id;
@@ -49,8 +51,6 @@ var Status = function() {
 				.append($('<div class="artist"></div>').append(Media.artistLink(t.artist)))
 				.append($('<div class="song"></div>').text(t.name))
 		);
-		
-		$("title").text(t.artist.name + " - " + t.name + " -- " + windowTitle);
 	}
 	
 }();
