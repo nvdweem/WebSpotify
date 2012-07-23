@@ -80,6 +80,7 @@ public class QueueHandler {
 		while (itt.hasNext()) {
 			Link link = itt.next();
 			Track track = JahSpotifyService.getInstance().getJahSpotify().readTrack(link);
+			if (track == null) continue;
 			totalDuration += track.getLength();
 			count++;
 			if (count < 100)
