@@ -16,9 +16,10 @@ var Playlist = function() {
 		var list = $('<ol></ol>');
 		result.append(list);
 		for (var i = 0; i < ps.length; i++)
-			list.append($('<li class="playlist"></li>').text(ps[i].name).data("index", i));
+			list.append($('<li class="playlist"></li>').text(ps[i].name).data("index", i).addClass('Playlist' + i));
 		
 		$("#lists").find('.playlists').detach().end().append(result);
+		Ajax.selectMenu();
 	}
 	
 	function decoratePlaylist(data) {

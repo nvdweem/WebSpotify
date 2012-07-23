@@ -3,8 +3,8 @@ var TopList = function() {
 	
 	function init() {
 		var toplist = $('<ol class="toplist"></ol>');
-		toplist.append($('<li>Top Tracks</li>').click(showTracks));
-		toplist.append($('<li>Top Albums</li>').click(showAlbums));
+		toplist.append($('<li class="TopList">Top Tracks</li>').click(showTracks));
+		toplist.append($('<li class="TopList1">Top Albums</li>').click(showAlbums));
 		
 		$('#queue').after(toplist);
 	}

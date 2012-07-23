@@ -46,7 +46,7 @@
     <div id="leftbar">
       <div id="lists">
         <ol id="queue">
-          <li>Play queue</li>
+          <li class="Queue">Play queue</li>
         </ol>
       </div>
       <div id="playing">

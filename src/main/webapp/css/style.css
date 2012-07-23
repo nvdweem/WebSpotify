@@ -464,6 +464,10 @@ table.browseTop td { width: 50%; }
 	white-space: nowrap;
 	background: left center no-repeat;
 }
+#lists ol li.selected {
+	background-color: #A9D9FE;
+	color: black;
+}
 .icon-remove {
 	background-image: url("../images/playing.png");
 }
