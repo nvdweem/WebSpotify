@@ -5,8 +5,11 @@ var Queue = function(){
 	
 	$("#lists #queue li").live('click', showQueue);
 	
-	function showQueue() {
-		Ajax.call('Queue', {}, decorateQueue);
+	function showQueue(force) {
+		var args = {"page": 'Queue', params: {}, decorator: decorateQueue};
+		if (force === true)
+			args.noHistory = true;
+		Ajax.call(args);
 	}
 	
 	function update(revision) {
@@ -18,7 +21,7 @@ var Queue = function(){
 			});
 			selectedIndex = $('.selected:first').index();
 			
-			showQueue();
+			showQueue(true);
 		}
 		
 		currentRevision = revision;
