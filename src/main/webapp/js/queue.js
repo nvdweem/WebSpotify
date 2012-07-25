@@ -80,6 +80,7 @@ var Queue = function(){
 	
 	return {
 		"update": update,
-		"decorate": decorateQueue
+		"decorate": decorateQueue,
+		"showQueue": showQueue
 	};
 }();

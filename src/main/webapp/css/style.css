@@ -89,11 +89,6 @@ a:hover {
 img {
 	border: 0px;
 }
-.ui-autocomplete img {
-	width: 20px;
-	height: 20px;
-	padding-right: 10px;
-}
 #playingArt img {
 	width: 240px;
 	height: 240px;
@@ -323,6 +318,18 @@ span.duration, td.index {
 /****************************************************************
  *								Search							*
  ****************************************************************/
+.ui-autocomplete-category {
+	font-weight: bold;
+	padding-top: 10px;
+	clear: left;
+	float: left;
+}
+.ui-autocomplete img {
+	width: 20px;
+	height: 20px;
+	padding-right: 10px;
+}
+
 .searchTop div.images, .browseTop div.images {
 	overflow: hidden;
 	width: 10000px;

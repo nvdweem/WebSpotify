@@ -39,8 +39,10 @@ var Search = function() {
 					AlbumBrowse.browse(itm);
 				else if (ui.item.otype == 'artist')
 					ArtistBrowse.browse(itm);
-				else if (ui.item.otype == 'track')
+				else if (ui.item.otype == 'track') {
 					Player.play(itm);
+					Queue.showQueue();
+				}
 				return false;
 			},
 			focus: function( event, ui ) {
