@@ -24,12 +24,63 @@ var Search = function() {
 		// Make the search bar usable.
 		$('.searchRight').click(search);
 		$('input.search').keypress(function(e) {
+			if (e.isDefaultPrevented())
+				return true;
 			if(e.which == 13){
 				search(e);
 				return false;
 			}
-		});
-		
+		}).autocomplete({
+			source: "Search.action?suggest=true&tracks=5&albums=5&artists=5",
+			minLength: 3,
+			select: function( event, ui ) {
+				var itm = $('<a/>').data('id', ui.item.id).get(0);
+				if (ui.item.otype == 'album')
+					AlbumBrowse.browse(itm);
+				else if (ui.item.otype == 'artist')
+					ArtistBrowse.browse(itm);
+				else if (ui.item.otype == 'track')
+					Player.play(itm);
+				return false;
+			},
+			focus: function( event, ui ) {
+				$(this).val(ui.item.label);
+				return false;
+			}
+		}).data( "autocomplete" )._renderMenu = function( ul, item ) {
+			var self = this;
+			var prevContext = null;
+			var decorateList = function(context) {
+				return function(index, item) {
+					if (context != prevContext)
+						ul.append( "<li class='ui-autocomplete-category'>" + context + "</li>" );
+					prevContext = context;
+					self._renderItem(ul, item);
+				};
+			};
+			
+			if (item[0].tracks && item[0].tracks.length > 0) $.each(item[0].tracks, decorateList("Tracks"));
+			if (item[0].albums && item[0].albums.length > 0) $.each(item[0].albums, decorateList("Albums"));
+			if (item[0].artists && item[0].artists.length > 0) $.each(item[0].artists, decorateList("Artists"));
+			
+			if (prevContext == null)
+				$('<li>No suggestions</li>').appendTo(ul);
+		};
+		$('input.search').data( "autocomplete" )._renderItem = function( ul, item ) {
+			var text = item.name;
+			if (item.artist)
+				text += ' - ' + item.artist.name;
+			item.label = text;
+			
+			var link = $('<a/>')
+				.append('<img src="Image.action?id='+item.id+'">')
+				.append(text);
+			return $('<li />')
+				.data('item.autocomplete', item)
+				.append(link)
+				.appendTo(ul);
+		};
+				
 		$('#center').scroll(function() {
 		  if (this.offsetHeight + this.scrollTop >= this.scrollHeight) {
 		    scrolledToBottom();

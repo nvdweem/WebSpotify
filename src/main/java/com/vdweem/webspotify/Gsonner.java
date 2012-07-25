@@ -98,6 +98,7 @@ public class Gsonner {
 			public JsonElement serialize(Artist a, Type arg1, JsonSerializationContext jsc) {
 				JsonObject result = new JsonObject();
 
+				result.addProperty("otype", "artist");
 				result.addProperty("id", a.getId().getId());
 				result.addProperty("name", a.getName());
 				result.addProperty("bio", a.getBios());
@@ -117,6 +118,7 @@ public class Gsonner {
 			public JsonElement serialize(Album a, Type arg1, JsonSerializationContext jsc) {
 				JsonObject result = new JsonObject();
 
+				result.addProperty("otype", "album");
 				result.addProperty("id", a.getId().getId());
 				result.addProperty("name", a.getName());
 				result.addProperty("year", a.getYear());
@@ -136,6 +138,7 @@ public class Gsonner {
 			public JsonElement serialize(Track a, Type arg1, JsonSerializationContext jsc) {
 				JsonObject result = new JsonObject();
 
+				result.addProperty("otype", "track");
 				result.addProperty("id", a.getId().getId());
 				result.add("album", jsc.serialize(a.getAlbum()));
 				result.addProperty("index", a.getTrackNumber());

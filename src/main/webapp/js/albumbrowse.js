@@ -67,6 +67,7 @@ var AlbumBrowse = function() {
 	
 	return {
 		"decorateAlbum": decorateAlbum,
-		"decorate": decorateAlbumBrowse
+		"decorate": decorateAlbumBrowse,
+		"browse": browseAlbum
 	};
 }();

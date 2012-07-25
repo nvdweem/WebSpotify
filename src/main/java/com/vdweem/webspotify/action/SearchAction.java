@@ -21,11 +21,14 @@ public class SearchAction {
     private int artists = 15;
     private int albums = 15;
     private int page = 0;
+    private boolean suggest;
+    private String term;
 
     public Result execute() {
-		if (Util.isEmpty(query)) {
+		if (Util.isEmpty(query) && Util.isEmpty(term)) {
 			return JsonResult.onAjax("You are required to enter a query.", true);
 		}
+		if (Util.isEmpty(query)) query = term;
 
 		jahspotify.Search search = new jahspotify.Search(Query.token(query));
 		if (page == 0) {
@@ -37,10 +40,14 @@ public class SearchAction {
 		}
 		search.setNumTracks(tracks);
 		search.setTrackOffset(tracks * page);
+		search.setSuggest(isSuggest());
 		SearchResult result = searchEngine.search(search);
 
 		try {
-			return JsonResult.onAjax(Gsonner.getGson(null).toJson(result));
+			String resultStr = Gsonner.getGson(null).toJson(result);
+			if (search.isSuggest()) // The jQuery.autocomplete widget requires an array result.
+				resultStr = "[" + resultStr + "]";
+			return JsonResult.onAjax(resultStr);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -86,5 +93,21 @@ public class SearchAction {
 
 	public void setPage(int page) {
 		this.page = page;
+	}
+
+	public boolean isSuggest() {
+		return suggest;
+	}
+
+	public void setSuggest(boolean suggest) {
+		this.suggest = suggest;
+	}
+
+	public String getTerm() {
+		return term;
+	}
+
+	public void setTerm(String term) {
+		this.term = term;
 	}
 }
