@@ -1,8 +1,10 @@
 package com.vdweem.webspotify.action;
 
+import jahspotify.media.Album;
 import jahspotify.media.Artist;
 import jahspotify.media.Image;
 import jahspotify.media.Link;
+import jahspotify.media.Track;
 import jahspotify.services.JahSpotifyService;
 import jahspotify.services.MediaHelper;
 
@@ -25,7 +27,9 @@ public class ImageAction {
 		switch (link.getType()) {
 		case ALBUM:
 			img = "noAlbum.png";
-			link = JahSpotifyService.getInstance().getJahSpotify().readAlbum(link).getCover();
+			Album album = JahSpotifyService.getInstance().getJahSpotify().readAlbum(link);
+			MediaHelper.waitFor(album, 2);
+			link = album.getCover();
 			break;
 		case ARTIST:
 			img = "noArtist.png";
@@ -36,12 +40,14 @@ public class ImageAction {
 			else link = null;
 			break;
 		case TRACK:
-			link = Link.create(JahSpotifyService.getInstance().getJahSpotify().readTrack(link).getCover());
+			Track t = JahSpotifyService.getInstance().getJahSpotify().readTrack(link);
+			if (!MediaHelper.waitFor(t, 2)) break;
+			link = JahSpotifyService.getInstance().getJahSpotify().readAlbum(t.getAlbum()).getCover();
 			break;
 		case IMAGE:
 			break;
 		default:
-				throw new IllegalArgumentException("Images should be created from an artist, album, track or image link.");
+			throw new IllegalArgumentException("Images should be created from an artist, album, track or image link.");
 		}
 
 		if (link != null) {
