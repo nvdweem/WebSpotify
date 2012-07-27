@@ -1,14 +1,9 @@
 package com.vdweem.webspotify.action;
 
-import jahspotify.media.Album;
-import jahspotify.media.Artist;
 import jahspotify.media.Image;
 import jahspotify.media.Link;
-import jahspotify.media.Track;
 import jahspotify.services.JahSpotifyService;
 import jahspotify.services.MediaHelper;
-
-import java.util.List;
 
 import com.opensymphony.xwork2.Result;
 import com.vdweem.webspotify.result.ImageResult;
@@ -24,38 +19,19 @@ public class ImageAction {
 		Link link = Link.create(id);
 		String img = null;
 
-		switch (link.getType()) {
-		case ALBUM:
-			img = "noAlbum.png";
-			Album album = JahSpotifyService.getInstance().getJahSpotify().readAlbum(link);
-			MediaHelper.waitFor(album, 2);
-			link = album.getCover();
-			break;
-		case ARTIST:
-			img = "noArtist.png";
-			Artist artist = JahSpotifyService.getInstance().getJahSpotify().readArtist(link, true);
-			if (!MediaHelper.waitFor(artist, 2)) break;
-			List<Link> links = artist.getPortraits();
-			if (links.size() > 0) link = links.get(0);
-			else link = null;
-			break;
-		case TRACK:
-			Track t = JahSpotifyService.getInstance().getJahSpotify().readTrack(link);
-			if (!MediaHelper.waitFor(t, 2)) break;
-			link = JahSpotifyService.getInstance().getJahSpotify().readAlbum(t.getAlbum()).getCover();
-			break;
-		case IMAGE:
-			break;
-		default:
-			throw new IllegalArgumentException("Images should be created from an artist, album, track or image link.");
-		}
-
-		if (link != null) {
-			Image image = JahSpotifyService.getInstance().getJahSpotify().readImage(link);
-			if (image == null) return null;
+		Image image = JahSpotifyService.getInstance().getJahSpotify().readImage(link);
+		if (image != null) {
 			if (MediaHelper.waitFor(image, 2)) {
 				return new ImageResult(image.getBytes());
 			}
+		}
+
+		switch (link.getType()) {
+			case ARTIST:
+				img = "noArtist.png";
+				break;
+			default:
+				img = "noAlbum.png";
 		}
 		return new ImageResult(img);
 	}
