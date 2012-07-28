@@ -14,7 +14,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.apache.struts2.ServletActionContext;
 
@@ -61,6 +60,7 @@ public class Gsonner {
 				result.add("artists", jsc.serialize(sr.getArtistsFound()));
 				result.add("albums", jsc.serialize(sr.getAlbumsFound()));
 				result.add("tracks", jsc.serialize(sr.getTracksFound()));
+				result.add("playlists", jsc.serialize(sr.getPlaylistsFound()));
 
 				return result;
 			}
@@ -88,6 +88,7 @@ public class Gsonner {
 					case ALBUM: return jsc.serialize(spotify.getJahSpotify().readAlbum(link));
 					case TRACK: return jsc.serialize(spotify.getJahSpotify().readTrack(link));
 					case IMAGE: return jsc.serialize(spotify.getJahSpotify().readImage(link));
+					case PLAYLIST: return jsc.serialize(spotify.getJahSpotify().readPlaylist(link, 0, 0));
 					default: return null;
 				}
 			}
@@ -161,10 +162,10 @@ public class Gsonner {
 				JsonArray arr = new JsonArray();
 
 				int i = 0;
-				for (Entry<Link, String> e : le.getPlaylists().entrySet()) {
+				for (Playlist pl : PlaylistContainer.getPlaylists()) {
 					JsonObject playlist = new JsonObject();
 					playlist.addProperty("id", i++);
-					playlist.addProperty("name", e.getValue());
+					playlist.addProperty("name", pl.getName());
 					arr.add(playlist);
 				}
 
@@ -181,6 +182,9 @@ public class Gsonner {
 				result.add("tracks", jsc.serialize(p.getTracks()));
 				result.addProperty("name", p.getName());
 				result.addProperty("index", ServletActionContext.getRequest().getParameter("index"));
+				result.addProperty("id", p.getId() == null ? null : p.getId().toString());
+				result.addProperty("author", p.getAuthor());
+				result.addProperty("otype", "playlist");
 
 				return result;
 			}

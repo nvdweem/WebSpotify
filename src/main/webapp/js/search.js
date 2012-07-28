@@ -31,7 +31,7 @@ var Search = function() {
 				return false;
 			}
 		}).autocomplete({
-			source: "Search.action?suggest=true&tracks=5&albums=5&artists=5",
+			source: "Search.action?suggest=true&tracks=5&albums=5&artists=5&playlists=5",
 			minLength: 3,
 			select: function( event, ui ) {
 				var itm = $('<a/>').data('id', ui.item.id).get(0);
@@ -42,6 +42,8 @@ var Search = function() {
 				else if (ui.item.otype == 'track') {
 					Player.play(itm);
 					Queue.showQueue();
+				} else if (ui.item.otype == 'playlist') {
+					Playlist.showPlaylist(ui.item.id);
 				}
 				return false;
 			},
@@ -64,6 +66,7 @@ var Search = function() {
 			if (item[0].tracks && item[0].tracks.length > 0) $.each(item[0].tracks, decorateList("Tracks"));
 			if (item[0].albums && item[0].albums.length > 0) $.each(item[0].albums, decorateList("Albums"));
 			if (item[0].artists && item[0].artists.length > 0) $.each(item[0].artists, decorateList("Artists"));
+			if (item[0].playlists && item[0].playlists.length > 0) $.each(item[0].playlists, decorateList("Playlists"));
 			
 			if (prevContext == null)
 				$('<li>No suggestions</li>').appendTo(ul);
@@ -143,6 +146,16 @@ var Search = function() {
 		target.append($('<span class="artist"> by </span>').append(Media.artistLink(album.artist)));
 		return target;
 	}
+	
+	function decoratePlaylist(playlist, forImage) {
+		var link = $('<a href="#" class="playlist"></a>').data("id", playlist.id).text(playlist.name);
+		if (forImage === true) {
+			return link;
+		}
+		var target = $('<span class="playlist"></span>');
+		target.append(link);
+		return target;
+	}
 
 	/**
 	 * Decorate the search result.
@@ -159,13 +172,14 @@ var Search = function() {
 		}
 		
 		var head;
-		if ((search.artists && search.artists.length != 0) || (search.albums && search.albums.length != 0)) {
+		if ((search.artists && search.artists.length != 0) || (search.albums && search.albums.length != 0) || (search.playlists && search.playlists.length != 0)) {
 			head = $('<table class="searchTop"></table>');
 			var row = $('<tr></tr>');
 			head.append(row);
 			
 			if (search.artists && search.artists.length != 0) row.append($('<td></td>').append(decorateList('Artists', search.artists, Media.artistLink)));
 			if (search.albums && search.albums.length != 0) row.append($('<td></td>').append(decorateList('Albums', search.albums, decorateAlbumAndArtist)));
+			if (search.playlists && search.playlists.length != 0) row.append($('<td></td>').append(decorateList('Playlists', search.playlists, decoratePlaylist)));
 		}
 		else
 			head = $('<div></div>');

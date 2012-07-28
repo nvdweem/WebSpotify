@@ -314,10 +314,16 @@ span.duration, td.index {
 #center tr.track.selected td a {
 	color: black;
 }
- 
+
 /****************************************************************
  *								Search							*
  ****************************************************************/
+.ui-autocomplete {
+	max-height: 500px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	padding-right: 20px;
+}
 .ui-autocomplete-category {
 	font-weight: bold;
 	padding-top: 10px;
@@ -364,7 +370,7 @@ table.searchResults, table.searchTop {
 	width: 100%;
 	table-layout: fixed;	
 }
-table.searchTop td { width: 50%; }
+table.searchTop td { width: 33%; }
 table.searchResults .track      { }
 table.searchResults .artist     { width: 15%; }
 table.searchResults .time       { width: 40px; }
@@ -562,6 +568,6 @@ table.playlist .album      { width: 30%; }
 	height: 60px;
 	padding-right: 20px;
 }
-.toplist .position, .toplist .by, .toplist .by a {
+.toplist .position, .by, .by a {
 	color: #666666;	
 }

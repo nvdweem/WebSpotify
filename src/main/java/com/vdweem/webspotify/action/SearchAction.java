@@ -20,6 +20,7 @@ public class SearchAction {
     private int tracks = 50;
     private int artists = 15;
     private int albums = 15;
+    private int playlists = 15;
     private int page = 0;
     private boolean suggest;
     private String term;
@@ -34,9 +35,11 @@ public class SearchAction {
 		if (page == 0) {
 			search.setNumAlbums(albums);
 			search.setNumArtists(artists);
+			search.setNumPlaylists(playlists);
 		} else {
 			search.setNumAlbums(0);
 			search.setNumArtists(0);
+			search.setNumPlaylists(0);
 		}
 		search.setNumTracks(tracks);
 		search.setTrackOffset(tracks * page);
@@ -93,6 +96,14 @@ public class SearchAction {
 
 	public void setPage(int page) {
 		this.page = page;
+	}
+
+	public int getPlaylists() {
+		return playlists;
+	}
+
+	public void setPlaylists(int playlists) {
+		this.playlists = playlists;
 	}
 
 	public boolean isSuggest() {

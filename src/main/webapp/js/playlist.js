@@ -8,6 +8,10 @@ var Playlist = function() {
 		$("li.playlist").live('click', function() {
 			Ajax.call("Playlist", {"index": $(this).data("index")}, decoratePlaylist);
 		});
+		
+		$(document).on('click', 'a.playlist', function() {
+			showPlaylist($(this).data("id"));
+		});
 	}
 	
 	function decoratePlaylists(data) {
@@ -22,6 +26,9 @@ var Playlist = function() {
 		Ajax.selectMenu();
 	}
 	
+	function showPlaylist(id) {
+		Ajax.call("Playlist", {"id": id}, decoratePlaylist);
+	}
 	function decoratePlaylist(data) {
 		var result = $('<div class="playlist"></div>').data("index", data.index);
 		
@@ -32,6 +39,11 @@ var Playlist = function() {
 		title.append($('<img src="images/playlistIcon.png" />').click(queuePlaylist));
 		title.append(image);
 		title.append(data.name);
+		
+		/(.*):playlist/.test(data.id);
+		var userUrl = $('<a href="#" class="user" />').data('id', RegExp.$1).text(data.author);
+		title.append($('<span class="by"> by </span>').append(userUrl));
+		
 		
 		var table = $(
 			'<table class="playlist">' +
@@ -60,28 +72,13 @@ var Playlist = function() {
 				albumCount++;
 			}
 		}
-		decorateImage(image, albums);
-		
+		decorateImage(image, data);
 		decorateDuration(duration, data.tracks ? data.tracks.length : -1, totalduration);
-		
 		return result.append(title).append(table);
 	}
 	
-	function decorateImage(imageTarget, albums) {
-		var covers = [];
-		for (cover in albums)
-			covers.push(cover);
-		
-		if (covers.length < 4) {
-		    return $('<img />').attr('src', 'Image?id=' + covers[0]).appendTo(imageTarget);
-		}
-		var target = $('<div/>').addClass('smallimages');
-		for (var i = 0; i < covers.length; i++) {
-		    $('<img />').attr('src', 'Image?id=' + covers[i]).appendTo(target);
-		    if (i == 1)
-		        $('<br/>').appendTo(target);
-		}
-		return target.appendTo(imageTarget);
+	function decorateImage(imageTarget, data) {
+	    return $('<img />').attr('src', 'Image?id=' + data.id).appendTo(imageTarget);
 	}
 	
 	function queuePlaylist() {
@@ -127,6 +124,7 @@ var Playlist = function() {
 		"deleteSelected": deleteSelected,
 		"clear": clear,
 		"decorateDuration": decorateDuration,
-		"decorate": decoratePlaylist
+		"decorate": decoratePlaylist,
+		"showPlaylist": showPlaylist
 	};
 }();

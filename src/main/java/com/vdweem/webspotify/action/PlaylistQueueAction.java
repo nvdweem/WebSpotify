@@ -2,7 +2,7 @@ package com.vdweem.webspotify.action;
 
 import jahspotify.media.Link;
 import jahspotify.media.Playlist;
-import jahspotify.services.JahSpotifyService;
+import jahspotify.media.PlaylistContainer;
 import jahspotify.services.MediaPlayer;
 
 import com.opensymphony.xwork2.Result;
@@ -21,7 +21,7 @@ public class PlaylistQueueAction {
 			return new JsonResult("Unknown playlist index.", true);
 		}
 
-		Playlist pl = JahSpotifyService.getInstance().getJahSpotify().getPlaylistContainer().getPlaylist(index);
+		Playlist pl = PlaylistContainer.getPlaylist(index);
 		for (Link track : pl.getTracks()) {
 			QueueHandler.addToList(track);
 		}

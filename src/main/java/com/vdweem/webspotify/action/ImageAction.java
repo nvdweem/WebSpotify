@@ -18,8 +18,8 @@ public class ImageAction {
 	public Result execute() {
 		Link link = Link.create(id);
 		String img = null;
-
 		Image image = JahSpotifyService.getInstance().getJahSpotify().readImage(link);
+
 		if (image != null) {
 			if (MediaHelper.waitFor(image, 2)) {
 				return new ImageResult(image.getBytes());

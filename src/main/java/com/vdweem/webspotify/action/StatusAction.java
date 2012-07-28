@@ -1,8 +1,8 @@
 package com.vdweem.webspotify.action;
 
-import jahspotify.media.Link;
+import jahspotify.media.Playlist;
+import jahspotify.media.PlaylistContainer;
 import jahspotify.media.Track;
-import jahspotify.services.JahSpotifyService;
 import jahspotify.services.MediaPlayer;
 
 import com.google.gson.JsonObject;
@@ -36,7 +36,7 @@ public class StatusAction {
 		result.addProperty("queuerevision", QueueHandler.getRevision());
 
 		StringBuffer hashBuff = new StringBuffer();
-		for (Link key : JahSpotifyService.getInstance().getJahSpotify().getPlaylistContainer().getPlaylists().keySet())
+		for (Playlist key : PlaylistContainer.getPlaylists())
 			hashBuff.append(key.getId());
 		result.addProperty("playlistRevision", hashBuff.toString().hashCode());
 
