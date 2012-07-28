@@ -4,7 +4,19 @@
  */
 var ArtistBrowse = function() {
 	$("a.artist").live('click', artistBrowseClick);
-	
+
+	// Showing and hiding the artist biography.	
+	var shown = false;
+	$(document).on('click', 'div.bio', function() {
+		var $this = $(this);
+		shown = !shown;
+		var height = 150;
+		if (shown) 
+			height = Math.max($this.find('.images').height(), $this.find('.text').height());
+
+		$this.animate({'height': height + 'px'});
+	});
+
 	/**
 	 * Click event for artist links.
 	 */
@@ -44,10 +56,22 @@ var ArtistBrowse = function() {
 	 * Decorate the artist bio.
 	 */
 	function decorateBio(a) {
+		var pictures = a.pictures;
+		var image = a.id;
+
+		if (pictures.length != 0)
+			image = pictures.shift();
+		
+		var images = $('<span class="images" />');
+		images.append($('<img src="Image?id='+image+'&amp;'+new Date()+'">'));
+		for (var i = 0; i < pictures.length; i++)
+			images.append('<br/><br/>').append($('<img src="Image?id='+pictures[i]+'&amp;'+new Date()+'">'));	
+		
 		var result = $('<div class="bio"></div>');
-		result.append($('<img src="Image?id='+(a.image ? a.image : a.id)+'&amp;'+new Date()+'">'));
+		result.append(images);
 		result.append($('<div class="artistname"></div>').text(a.name));
-		result.append($('<div class="text"></span>').html(a.bio || "").bio());
+		result.append($('<div class="text"></span>').html( (a.bio || "").replace(/\n/g, '<br/>') ).bio());
+		
 		return result;
 	}
 	

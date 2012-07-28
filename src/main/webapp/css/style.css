@@ -392,8 +392,11 @@ table.browseTop td { width: 50%; }
 .bio img {
 	width: 130px;
 	height: 130px;
+}
+.bio .images {
 	float: left;
 	padding: 15px;
+	width: 130px;
 }
 .artistname, .relatedArtists {
 	font-size: 14px;
@@ -403,11 +406,15 @@ table.browseTop td { width: 50%; }
 }
 .bio {
 	padding-right: 20px;
+	height: 150px;
+	overflow: hidden;
+}
+.bio .artistname {
+	padding-left: 170px;
 }
 .bio .text {
-	height: 102px;
-	overflow: hidden;
 	color: #999999;
+	padding-left: 170px;
 }
 
 .browse div.label {

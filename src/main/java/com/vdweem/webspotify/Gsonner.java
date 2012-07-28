@@ -3,6 +3,7 @@ package com.vdweem.webspotify;
 import jahspotify.SearchResult;
 import jahspotify.media.Album;
 import jahspotify.media.Artist;
+import jahspotify.media.Image;
 import jahspotify.media.Link;
 import jahspotify.media.Media;
 import jahspotify.media.Playlist;
@@ -22,6 +23,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
@@ -106,10 +108,15 @@ public class Gsonner {
 				if (!artist)
 					return result;
 
-				result.add("topTracks", jsc.serialize(a.getTopHitTracks()));
+				result.add("topTracks", getGson(null, replacements).toJsonTree(a.getTopHitTracks()));
 				result.add("albums", getGson(Album.class, replacements).toJsonTree(a.getAlbums()));
 				result.add("relatedArtists", getGson(null, replacements).toJsonTree(a.getSimilarArtists()));
 
+				JsonArray arr = new JsonArray();
+				for (Link image : a.getPortraits()) {
+					arr.add(new JsonPrimitive(image.getId()));
+				}
+				result.add("pictures", arr);
 				return result;
 			}
 		});

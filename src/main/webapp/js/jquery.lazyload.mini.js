@@ -170,7 +170,7 @@
 (function($) {
     $.fn.img = function() {
     	return this.find("img[src^=Image]").lazyload({
-    	       placeholder : "img/grey.gif",
+    	       placeholder : "images/noAlbum.png",
     	       effect      : "fadeIn",
     	       container   : $("#center").get(0)
 	    }).end();
