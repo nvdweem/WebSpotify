@@ -140,6 +140,7 @@ public class QueueHandler {
 	 */
 	public static void clear() {
 		list.clear();
+		queue.clear();
 	}
 
 	/**
