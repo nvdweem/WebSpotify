@@ -28,6 +28,7 @@ var Search = function() {
 				return true;
 			if(e.which == 13){
 				search(e);
+				$(this).trigger('blur').trigger('focus');
 				return false;
 			}
 		}).autocomplete({

@@ -6,7 +6,8 @@
     <title> WebSpotify </title>
     
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.21/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="js/jquery.ui.autocomplete.js"></script>
     <script type="text/javascript" src="js/jquery.lazyload.mini.js"></script>
     <script type="text/javascript" src="js/jquery.contextMenu.js"></script>
     <script type="text/javascript" src="js/jquery.history.js"></script>
@@ -14,7 +15,7 @@
     
     <link rel="stylesheet" type="text/css" href="css/jquery.contextMenu.css" />
     <link rel="stylesheet" type="text/css" href="css/style.css" />
-    <link rel="stylesheet" type="text/css" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/base/jquery-ui.css" />
+    <link rel="stylesheet" type="text/css" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.21/themes/base/jquery-ui.css" />
     
     <script type="text/javascript" src="js/actions.js"></script>
     <script type="text/javascript" src="js/contextMenu.js"></script>
