@@ -97,7 +97,7 @@
 	 * Add a track to the queue.
 	 */
 	key('enter', function() {
-		$('.selected').dblclick();
+		Player.addSelectedToQueue();
 	});
 	/**
 	 * Focus and select the text in the search popup.

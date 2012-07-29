@@ -77,12 +77,24 @@ var Player = function() {
 	}
 	
 	function addSelectedToPlaylist() {
+		addSelected(true);
+	}
+	
+	function addSelectedToQueue() {
+		addSelected(false);
+	}
+	function addSelected(playlist) {
+		var selected = $('.selected');
 		var ids = [];
-		$('.selected').each(function() {
+		if (selected.length > 20) {
+			playlist = true;
+		}
+		selected.each(function() {
 			ids.push($(this).data('id'));
 		});
 		if (ids.length > 0)
-			Ajax.post("Play", {"ids": ids, "playlist": true});
+			Ajax.post("Play", {"ids": ids, "playlist": playlist});
+		queued(selected);
 	}
 	
 	function toggleShuffle() {
@@ -98,6 +110,7 @@ var Player = function() {
 		"updatePosition": updatePosition,
 		"updateShuffling": updateShuffling,
 		"addSelectedToPlaylist": addSelectedToPlaylist,
+		"addSelectedToQueue": addSelectedToQueue,
 		"play": play
 	};
 }();

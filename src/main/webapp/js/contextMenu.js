@@ -1,7 +1,7 @@
 
 $(function(){
 	var addToQueue = {"name": "Add to queue", "icon":"queue", "callback": function() {
-		$('.selected').dblclick();
+		Player.addSelectedToQueue();
 	}};
 	var addToPlaylist = {"name": "Add to playlist", "icon":"playlist", "callback": function() {
 		Player.addSelectedToPlaylist();
