@@ -22,7 +22,7 @@ public class TopListAction {
 		}
 
 		TopListType typeObj = TopListType.values()[type];
-		SearchResult result = JahSpotifyService.getInstance().getJahSpotify().getTopList(typeObj);
+		SearchResult result = JahSpotifyService.getInstance().getJahSpotify().getTopList(typeObj, JahSpotifyService.getInstance().getJahSpotify().getUser().getCountry());
 		MediaHelper.waitFor(result, 10);
 		return JsonResult.onAjax(Gsonner.getGson(SearchResult.class).toJson(result));
 	}
