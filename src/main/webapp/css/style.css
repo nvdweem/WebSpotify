@@ -368,7 +368,8 @@ span.duration, td.index {
  
 table.searchResults, table.searchTop {
 	width: 100%;
-	table-layout: fixed;	
+	table-layout: fixed;
+	overflow: hidden;	
 }
 table.searchTop td { width: 33%; }
 table.searchResults .track      { }

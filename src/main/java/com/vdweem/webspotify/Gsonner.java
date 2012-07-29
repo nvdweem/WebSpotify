@@ -3,7 +3,6 @@ package com.vdweem.webspotify;
 import jahspotify.SearchResult;
 import jahspotify.media.Album;
 import jahspotify.media.Artist;
-import jahspotify.media.Image;
 import jahspotify.media.Link;
 import jahspotify.media.Media;
 import jahspotify.media.Playlist;
