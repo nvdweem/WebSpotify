@@ -436,7 +436,6 @@ var // currently active contextMenu trigger
                 $round;
 
             switch (e.keyCode) {
-                case 9:
                 case 38: // up
                     handle.keyStop(e, opt);
                     // if keyCode is [38 (up)] or [9 (tab) with shift]
