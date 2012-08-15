@@ -73,6 +73,11 @@ public class QueueHandler {
 			queue.add(jsc.toJsonTree(track));
 		}
 		result.add("queue", queue);
+		
+		JsonArray history = new JsonArray();
+		for (Track track : MediaPlayer.getInstance().getHistory()) {
+			history.add(jsc.toJsonTree(track));
+		}
 
 		JsonArray list = new JsonArray();
 		itt = QueueHandler.getList().iterator();
@@ -90,6 +95,7 @@ public class QueueHandler {
 		result.add("playlist", list);
 		result.addProperty("duration", totalDuration);
 		result.addProperty("size", totalTracks);
+		result.add("history", history);
 
 		return result;
 	}

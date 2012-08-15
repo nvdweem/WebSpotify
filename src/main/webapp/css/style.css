@@ -559,6 +559,16 @@ table.playlist .album      { width: 30%; }
 .playingTable tr.queue, .playingTable tr.queue a, .playingTable .queue span.duration {
 	color: #FFFD7F;
 }
+.tabs {
+	text-align: center;
+}
+.tabheader.shown {
+	color: white;
+}
+.tabheader {
+	padding: 10px;
+	color: #BBB;
+}
 
 /****************************************************************
  *							Queue								*

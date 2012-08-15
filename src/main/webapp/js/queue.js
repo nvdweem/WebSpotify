@@ -4,12 +4,21 @@ var Queue = function(){
 	var selectedIndex = 0;
 	
 	$("#lists #queue li").live('click', showQueue);
+	$(document).on('click', '.tabheader', showTab);
 	
 	function showQueue(force) {
 		var args = {"page": 'Queue', params: {}, decorator: decorateQueue};
 		if (force === true)
 			args.noHistory = true;
 		Ajax.call(args);
+	}
+	
+	function showTab() {
+		$this = $(this);
+		$('.tab').hide();
+		$('.tabheader.shown').removeClass('shown');
+		$('.tab.' + $(this).attr('data-tab')).show();
+		$this.addClass('shown');
 	}
 	
 	function update(revision) {
@@ -28,7 +37,13 @@ var Queue = function(){
 	}
 	
 	function decorateQueue(q) {
-		var queue = $('<div></div>');
+		var container = $('<div class="queue"></div>');
+		$('<div class="tabs" />')
+			.append('<span data-tab="queue" class="tabheader shown">Queue</span>')
+			.append('<span data-tab="history" class="tabheader">History</span>')
+			.appendTo(container);
+		
+		var queue = $('<div class="tab queue"></div>');
 		var playingTable = $(
 				'<table class="playingTable">' +
 				'  <tr class="playingHead head">' +
@@ -39,6 +54,7 @@ var Queue = function(){
 				'    <th class="album">Album</th>' +
 				'  </tr>' +
 				'</table>');
+		var historyTable = playingTable.clone();
 		
 		var evenOddOffset = 0;
 		if (q.queue) {
@@ -52,6 +68,12 @@ var Queue = function(){
 			for (var i = 0; i < q.playlist.length; i++) {
 				var track = q.playlist[i];
 				playingTable.append(Media.decorateTrack(track).addClass((i + evenOddOffset) % 2 == 0 ? "even" : "odd"));
+			}
+		}
+		if (q.history) {
+			for (var i = 0; i < q.history.length; i++) {
+				var track = q.history[i];
+				historyTable.append(Media.decorateTrack(track).addClass((i + evenOddOffset) % 2 == 0 ? "even" : "odd"));
 			}
 		}
 		
@@ -75,7 +97,9 @@ var Queue = function(){
 			selectedIndex = -1;
 		}
 		
-		return queue;
+		container.append(queue);
+		container.append($('<div class="tab history" style="display:none;"/>').append(historyTable));
+		return container;
 	}
 	
 	return {
