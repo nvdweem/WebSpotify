@@ -1,5 +1,6 @@
 package com.vdweem.webspotify.interceptor;
 
+import jahspotify.AbstractConnectionListener;
 import jahspotify.ConnectionListener;
 import jahspotify.services.JahSpotifyService;
 
@@ -32,15 +33,7 @@ public class LoginInterceptor implements Interceptor {
 
 	@Override
 	public void init() {
-		JahSpotifyService.getInstance().getJahSpotify().addConnectionListener(new ConnectionListener() {
-			@Override
-			public void loggedOut() {}
-			@Override
-			public void disconnected() {}
-			@Override
-			public void connected() {}
-			@Override
-			public void loggedIn() {}
+		JahSpotifyService.getInstance().getJahSpotify().addConnectionListener(new AbstractConnectionListener() {
 			@Override
 			public void blobUpdated(String blob) {
 				if (rememberMe) {
