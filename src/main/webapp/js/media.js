@@ -23,7 +23,7 @@ var Media = function() {
 	 * Format a duration integer to mm:ss span.
 	 */
 	function decorateDuration(duration) {
-		duration /= 1000;
+		duration = Math.round(duration / 1000);
 		var minutes = Math.floor(duration / 60);
 		var seconds = lz(duration % 60, 2);
 		return $('<span class="duration">'+minutes+':'+seconds+'</span>').data("value", duration);

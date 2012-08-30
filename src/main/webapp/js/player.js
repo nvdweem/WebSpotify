@@ -72,8 +72,8 @@ var Player = function() {
 		
 		$('#controls .progressTime').detach();
 		$('#controls')
-			.append(Media.decorateDuration(position * 1000).removeClass("duration").addClass("played progressTime"))
-			.append(Media.decorateDuration(duration * 1000).addClass("progressTime"));
+			.append(Media.decorateDuration(position).removeClass("duration").addClass("played progressTime"))
+			.append(Media.decorateDuration(duration).addClass("progressTime"));
 	}
 	
 	function addSelectedToPlaylist() {

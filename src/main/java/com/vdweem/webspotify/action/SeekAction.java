@@ -13,7 +13,7 @@ public class SeekAction {
 	private int position = 0;
 
 	public Result execute() {
-		MediaPlayer.getInstance().seek(position);
+		MediaPlayer.getInstance().seek(position * 1000);
 		return JsonResult.SUCCESS;
 	}
 
